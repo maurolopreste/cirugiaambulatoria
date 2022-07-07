@@ -63,12 +63,24 @@ class Agenda extends Front_Controller {
 				$data['profesional_id'] = $post['profesional_id'];
 			}
 
-			$this->agenda_model->insert($data);
+			$agenda_id = $this->agenda_model->insert($data);
 
 			$this->session->set_flashdata('alert', array(
 				'msg' => lang('La agenda se actualizó correctamente'),
 				'error' => FALSE
 			));
+
+			//notificar al paciente
+			$turno = $this->agenda_model->get_turno($agenda_id);
+			$data['paciente'] = $turno->nombre_paciente;
+			$data['profesional'] = $turno->nombre_profesional;
+			$data['fecha'] = strftime('%A %e/%m a las %H:%M hs.', strtotime($turno->fecha));
+			$message = $this->load->view('email/turno_nuevo', $data, true);
+			$this->email->from(get_site_config('admin_email'), get_site_config('site_title'));
+			$this->email->to($turno->email_paciente);
+			$this->email->subject('Asignación de Turno Clínica Ambulatoria: '. $post['fecha'] .' a las '. $post['hora'] .' con '. $turno->nombre_profesional);
+			$this->email->message($message);
+			$this->email->send();
 
 			if($paciente_id)
 			{

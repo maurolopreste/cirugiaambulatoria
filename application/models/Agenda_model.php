@@ -111,9 +111,11 @@ class Agenda_model extends Super_model {
 		$this->db->select("
 			$this->tbl.*,
 			CONCAT(user.first_name, ' ', user.last_name) as nombre_paciente,
+			CONCAT(profesional.first_name, ' ', profesional.last_name) as nombre_profesional,
 			user.email as email_paciente
 		");
 		$this->db->join('user', "$this->tbl.paciente_id = user.id", 'left');
+		$this->db->join('user as profesional', "$this->tbl.profesional_id = profesional.id", 'left');
 		$this->db->where("$this->tbl.id", $id);
 		
 		return $this->db->get($this->tbl)->row();

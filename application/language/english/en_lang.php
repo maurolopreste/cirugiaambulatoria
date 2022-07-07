@@ -25,3 +25,5 @@ $lang['La historia clínica se agregó correctamente'] = 'La historia clínica s
 $lang['No se pudo restablecer la contraseña'] = 'No se pudo restablecer la contraseña';
 $lang['El paciente se agregó correctamente'] = 'El paciente se agregó correctamente';
 $lang['El profesional se habilitó nuevamente'] = 'El profesional se habilitó nuevamente';
+$lang['La agenda se actualizó correctamente'] = 'La agenda se actualizó correctamente';
+$lang['Cancelación turno'] = 'Cancelación turno';

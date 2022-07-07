@@ -25,13 +25,11 @@
 					<select name="profesional_id" class="custom-select select2">
 						<option value="">Seleccione una opción</option>
 						<?php foreach($this->profesionales_list as $profesional): ?>
-							<?php if($profesional->active): ?>
+							<?php if(!$profesional->active) continue; ?>
 							<?php $selected = $row->profesional_id==$profesional->id ? 'selected' : ''; ?>
 							<option value="<?php echo $profesional->id; ?>" <?php echo $selected; ?>>
 								<?php echo $profesional->first_name; ?> <?php echo $profesional->last_name; ?>
-								(Mat <?php echo $profesional->matricula; ?>)
 							</option>
-							<?php endif; ?>
 						<?php endforeach; ?>
 					</select>
 				</div>
@@ -49,7 +47,7 @@
 				</div>
 			</div>
 			
-			<?php if($this->is_admin): ?>
+			<?php /*if($this->is_admin): ?>
 				<div class="form-row">
 					<div class="form-group col-6">
 						<label>Método de pago</label>
@@ -72,7 +70,7 @@
 					<label>Adjuntar comprobante</label>
 					<input type="file" name="userfile">
 				</div>
-			<?php endif; ?>
+			<?php endif;*/ ?>
 
 			<?php if($this->is_admin && !empty($row->file)): ?>
 				<div class="alert alert-warning mt-2 p-2">Archivo subido: <a href="<?php echo site_url('/uploads/'.$row->file); ?>" class="alert-link" target="_blank"><?php echo $row->file; ?></a></div>
@@ -110,7 +108,7 @@
 	<script type="text/javascript">
 		function getFechasDisponibles(profesional_id) {
 			if(profesional_id) {
-				var action = '<?php echo site_url('/dashboard/get_fechas_disponibles/'); ?>'+profesional_id;
+				var action = base_url+'/dashboard/get_fechas_disponibles/'+profesional_id;
 				$.post(action, null, function(res){
 					$('#fecha_turno').datepicker('setDatesDisabled', res).on('changeDate', function(e) {
 						var fecha = $('#fecha_turno').val();
@@ -122,7 +120,7 @@
 
 		function getHorariosDisponibles(fecha, profesional_id) {
 			if(fecha) {
-				var action = '/dashboard/get_horarios_disponibles';
+				var action = base_url+'/dashboard/get_horarios_disponibles';
 				$.post(action, {fecha: fecha, profesional_id: profesional_id}, function(res){
 					if(res) {
 						$('#horario_turno').html(res);

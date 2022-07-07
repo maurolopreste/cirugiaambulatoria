@@ -21,7 +21,7 @@
 			line-height: 1.4;
 			border-radius: .125rem;
 			text-decoration: none;
-			background-color: #825BAB;
+			background-color: #3D968F;
 			color: #fff;
 		}
 	</style>
@@ -31,7 +31,7 @@
 	<div style="background: #f3f5fa; padding: 40px 15px">
 		<div style="text-align: center">
 			<a href="<?php echo site_url(); ?>">
-				<img src="<?php echo base_url('/assets/img/logo-email.png'); ?>" alt="<?php echo get_site_config('site_title'); ?>" height="80" />
+				<img src="<?php echo base_url('/assets/img/logo-email.png'); ?>" alt="<?php echo get_site_config('site_title'); ?>" height="50" />
 			</a>
 		</div>
 		<br>

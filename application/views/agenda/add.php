@@ -1,7 +1,7 @@
 
 	<?php echo form_open_multipart('', array('autocomplete'=>'off')); ?>
 		<header class="modal-header">
-			<h4 class="modal-title">Agregar fecha</h4>
+			<h4 class="modal-title">Agendar turno</h4>
 		</header>
 
 		<div class="modal-body pt-3">
@@ -20,14 +20,13 @@
 			<?php if($this->is_admin): ?>
 				<div class="form-group">
 					<label>Profesional</label>
-					<select id="profesional_id" name="profesional_id" class="custom-select" onchange="getFechasDisponibles(this.value);">
+					<select id="profesional_id" name="profesional_id" class="custom-select select2" onchange="getFechasDisponibles(this.value);">
 						<option value="">Seleccione una opción</option>
 						<?php foreach($this->profesionales_list as $profesional): ?>
-							<?php if($profesional->active): ?>
+							<?php if(!$profesional->active) continue; ?>
 							<option value="<?php echo $profesional->id; ?>">
 								<?php echo $profesional->first_name; ?> <?php echo $profesional->last_name; ?>
 							</option>
-							<?php endif; ?>
 						<?php endforeach; ?>
 					</select>
 				</div>
@@ -57,7 +56,7 @@
 	<script type="text/javascript">
 		function getFechasDisponibles(profesional_id) {
 			if(profesional_id) {
-				var action = '/dashboard/get_fechas_disponibles/'+profesional_id;
+				var action = base_url+'/dashboard/get_fechas_disponibles/'+profesional_id;
 				$.post(action, null, function(res){
 					$('#fecha_turno').datepicker('setDatesDisabled', res).on('changeDate', function(e) {
 						var fecha = $('#fecha_turno').val();
@@ -69,7 +68,7 @@
 
 		function getHorariosDisponibles(fecha, profesional_id) {
 			if(fecha) {
-				var action = '/dashboard/get_horarios_disponibles';
+				var action = base_url+'/dashboard/get_horarios_disponibles';
 				$.post(action, {fecha: fecha, profesional_id: profesional_id}, function(res){
 					if(res) {
 						$('#horario_turno').html(res);
