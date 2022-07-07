@@ -1,0 +1,97 @@
+:root {
+	--primary-color: #263281;
+}
+html, body {
+	height: 100%;
+	margin: 0;
+	padding: 0;
+}
+body {
+	padding: 0;
+	background-color: #fff;
+	font-family: 'Spartan', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+	font-weight: 500;
+	font-size: 15px;
+	color: #3A3A3F;
+}
+header {
+	background: #fff;
+}
+h4 {
+	margin-bottom: 30px;
+	font-size: 15px;
+	font-weight: 500;
+}
+img, video {
+	display: inline-block;
+	max-width: 100%;
+}
+.text-center video {
+	margin: 0 auto;
+}
+
+/** LOGIN **/
+section#login {
+	height: 100%;
+	padding: 30px 20px;
+	display: flex;
+	align-items: center;
+}
+section#login .logo {
+	margin-bottom: 50px;
+}
+@media(min-width: 990px){
+	section#login {
+		padding: 0;
+		background: url(../img/bg.jpg) top center no-repeat;
+		background-size: cover;
+	}
+	section#login .content {
+		padding: 40px 0 60px 60px;
+	}
+	section#login .container {
+		width: 950px;
+		background: #fff url(../img/login.jpg) top right no-repeat;
+		box-shadow: 7px 7px 20px rgba(0,0,0,.5);
+	}
+}
+
+/** BUTTONS **/
+.btn {
+	height: 40px;
+	min-width: 175px;
+	padding: 0 40px;
+	text-align: center;
+	border: 0 none;
+	border-radius: 2em;
+}
+.btn-primary {
+	background: #3299df; /* Old browsers */
+	background: -moz-linear-gradient(left,  #3299df 0%, #2a6fd3 100%); /* FF3.6-15 */
+	background: -webkit-linear-gradient(left,  #3299df 0%,#2a6fd3 100%); /* Chrome10-25,Safari5.1-6 */
+	background: linear-gradient(to right,  #3299df 0%,#2a6fd3 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
+	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#3299df', endColorstr='#2a6fd3',GradientType=1 ); /* IE6-9 */
+	color: #fff;
+}
+
+/** FORMS */
+.form-group {
+	margin-bottom: 30px;
+}
+.form-control {
+	padding: 0;
+	background: transparent;
+	border: 0 none;
+	border-bottom: 2px solid #000;
+	border-radius: 0;
+	font-size: 15px;
+}
+.form-control:focus {
+	box-shadow: none;
+	border-color: inherit;
+}
+
+footer {
+	text-align: center;
+	font-size: 12px;
+}

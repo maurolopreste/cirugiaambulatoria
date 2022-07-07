@@ -1,0 +1,86 @@
+<?php $this->load->view('header'); ?>
+
+	<div class="py-4 px-3 px-md-4">
+		<div class="card mb-3 mb-md-4">
+			<div class="card-body">
+				<?php $this->load->view('alert'); ?>
+				
+				<nav class="d-none d-md-block" aria-label="breadcrumb">
+					<ol class="breadcrumb">
+						<li class="breadcrumb-item">
+							<a href="#">Pacientes</a>
+						</li>
+						<li class="breadcrumb-item active" aria-current="page">Todos los pacientes</li>
+					</ol>
+				</nav>
+				
+				<div class="mb-5 d-flex justify-content-between">
+					<div class="h3 mb-0">Pacientes</div>
+					<a href="<?php echo site_url('/paciente/add'); ?>" class="btn btn-primary">Agregar nuevo</a>
+				</div>
+
+				<form action="<?php echo site_url('/paciente'); ?>" method="get">
+					<div class="input-group mb-5">
+						<button type="submit" class="input-group-append btn">
+							<i class="gd-search icon-text icon-text-sm"></i>
+						</button>
+						<input type="text" name="q" class="form-control form-control-icon-text" placeholder="Buscar" value="<?php echo $this->input->get('q'); ?>">
+					</div>
+				</form>
+
+				<?php if(!empty($rows)): ?>
+					<div class="table-responsive-xl">
+						<table class="table text-nowrap mb-0">
+							<thead>
+								<tr>
+									<!-- <th class="font-weight-semi-bold border-top-0 py-2"><input type="checkbox" onclick="toggleAll(this)"></th> -->
+									<th class="font-weight-semi-bold border-top-0 py-2">Nombre</th>
+									<th class="font-weight-semi-bold border-top-0 py-2">DNI</th>
+									<th class="font-weight-semi-bold border-top-0 py-2">Email</th>
+									<th class="font-weight-semi-bold border-top-0 py-2 text-right">Acciones</th>
+								</tr>
+							</thead>
+							<tbody>
+							<?php foreach($rows as $row): ?>
+								<tr>
+									<!-- <td class="py-3">
+										<input type="checkbox" name="ids[]" value="<?php echo $row->id; ?>">
+									</td> -->
+									<td>
+										<a href="<?php echo site_url('/paciente/edit/'.$row->id); ?>">
+											<?php echo $row->first_name; ?>
+											<?php echo $row->last_name; ?>
+										</a>
+									</td>
+									<td><?php echo $row->dni; ?></td>
+									<td><?php echo $row->email; ?></td>
+									<td class="py-3 text-right">
+										<div class="position-relative">
+											<a class="link-dark d-inline-block" href="<?php echo site_url('/paciente/edit/'.$row->id); ?>">
+												<i class="gd-pencil icon-text"></i>
+											</a>
+											<?php if($this->is_admin): ?>
+												<a class="link-dark d-inline-block" href="<?php echo site_url('/paciente/delete/'.$row->id); ?>" onclick="return confirm('Atención: Se eliminá este paciente', this)">
+													<i class="gd-trash icon-text"></i>
+												</a>
+											<?php endif; ?>
+										</div>
+									</td>
+								</tr>
+							<?php endforeach; ?>
+							</tbody>
+						</table>
+						
+					</div>
+				<?php else: ?>
+					<div class="pt-10 pb-12 text-center">
+						<i class="gd-user display-1"></i>
+						<h4 class="m-5">No hay pacientes para mostrar</h4>
+						<!-- <a href="<?php echo site_url('/paciente/add'); ?>" class="btn btn-primary">Crear paciente</a> -->
+					</div>
+				<?php endif; ?>
+			</div>
+		</div>
+	</div>
+
+<?php $this->load->view('footer'); ?>
