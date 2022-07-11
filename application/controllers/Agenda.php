@@ -146,13 +146,14 @@ class Agenda extends Front_Controller {
 
 	public function cancelar_turno($id)
 	{
-		$this->is_ajax();
+		// $this->is_ajax();
+		$this->is_admin();
 		$this->load->library('email');
 
 		//cambiar estado agenda
-		$this->agenda_model->update($id, array('estado_cita'=>3));//cancelado
-
 		$turno = $this->agenda_model->get_turno($id);
+		if(!$turno) die('no existe el turno');
+		$this->agenda_model->update($id, array('estado_cita'=>3));//cancelado
 
 		//notificar al paciente
 		$data['paciente'] = $turno->nombre_paciente;
@@ -164,7 +165,11 @@ class Agenda extends Front_Controller {
 		$this->email->message($message);
 		$this->email->send();
 
-		echo 'ok';
+		$this->session->set_flashdata('alert', array(
+			'msg' => lang('La agenda se actualizó correctamente'),
+			'error' => FALSE
+		));	
+		redirect('/agenda', 'refresh');
 	}
 
 }

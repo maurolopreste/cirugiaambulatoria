@@ -97,7 +97,7 @@
 			<?php endif; ?>
 			
 			<?php if($row->estado_cita!=3): ?>
-				<a href="<?php echo site_url('/agenda/cancelar_turno/'.$row->id); ?>" class="btn btn-danger" onclick="return confirm('El turno se cancelará. Le enviaremos una notificación al paciente.', this)">Cancelar turno</a>
+				<button type="button" class="btn btn-danger" data-title="El turno se cancelará. Le enviaremos una notificación al paciente." onclick="cancelarTurno(<?php echo $row->id; ?>)">Cancelar turno</button>
 			<?php endif; ?>
 			
 			<button type="submit" class="btn btn-primary btn-submit">Guardar</button>
@@ -128,6 +128,16 @@
 					}
 				});
 			}
+		}
+
+		function cancelarTurno(turno) {
+			var modal = $('#deleteModal');
+			var href = base_url+'agenda/cancelar_turno/'+turno;
+			modal.find('.h5').text('El turno se cancelará. Le enviaremos una notificación al paciente.');
+			modal.find('.btn-confirm').click(function(){
+				window.location.href = href;
+			});
+			modal.modal('show');
 		}
 
 		getFechasDisponibles(<?php echo $row->profesional_id; ?>);
