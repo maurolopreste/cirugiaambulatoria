@@ -19,15 +19,6 @@
 					<a href="<?php echo site_url('/user/add'); ?>" class="btn btn-primary btn-sm">Agregar nuevo</a>
 				</div>
 
-				<form action="<?php echo site_url('/user'); ?>" method="get">
-					<div class="input-group mb-5">
-						<button type="submit" class="input-group-append btn">
-							<i class="gd-search icon-text icon-text-sm"></i>
-						</button>
-						<input type="text" name="q" class="form-control form-control-icon-text" placeholder="Buscar" value="<?php echo $this->input->get('q'); ?>">
-					</div>
-				</form>
-
 				<?php if(!empty($rows)): ?>
 					<div class="table-responsive-xl">
 						<table class="table text-nowrap mb-0">
@@ -35,7 +26,6 @@
 								<tr>
 									<!-- <th class="font-weight-semi-bold border-top-0 py-2"><input type="checkbox" onclick="toggleAll(this)"></th> -->
 									<th class="font-weight-semi-bold border-top-0 py-2">Nombre</th>
-									<th class="font-weight-semi-bold border-top-0 py-2">DNI</th>
 									<th class="font-weight-semi-bold border-top-0 py-2">Email</th>
 									<th class="font-weight-semi-bold border-top-0 py-2">Perfil</th>
 									<th class="font-weight-semi-bold border-top-0 py-2">Acciones</th>
@@ -53,7 +43,6 @@
 											<?php echo $row->last_name; ?>
 										</a>
 									</td>
-									<td><?php echo $row->dni; ?></td>
 									<td><?php echo $row->email; ?></td>
 									<td><?php echo $row->perfil; ?></td>
 									<td class="py-3 text-right">

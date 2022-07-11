@@ -275,6 +275,15 @@
 							<a class="side-nav-menu-link<?php if(strpos($this->uri->uri_string(), 'config/medicamento')!==false) echo ' active'; ?>" href="<?php echo site_url('config/medicamento'); ?>">Medicamentos</a>
 						</li>
 					</ul>
+
+					<li class="side-nav-menu-item<?php if('user'==$this->uri->segments[1]) echo ' active'; ?>">
+						<a class="side-nav-menu-link media align-items-center" href="<?php echo site_url('user'); ?>">
+							<span class="side-nav-menu-icon d-flex mr-3">
+								<i class="gd-user"></i>
+							</span>
+							<span class="side-nav-fadeout-on-closed media-body"><?php echo lang('Usuarios Sistema'); ?></span>
+						</a>
+					</li>
 				</li>
 					
 				<?php endif; ?>

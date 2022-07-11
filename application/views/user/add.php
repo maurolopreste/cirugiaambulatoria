@@ -21,27 +21,6 @@
 				<?php echo form_open(''); ?>
 					<div class="row">
 						<div class="col-md-6">
-							<?php if($this->is_admin): ?>
-								<div class="form-group">
-									<label>Perfil</label>
-									<select name="group_id" class="custom-select" onchange="return change_perfil(this.value)" required>
-										<option value="">Seleccione una opción</option>
-										<?php foreach($this->group_list as $group): ?>
-											<option value="<?php echo $group->id; ?>"><?php echo $group->name; ?></option>
-										<?php endforeach; ?>
-									</select>
-								</div>
-								<div class="form-group">
-									<label>Productor asignado</label>
-									<select name="productor_id" class="custom-select select2">
-										<option value="">Seleccione una opción</option>
-										<?php foreach($this->productores_list as $productor): ?>
-											<option value="<?php echo $productor->id; ?>"><?php echo $productor->first_name; ?> <?php echo $productor->last_name; ?> (<?php echo $productor->email; ?>)</option>
-										<?php endforeach; ?>
-									</select>
-								</div>
-							<?php endif; ?>
-
 							<div class="form-row">
 								<div class="form-group col-md-6">
 									<label>Nombre</label>
@@ -50,44 +29,6 @@
 								<div class="form-group col-md-6">
 									<label>Apellido</label>
 									<input type="text" class="form-control" name="last_name" required>
-								</div>
-							</div>
-
-							<div class="form-group productor_content">
-								<label>Matricula (sólo productores)</label>
-								<input type="text" class="form-control" name="matricula">
-							</div>
-
-							<div class="cliente_content">
-								<div class="form-group">
-									<label>DNI</label>
-									<input type="text" class="form-control" name="dni">
-								</div>
-
-								<div class="form-row">
-									<div class="form-group col-md-6">
-										<label>Compañía</label>
-										<select name="empresa_id" class="custom-select select2">
-											<option value="">Seleccione una opción</option>
-											<?php foreach($this->empresas_list as $empresa): ?>
-												<option value="<?php echo $empresa->id; ?>"><?php echo $empresa->nombre; ?></option>
-											<?php endforeach; ?>
-										</select>
-									</div>
-									<div class="form-group col-md-6">
-										<label>N&deg; póliza</label>
-										<input type="text" class="form-control" name="nro_poliza">
-									</div>
-								</div>
-
-								<div class="form-group">
-									<label>Dirección</label>
-									<input type="text" class="form-control" name="direccion">
-								</div>
-
-								<div class="form-group">
-									<label>Teléfono</label>
-									<input type="text" class="form-control" name="telefono">
 								</div>
 							</div>
 

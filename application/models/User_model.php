@@ -136,6 +136,12 @@ class User_model extends Super_model {
 
 	public function get_by_group_id($group_id, $search=null)
 	{
+		$this->db->select("
+			$this->tbl.*,
+			group.name as perfil
+		");
+		$this->db->join('group', "$this->tbl.group_id = group.id", 'left');
+
 		//search by $search
 		$this->db->group_start();
 		$this->db->like("$this->tbl.first_name", $search);
