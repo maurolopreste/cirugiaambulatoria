@@ -78,7 +78,7 @@
 							<div class="form-row mb-3">
 								<div class="col-sm-3">
 									<label>Fecha de Nacimiento</label>
-									<input type="date" class="form-control form-control-line" name="fecha_nac" value="<?php echo $form->fecha_nac; ?>">
+									<input type="date" class="form-control form-control-line" name="fecha_nac" value="<?php echo $row->fecha_nac; ?>">
 								</div>
 								<div class="form-group col-sm-7">
 									<label>Calle</label>
@@ -257,33 +257,33 @@
 							<div class="form-row mb-3">
 								<div class="form-group col-sm-5">
 									<label>Fecha del Accidente / Primera manifestación invalidante</label>
-									<input type="date" class="form-control form-control-line" name="fecha_accidente" value="<?php echo date('Y-m-d', strtotime($form->fecha_accidente)); ?>">
+									<input type="date" class="form-control form-control-line" name="fecha_accidente" value="<?php echo $form->fecha_accidente ? date('Y-m-d', strtotime($form->fecha_accidente)) : ''; ?>">
 								</div>
 								<div class="form-group col-sm-2">
 									<label>Hora</label>
-									<input type="text" class="form-control form-control-line" name="hora_accidente" value="<?php echo date('H:i', strtotime($form->fecha_accidente)); ?>">
+									<input type="text" class="form-control form-control-line" name="hora_accidente" value="<?php echo $form->fecha_accidente ? date('H:i', strtotime($form->fecha_accidente)) : ''; ?>">
 								</div>
 							</div>
 
 							<div class="form-row mb-3">
 								<div class="form-group col-sm-5">
 									<label>Fecha de inicio de la inasistencia laboral</label>
-									<input type="date" class="form-control form-control-line" name="fecha_inasistencia" value="<?php echo date('Y-m-d', strtotime($form->fecha_inasistencia)); ?>">
+									<input type="date" class="form-control form-control-line" name="fecha_inasistencia" value="<?php echo $form->fecha_inasistencia ? date('Y-m-d', strtotime($form->fecha_inasistencia)) : ''; ?>">
 								</div>
 								<div class="form-group col-sm-2">
 									<label>Hora</label>
-									<input type="text" class="form-control form-control-line" name="hora_inasistencia" value="<?php echo date('H:i', strtotime($form->fecha_inasistencia)); ?>">
+									<input type="text" class="form-control form-control-line" name="hora_inasistencia" value="<?php echo $form->fecha_inasistencia ? date('H:i', strtotime($form->fecha_inasistencia)) : ''; ?>">
 								</div>
 							</div>
 
 							<div class="form-row mb-3">
 								<div class="form-group col-sm-5">
 								<label>Fecha de primera atención médica</label>
-									<input type="date" class="form-control form-control-line" name="fecha_primera_atencion" value="<?php echo date('Y-m-d', strtotime($form->fecha_primera_atencion)); ?>">
+									<input type="date" class="form-control form-control-line" name="fecha_primera_atencion" value="<?php echo $form->fecha_primera_atencion ? date('Y-m-d', strtotime($form->fecha_primera_atencion)) : ''; ?>">
 								</div>
 								<div class="form-group col-sm-2">
 									<label>Hora</label>
-									<input type="text" class="form-control form-control-line" name="hora_primera_atencion" value="<?php echo date('H:i', strtotime($form->fecha_primera_atencion)); ?>">
+									<input type="text" class="form-control form-control-line" name="hora_primera_atencion" value="<?php echo $form->fecha_primera_atencion ? date('H:i', strtotime($form->fecha_primera_atencion)) : ''; ?>">
 								</div>
 							</div>
 
@@ -316,7 +316,7 @@
 								</div>
 								<div class="form-group col-sm-6">
 									<label>Fecha probable de alta (en caso de ser posible)</label>
-									<input type="date" class="form-control form-control-line" name="fecha_probable_alta" value="<?php echo date('Y-m-d', strtotime($form->fecha_probable_alta)); ?>">
+									<input type="date" class="form-control form-control-line" name="fecha_probable_alta" value="<?php echo $form->fecha_probable_alta ? date('Y-m-d', strtotime($form->fecha_probable_alta)) : ''; ?>">
 								</div>
 							</div>
 
@@ -325,17 +325,17 @@
 									<div class="form-row">
 										<div class="form-group col-sm-8">
 											<label>Fecha de próxima revisión</label>
-											<input type="date" class="form-control form-control-line" name="fecha_proxima_revision" value="<?php echo date('Y-m-d', strtotime($form->fecha_proxima_revision)); ?>">
+											<input type="date" class="form-control form-control-line" name="fecha_proxima_revision" value="<?php echo $form->fecha_proxima_revision ? date('Y-m-d', strtotime($form->fecha_proxima_revision)) : ''; ?>">
 										</div>
 										<div class="form-group col-sm-4">
 											<label>Hora</label>
-											<input type="text" class="form-control form-control-line" name="hora_proxima_revision" value="<?php echo date('H:i', strtotime($form->fecha_proxima_revision)); ?>">
+											<input type="text" class="form-control form-control-line" name="hora_proxima_revision" value="<?php echo $form->fecha_proxima_revision ? date('H:i', strtotime($form->fecha_proxima_revision)) : ''; ?>">
 										</div>
 									</div>
 								</div>
 								<div class="form-group col-sm-6">
 									<label>Fecha de retorno al trabajo</label>
-									<input type="date" class="form-control form-control-line" name="fecha_retorno" value="<?php echo date('Y-m-d', strtotime($form->fecha_retorno)); ?>">
+									<input type="date" class="form-control form-control-line" name="fecha_retorno" value="<?php echo $form->fecha_retorno ? date('Y-m-d', strtotime($form->fecha_retorno)) : ''; ?>">
 								</div>
 							</div>
 

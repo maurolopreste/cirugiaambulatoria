@@ -452,8 +452,11 @@ class Paciente extends Front_Controller {
 			redirect('/paciente/edit/'.$id);
 		}
 
-		$data['row'] = $this->user_model->get($id);
+		$row = $this->user_model->get($id);
+		
+		$data['row'] = $row;
 		$data['form'] = $this->user_model->formingreso($id);
+		$data['page_title'] = "Formulario de Ingreso - ".$row->first_name." ".$row->last_name;
 
 		$this->load->view('paciente/edit_form_ingreso', $data);
 	}
@@ -535,8 +538,11 @@ class Paciente extends Front_Controller {
 			redirect('/paciente/edit/'.$id);
 		}
 
-		$data['row'] = $this->user_model->get($id);
+		$row = $this->user_model->get($id);
+
+		$data['row'] = $row;
 		$data['form'] = $formalta;
+		$data['page_title'] = "Formulario de Alta - ".$row->first_name." ".$row->last_name;
 
 		$this->load->view('paciente/edit_form_alta', $data);
 	}
@@ -611,8 +617,11 @@ class Paciente extends Front_Controller {
 			redirect('/paciente/edit/'.$id);
 		}
 
-		$data['row'] = $this->user_model->get($id);
+		$row = $this->user_model->get($id);
+
+		$data['row'] = $row;
 		$data['form'] = $formreingreso;
+		$data['page_title'] = "Formulario de Reingreso - ".$row->first_name." ".$row->last_name;
 
 		$this->load->view('paciente/edit_form_reingreso', $data);
 	}

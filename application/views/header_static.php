@@ -6,7 +6,7 @@
 	<link rel="canonical" href="<?php echo site_url($this->uri->uri_string()); ?>" />
 	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 	<meta http-equiv="x-ua-compatible" content="ie=edge">
-	<title><?php echo get_site_config('site_title'); ?></title>
+	<title><?php echo !empty($page_title) ? $page_title : get_site_config('site_title'); ?></title>
 	<link rel="icon" type="image/png" href="<?php echo base_url('/favicon.png'); ?>">
 	<meta name="theme-color" content="<?php echo get_site_config('primary_color'); ?>">
 	<meta name="description" content="">
