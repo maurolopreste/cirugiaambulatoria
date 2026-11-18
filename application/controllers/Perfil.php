@@ -23,11 +23,23 @@ class Perfil extends Front_Controller {
 				'first_name' => $post['first_name'],
 				'last_name' => $post['last_name'],
 				'dni' => $post['dni'],
-				'direccion' => $post['direccion'],
 				'telefono' => $post['telefono']
 			);
 
-			if(!empty($post['password'])) {
+			if(!empty($post['password']))
+			{
+				//para cambiar la contraseña hay que conocer la actual y cumplir la política mínima
+				$actual = $this->db->select('password')->where('id', $this->login->id)->get('user')->row();
+				$ok_actual = $actual && !empty($post['current_password']) && password_verify($post['current_password'], $actual->password);
+
+				if(!$ok_actual || !password_is_valid($post['password']))
+				{
+					$this->session->set_flashdata('alert', array(
+						'msg' => lang($ok_actual ? 'La contraseña debe tener al menos 8 caracteres' : 'La contraseña actual no es correcta'),
+						'error' => TRUE
+					));
+					redirect('/perfil');
+				}
 				$data['password'] = password_hash($post['password'], PASSWORD_DEFAULT);
 			}
 

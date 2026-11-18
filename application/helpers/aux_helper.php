@@ -40,3 +40,14 @@ if (!function_exists('get_userdata'))
 		return isset($get_userdata[$key]) ? $get_userdata[$key] : "";
 	}
 }
+
+if (!function_exists('password_is_valid'))
+{
+	/**
+	 * Política mínima de contraseñas: al menos 8 caracteres.
+	 */
+	function password_is_valid($password)
+	{
+		return is_string($password) && strlen($password) >= 8;
+	}
+}

@@ -1,58 +1,6 @@
 #!/usr/bin/env python3
 """Pruebas de integración HTTP: autorización, CSRF/cookies y XSS. Ver run.sh."""
-import os, re, subprocess, sys, glob, urllib.request, urllib.parse, urllib.error, http.cookiejar
-
-BASE = os.environ['BASE']; DB = os.environ['DB']; MYSQL = os.environ['MYSQL_CLI']; ROOT = os.environ['ROOT']
-PASS = 'Test1234!'
-USERS = {'admin': 'admin@t.test', 'prof1': 'prof1@t.test', 'prof2': 'prof2@t.test',
-         'pac1': 'pac1@t.test', 'pac2': 'pac2@t.test', 'xss': 'xss@t.test'}
-
-class NoRedirect(urllib.request.HTTPRedirectHandler):
-    def redirect_request(self, *a, **k): return None
-
-class Client:
-    def __init__(self):
-        self.jar = http.cookiejar.CookieJar()
-        self.op = urllib.request.build_opener(urllib.request.HTTPCookieProcessor(self.jar), NoRedirect)
-    def cookie(self, name):
-        for c in self.jar:
-            if c.name == name: return c.value
-    def req(self, method, path, data=None, ajax=False, token=True):
-        headers = {'X-Requested-With': 'XMLHttpRequest'} if ajax else {}
-        body = None
-        if method == 'POST':
-            data = dict(data or {})
-            if token and self.cookie('csrf_cookie_name'): data.setdefault('csrf_test_name', self.cookie('csrf_cookie_name'))
-            body = urllib.parse.urlencode(data).encode()
-        r = urllib.request.Request(BASE + path, data=body, headers=headers, method=method)
-        try:
-            resp = self.op.open(r); status = resp.status
-        except urllib.error.HTTPError as e:
-            resp = e; status = e.code
-        txt = resp.read().decode('utf-8', 'replace')
-        return status, resp.headers, txt
-    def get(self, p, **k): return self.req('GET', p, **k)
-    def post(self, p, d=None, **k): return self.req('POST', p, d, **k)
-
-def login(who):
-    c = Client(); c.get('/login')                      # obtiene cookie CSRF
-    s, h, _ = c.post('/login', {'email': USERS[who], 'password': PASS})
-    assert s in (302, 303, 307) and '/dashboard' in h.get('Location', ''), f'login {who} falló: {s} {h.get("Location")}'
-    return c
-
-def sql(q):
-    out = subprocess.run([MYSQL, '-uroot', '-N', '-B', DB, '-e', q], capture_output=True, text=True,
-                         env={**os.environ, 'MYSQL_PWD': 'root'}).stdout.strip()
-    return out
-
-def denied(r):
-    s, h, _ = r
-    loc = h.get('Location', '')
-    return s == 403 or (s in (301, 302, 303, 307, 308) and re.search(r'/(dashboard|login)(\?|$)', loc) is not None)
-
-results = []
-def check(name, cond, extra=''):
-    results.append((name, bool(cond), extra)); print(('PASS ' if cond else 'FAIL ') + name + (f'  [{extra}]' if (extra and not cond) else ''))
+from common import *
 
 # ---------------------------------------------------------------- cookies y CSRF
 c = Client(); s, h, body = c.get('/login')
@@ -90,9 +38,9 @@ r = p.post('/paciente/send_historiaclinica/1', {'email': 'x@x.test', 'nombre': '
 check('AUTZ paciente: NO puede enviar historia clínica ajena por email', denied(r), (r[0], r[1].get('Location')))
 check('AUTZ paciente: /agenda denegado', denied(p.get('/agenda')))
 check('AUTZ paciente: /agenda/edit/2 denegado', denied(p.get('/agenda/edit/2')))
-r = p.post('/cita/edit/2', {'estado': '3', 'observacion_profesional': 'hack'})
+r = p.post('/cita/edit/2', {'estado_cita': '3', 'observacion_profesional': 'hack'})
 check('AUTZ paciente: no puede modificar turno ajeno (/cita/edit)', denied(r) and sql('select estado_cita from agenda where id=2') == '1')
-r = p.post('/cita/edit/1', {'estado': '3', 'observacion_profesional': 'hack'})
+r = p.post('/cita/edit/1', {'estado_cita': '3', 'observacion_profesional': 'hack'})
 check('AUTZ paciente: no puede modificar ni su propio turno (estado/observación)', denied(r) and sql('select estado_cita from agenda where id=1') == '1')
 check('AUTZ paciente: link de pago de turno ajeno denegado', denied(p.get('/cita/generar_link_pago/2')))
 check('AUTZ paciente: /prescripcion/view/<ajena> denegado', denied(p.get('/prescripcion/view/2')))
@@ -123,7 +71,7 @@ check('AUTZ profesional: sigue viendo /paciente (decisión de negocio pendiente)
 check('AUTZ profesional: /agenda/edit/<turno de otro profesional> denegado', denied(f.get('/agenda/edit/2')))
 r = f.get('/agenda/edit/1'); check('AUTZ profesional: /agenda/edit/<su turno> permitido', r[0] == 200, r[0])
 r = f.get('/agenda/completar/2'); check('AUTZ profesional: no completa turno ajeno', denied(r) and sql('select estado_cita from agenda where id=2') == '1')
-r = f.post('/cita/edit/2', {'estado': '4', 'observacion_profesional': 'x'})
+r = f.post('/cita/edit/2', {'estado_cita': '4', 'observacion_profesional': 'x'})
 check('AUTZ profesional: no modifica turno ajeno (/cita/edit)', denied(r) and sql('select estado_cita from agenda where id=2') == '1')
 r = f.get('/agenda/completar/1'); check('AUTZ profesional: completa su propio turno', sql('select estado_cita from agenda where id=1') == '2', r[0])
 check('AUTZ profesional: /prescripcion/edit/<de otro> denegado', denied(f.get('/prescripcion/edit/2')))
@@ -142,7 +90,7 @@ check('AUTZ admin: /paciente 200', adm.get('/paciente')[0] == 200)
 check('AUTZ admin: /agenda/edit/<cualquiera> 200', adm.get('/agenda/edit/2')[0] == 200)
 check('AUTZ admin: /prescripcion/edit/<cualquiera> 200', adm.get('/prescripcion/edit/2')[0] == 200)
 check('AUTZ admin: /payment/success de cualquier turno 200', adm.get('/payment/success?external_reference=2')[0] == 200)
-r = adm.post('/cita/edit/2', {'estado': '4', 'observacion_profesional': 'ok'}); check('AUTZ admin: /cita/edit NO es denegado (llega al modelo)', not denied(r), r[0])
+r = adm.post('/cita/edit/2', {'estado_cita': '4', 'observacion_profesional': 'ok'}); check('AUTZ admin: /cita/edit guarda estado_cita (bug de columna corregido)', not denied(r) and sql('select estado_cita from agenda where id=2') == '4', r[0])
 for pth in ('/dashboard', '/config', '/pagos', '/profesional', '/user'):
     check(f'AUTZ admin: GET {pth} 200', adm.get(pth)[0] == 200)
 
@@ -183,6 +131,4 @@ for who, paths in {'admin': ['/dashboard', '/paciente', '/agenda', '/profesional
         mm = re.search(r'Fatal error|Parse error|Uncaught|A PHP Error[^<]*</h4>\s*<p>[^<]*<p>[^<]*<p>[^<]*', b)
         check(f'HUMO {who}: {pth} responde sin error fatal', s == 200 and not mm, (s, mm.group(0)[:200] if mm else ''))
 
-fails = [r for r in results if not r[1]]
-print(f'\nTotal: {len(results)} pruebas, {len(results) - len(fails)} ok, {len(fails)} fallas')
-sys.exit(1 if fails else 0)
+summary()

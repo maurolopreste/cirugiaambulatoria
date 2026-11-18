@@ -194,23 +194,56 @@ class User_model extends Super_model {
 		$this->db->update($this->tbl, $data);
 	}
 
-	public function generate_token($email)
+	/**
+	 * Genera un token de un solo uso (40 hex): 8 hex con el vencimiento + 32 hex aleatorios (random_bytes).
+	 * En la base se guarda sólo el hash SHA-256 (si se filtra la tabla, los tokens no sirven).
+	 * @param int $ttl segundos de validez (1 hora para recuperar clave, 48 hs para confirmar email)
+	 */
+	public function generate_token($email, $ttl = 3600)
 	{
-		$token = sha1(uniqid($email, true));
-		$data['rp_token'] = $token;
+		$token = str_pad(dechex(time() + (int)$ttl), 8, '0', STR_PAD_LEFT) . bin2hex(random_bytes(16));
 		$this->db->where('email', $email);
-		$this->db->update($this->tbl, $data);
+		$this->db->where('deleted_at IS NULL');
+		$this->db->update($this->tbl, array('rp_token' => hash('sha256', $token)));
 		return $token;
 	}
 	
+	/**
+	 * Devuelve el usuario dueño del token si es válido y no venció; si no, FALSE.
+	 */
 	public function verify_token($token)
 	{
-		if (preg_match('/^[0-9A-F]{40}$/i', $token))
-		{
-			$this->db->where('rp_token', $token);
-			$result = $this->db->get($this->tbl);
-			return $result->num_rows() ? $result->row() : FALSE;
-		}
+		if (!is_string($token) || !preg_match('/^[0-9a-f]{40}$/', $token)) return FALSE;
+		if (hexdec(substr($token, 0, 8)) < time()) return FALSE;
+
+		$this->db->where('rp_token', hash('sha256', $token));
+		$this->db->where('deleted_at IS NULL');
+		$result = $this->db->get($this->tbl);
+		return $result->num_rows() ? $result->row() : FALSE;
+	}
+
+	/**
+	 * Usuario para guardar en la sesión: sin hash de contraseña ni token.
+	 */
+	public function for_session($user)
+	{
+		if (!$user) return FALSE;
+		$u = clone $user;
+		unset($u->password, $u->rp_token);
+		return $u;
+	}
+
+	/**
+	 * Usuario activo y no eliminado, sin datos sensibles (se consulta en cada request para que
+	 * los cambios de rol/baja se apliquen enseguida). FALSE si ya no puede operar.
+	 */
+	public function get_session_user($id)
+	{
+		$this->db->where('id', (int)$id);
+		$this->db->where('deleted_at IS NULL');
+		$this->db->where('active', 1);
+		$row = $this->db->get($this->tbl)->row();
+		return $this->for_session($row);
 	}
 
 }

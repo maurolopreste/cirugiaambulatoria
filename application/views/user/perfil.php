@@ -28,8 +28,13 @@
 						<h4 class="mb-4"><strong>Cambiar contraseña</strong></h4>
 
 						<div class="form-group">
-							<label>Nueva Contraseña</label>
-							<input type="text" class="form-control" name="password">
+							<label>Contraseña actual</label>
+							<input type="password" class="form-control" name="current_password" autocomplete="current-password" placeholder="(Sólo si vas a cambiarla)">
+						</div>
+
+						<div class="form-group">
+							<label>Nueva Contraseña (mínimo 8 caracteres)</label>
+							<input type="password" class="form-control" name="password" autocomplete="new-password" minlength="8">
 						</div>
 
 						<hr class="my-5" />

@@ -35,7 +35,7 @@
 				<div class="row justify-content-md-center">
 					<div class="card-wrapper col-12 col-md-<?php echo isset($large) ? '6' : '4'; ?> pt-5">
 						<div class="brand text-center mb-5">
-							<a href="<?php echo site_url(); ?>"><img src="<?php echo html_escape(base_url('uploads/'.get_site_config('logo'))); ?>" alt="<?php echo html_escape(get_site_config('site_title')); ?>" height="50"></a>
+							<a href="<?php echo site_url(); ?>"><img src="<?php echo html_escape(site_url('archivo/logo')); ?>" alt="<?php echo html_escape(get_site_config('site_title')); ?>" height="50"></a>
 						</div>
 
 						<?php $this->load->view('alert'); ?>

@@ -37,7 +37,7 @@
 				<label for="ControlFile1">Documentación Adjunta (opcional)</label>
 				<input type="file" name="userfile" class="form-control-file" id="ControlFile1">
 				<?php if(!empty($row->file)): ?>
-				<div class="alert alert-warning mt-2 p-2">Archivo subido: <a href="<?php echo html_escape(site_url('/uploads/'.$row->file)); ?>" class="alert-link" target="_blank"><?php echo html_escape($row->file); ?></a></div>
+				<div class="alert alert-warning mt-2 p-2">Archivo subido: <a href="<?php echo html_escape(site_url('archivo/ver/'.rawurlencode($row->file))); ?>" class="alert-link" target="_blank"><?php echo html_escape($row->file); ?></a></div>
 				<?php endif; ?>
 			</div>
 		</div>

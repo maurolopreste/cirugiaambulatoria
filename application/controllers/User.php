@@ -36,6 +36,12 @@ class User extends Front_Controller {
 				'created_at' => date('Y-m-d H:i:s')
 			);
 
+			if(!password_is_valid($post['password']))
+			{
+				$this->session->set_flashdata('alert', array('msg' => lang('La contraseña debe tener al menos 8 caracteres'), 'error' => TRUE));
+				redirect('/user/add');
+			}
+
 			$this->user_model->insert($data);
 
 			$this->session->set_flashdata('alert', array(
@@ -64,7 +70,13 @@ class User extends Front_Controller {
 			);
 
 			//password change
-			if(!empty($post['password'])) {
+			if(!empty($post['password']))
+			{
+				if(!password_is_valid($post['password']))
+				{
+					$this->session->set_flashdata('alert', array('msg' => lang('La contraseña debe tener al menos 8 caracteres'), 'error' => TRUE));
+					redirect('/user/edit/'.$id);
+				}
 				$data['password'] = password_hash($post['password'], PASSWORD_DEFAULT);
 			}
 

@@ -29,7 +29,7 @@ class Cita extends Front_Controller {
 		if ($post && $id)
 		{
 			$data = array(
-				'estado' => $post['estado'],
+				'estado_cita' => $post['estado_cita'],
 				'observacion_profesional' => $post['observacion_profesional']
 			);
 

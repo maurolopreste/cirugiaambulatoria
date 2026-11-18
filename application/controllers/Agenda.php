@@ -52,7 +52,7 @@ class Agenda extends Front_Controller {
 			{
 				$nuevopaciente = $post['nuevopaciente'];
 				$data_paciente = array(
-					'group_id' => 2,
+					'group_id' => 3,//paciente
 					'first_name' => $nuevopaciente['first_name'],
 					'last_name' => $nuevopaciente['last_name'],
 					'email' => $nuevopaciente['email'],

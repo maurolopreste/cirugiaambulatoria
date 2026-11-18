@@ -1,16 +1,19 @@
 <?php
+defined('BASEPATH') OR exit('No direct script access allowed');
 
-$config['mode'] = "production";//or sandbox
+// Las credenciales NO se versionan: se leen de application/config/secrets.php o de variables de entorno
+// (ver secrets.example.php). En desarrollo se usa el modo sandbox con credenciales de prueba.
+$_mp = function ($key) { return function_exists('_secret') ? _secret($key) : getenv($key); };
 
-$config['ci'] = '3399844905382417';
-$config['cs'] = '45Ops119L1H3PRZCXJA72Sb3K5oMksnD';
+$config['mode'] = (ENVIRONMENT === 'production') ? 'production' : 'sandbox';
 
-///Modo sandbox
-$config['public_key_sandbox'] = 'TEST-****';
-$config['access_token_sandbox'] ='TEST-******';
+$config['ci'] = $_mp('MP_CLIENT_ID');
+$config['cs'] = $_mp('MP_CLIENT_SECRET');
 
-///Modo ProducciÛn
-$config['public_key_production'] = 'APP_USR-9c3ec545-6832-4d59-98d7-85447901b9d4';
-$config['access_token_production'] = 'APP_USR-3399844905382417-061114-c624024565957847f951a767cc98bf25-96380661';
+// Modo sandbox
+$config['public_key_sandbox']   = $_mp('MP_PUBLIC_KEY');
+$config['access_token_sandbox'] = $_mp('MP_ACCESS_TOKEN');
 
-?>
+// Modo producci√≥n
+$config['public_key_production']   = $_mp('MP_PUBLIC_KEY');
+$config['access_token_production'] = $_mp('MP_ACCESS_TOKEN');

@@ -44,7 +44,7 @@
 							<div class="custom-file">
 								<?php if($row->logo): ?>
 									<button class="delete" style="display: block;">&times;</button>
-									<img src="<?php echo html_escape(base_url('uploads/'.$row->logo)); ?>" class="preview-image">
+									<img src="<?php echo html_escape(site_url('archivo/logo')); ?>" class="preview-image">
 								<?php else: ?>
 									<button class="delete">&times;</button>
 									<img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNkYAAAAAYAAjCB0C8AAAAASUVORK5CYII=" class="preview-image">

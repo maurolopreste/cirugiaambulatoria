@@ -43,13 +43,13 @@
 			<div class="navbar-brand-wrapper d-flex align-items-center col-auto">
 				<!-- Logo For Mobile View -->
 				<a class="navbar-brand navbar-brand-mobile" href="<?php echo site_url(); ?>">
-					<img class="img-fluid w-100" src="<?php echo html_escape(base_url('uploads/'.get_site_config('logo'))); ?>" height="40" alt="<?php echo html_escape(get_site_config('site_title')); ?>">
+					<img class="img-fluid w-100" src="<?php echo html_escape(site_url('archivo/logo')); ?>" height="40" alt="<?php echo html_escape(get_site_config('site_title')); ?>">
 				</a>
 
 				<!-- Logo For Desktop View -->
 				<a class="navbar-brand navbar-brand-desktop" href="<?php echo site_url(); ?>">
 					<img class="side-nav-show-on-closed" src="<?php echo base_url('assets/img/logo-mini.png'); ?>" alt="<?php echo html_escape(get_site_config('site_title')); ?>">
-					<img class="side-nav-hide-on-closed" src="<?php echo html_escape(base_url('uploads/'.get_site_config('logo'))); ?>" height="50" alt="<?php echo html_escape(get_site_config('site_title')); ?>">
+					<img class="side-nav-hide-on-closed" src="<?php echo html_escape(site_url('archivo/logo')); ?>" height="50" alt="<?php echo html_escape(get_site_config('site_title')); ?>">
 				</a>
 			</div>
 

@@ -53,7 +53,28 @@
  *
  * NOTE: If you change these, also change the error_reporting() code below
  */
-	define('ENVIRONMENT', 'development');
+	// Se define por la variable de entorno CI_ENV. Si no está, se asume DESARROLLO sólo cuando se
+	// accede desde la propia máquina (CLI, localhost, 127.0.0.1 o *.test); en cualquier otro caso es PRODUCCIÓN.
+	$_env = getenv('CI_ENV');
+	if (!$_env)
+	{
+		$_host = isset($_SERVER['HTTP_HOST']) ? strtolower(preg_replace('/:\d+$/', '', $_SERVER['HTTP_HOST'])) : '';
+		$_local = (PHP_SAPI === 'cli') || in_array($_host, array('localhost', '127.0.0.1', '[::1]'), TRUE)
+			|| substr($_host, -5) === '.test' || substr($_host, -10) === '.localhost';
+		$_env = $_local ? 'development' : 'production';
+	}
+	define('ENVIRONMENT', $_env);
+
+	// Credenciales de producción: NO van en el repositorio. Se leen de application/config/secrets.php
+	// (ignorado por git; ver secrets.example.php) o de variables de entorno.
+	$_secrets = is_file(dirname(__FILE__).'/application/config/secrets.php')
+		? (array) include dirname(__FILE__).'/application/config/secrets.php' : array();
+	function _secret($key, $default = '')
+	{
+		global $_secrets;
+		$env = getenv($key);
+		return $env !== FALSE ? $env : (isset($_secrets[$key]) ? $_secrets[$key] : $default);
+	}
 	
 /*
  *---------------------------------------------------------------
@@ -87,9 +108,9 @@ switch (ENVIRONMENT)
 		}
 		define('BASE_URL', 'https://gestion.cirugiaambulatoria.com.ar');
 		define('DB_HOSTNAME', 'localhost');
-		define('DB_USERNAME', 'c1070236_ci');
-		define('DB_PASSWORD', 'la64DUlofo');
-		define('DB_DATABASE', 'c1070236_ci');
+		define('DB_USERNAME', _secret('DB_USERNAME'));
+		define('DB_PASSWORD', _secret('DB_PASSWORD'));
+		define('DB_DATABASE', _secret('DB_DATABASE'));
 	break;
 
 	default:

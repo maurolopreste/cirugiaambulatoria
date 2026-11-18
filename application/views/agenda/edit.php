@@ -92,7 +92,7 @@
 			<?php endif;*/ ?>
 
 			<?php if($this->is_admin && !empty($row->file)): ?>
-				<div class="alert alert-warning mt-2 p-2">Archivo subido: <a href="<?php echo html_escape(site_url('/uploads/'.$row->file)); ?>" class="alert-link" target="_blank"><?php echo html_escape($row->file); ?></a></div>
+				<div class="alert alert-warning mt-2 p-2">Archivo subido: <a href="<?php echo html_escape(site_url('archivo/ver/'.rawurlencode($row->file))); ?>" class="alert-link" target="_blank"><?php echo html_escape($row->file); ?></a></div>
 			<?php endif; ?>
 
 			<?php if($this->is_admin): ?>
@@ -110,7 +110,7 @@
 
 		<footer class="modal-footer text-right border-0">
 			<?php if($this->is_admin && !empty($row->file)): ?>
-				<a href="<?php echo html_escape(site_url('/uploads/'.$row->file)); ?>" class="btn btn-outline-primary mr-auto" target="_blank">
+				<a href="<?php echo html_escape(site_url('archivo/ver/'.rawurlencode($row->file))); ?>" class="btn btn-outline-primary mr-auto" target="_blank">
 					Descargar Comprobante <i class="gd-download ml-2"></i>
 				</a>
 			<?php endif; ?>

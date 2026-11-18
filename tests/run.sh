@@ -28,6 +28,10 @@ trap 'exit 143' INT TERM
 
 cp -R "$ROOT/application/language" "$WORK/lang_backup"
 
+# contadores de intentos de login de corridas anteriores (viven en el directorio temporal)
+TMPD="$("$PHP" -r 'echo sys_get_temp_dir();')"
+rm -f "$TMPD"/ci_rate_* 2>/dev/null || true
+
 # 1) Base de pruebas: estructura clonada + datos de ejemplo
 $MY -e "DROP DATABASE IF EXISTS $DB; CREATE DATABASE $DB CHARACTER SET latin1;"
 $MY "$DB" < "$T/schema.sql"
@@ -53,6 +57,7 @@ ln -s "$ROOT/assets" "$WORK/assets"; ln -s "$ROOT/favicon.png" "$WORK/favicon.pn
 cat > "$WORK/router.php" <<'PHPR'
 <?php
 $path = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);
+if (strpos($path, '/uploads/') === 0) { http_response_code(403); exit; } // igual que uploads/.htaccess en Apache
 if ($path !== '/' && is_file(__DIR__ . $path) && $path !== '/index.php' && $path !== '/router.php') return false; // estáticos
 $_SERVER['SCRIPT_NAME'] = '/index.php';
 require __DIR__ . '/index.php';
@@ -72,7 +77,8 @@ fi
 
 # 5) Pruebas
 RC=0
-BASE="http://127.0.0.1:$PORT" MYSQL_CLI="$MYSQL/mysql" DB=$DB ROOT="$ROOT" python3 "$T/test_security.py" || RC=$?
+UPLOADS="$WORK/uploads" TMPD="$TMPD" BASE="http://127.0.0.1:$PORT" MYSQL_CLI="$MYSQL/mysql" DB=$DB ROOT="$ROOT" python3 "$T/test_security.py" || RC=$?
+UPLOADS="$WORK/uploads" TMPD="$TMPD" BASE="http://127.0.0.1:$PORT" MYSQL_CLI="$MYSQL/mysql" DB=$DB ROOT="$ROOT" python3 "$T/test_hardening.py" || RC=$?
 node "$T/test_csrf_prefilter.js" || RC=$?
 cp "$WORK/server.log" "${SERVER_LOG_OUT:-/dev/null}" 2>/dev/null || true
 exit $RC

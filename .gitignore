@@ -39,3 +39,7 @@ application/logs/*
 /vendor/
 # Material de trabajo con posibles datos de pacientes
 material/
+
+# Credenciales locales/de producción (ver application/config/secrets.example.php)
+application/config/secrets.php
+__pycache__/

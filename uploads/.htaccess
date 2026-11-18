@@ -1,0 +1,10 @@
+# Los archivos se entregan sólo a través de /archivo/ver/... (con control de acceso). Nada se sirve ni se ejecuta directo.
+<IfModule mod_php7.c>
+    php_flag engine off
+</IfModule>
+<IfModule authz_core_module>
+    Require all denied
+</IfModule>
+<IfModule !authz_core_module>
+    Deny from all
+</IfModule>

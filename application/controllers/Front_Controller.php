@@ -13,7 +13,20 @@ class Front_Controller extends CI_Controller {
 		//cargar variables de lenguaje
 		$this->lang->load('es', 'spanish');
 
+		//el usuario se vuelve a leer de la base en cada request: rol, baja y desactivación se aplican de inmediato
 		$this->login = $this->session->userdata('login');
+		if($this->login)
+		{
+			$fresh = $this->user_model->get_session_user($this->login->id);
+			if(!$fresh) {
+				$this->session->unset_userdata('login');
+			}
+			elseif(isset($this->login->password) || isset($this->login->rp_token)) {
+				//sesiones viejas que tenían el hash de la contraseña: se reemplazan por el objeto limpio
+				$this->session->set_userdata('login', $fresh);
+			}
+			$this->login = $fresh ? $fresh : NULL;
+		}
 		$this->pacientes_list = $this->user_model->get_by_group_id(3);
 		$this->profesionales_list = $this->user_model->get_by_group_id(2);
 		$this->provincias_list = $this->user_model->get_provincias();
@@ -32,7 +45,7 @@ class Front_Controller extends CI_Controller {
 
 	private function check_tyc()
 	{
-		if($this->uri->uri_string()=='dashboard/tyc') {
+		if($this->uri->uri_string()=='dashboard/tyc' || $this->uri->uri_string()=='archivo/logo') {
 			return;
 		}
 

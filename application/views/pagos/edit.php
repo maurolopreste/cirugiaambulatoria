@@ -48,7 +48,7 @@
 
 		<footer class="modal-footer text-right border-0">
 			<?php if(isset($row->file)): ?>
-				<a href="<?php echo html_escape(site_url('/uploads/'.$row->file)); ?>" class="btn btn-outline-primary mr-auto" target="_blank">
+				<a href="<?php echo html_escape(site_url('archivo/ver/'.rawurlencode($row->file))); ?>" class="btn btn-outline-primary mr-auto" target="_blank">
 					Descargar Comprobante <i class="gd-download ml-2"></i>
 				</a>
 			<?php endif; ?>
