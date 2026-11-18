@@ -68,12 +68,12 @@ class Agenda_model extends Super_model {
 			
 			if(time() > strtotime($row->fecha)) {
 				//si el turno es anterior a hoy
-				$cal_data[$index] .= '<div class="badge badge-light" data-id="'. $row->id .'">'. date('H:i', strtotime($row->fecha)) .' '. $row->paciente .'</div>';
+				$cal_data[$index] .= '<div class="badge badge-light" data-id="'. $row->id .'">'. date('H:i', strtotime($row->fecha)) .' '. html_escape($row->paciente) .'</div>';
 			}
 			else {
 				$badge_class = 'badge-primary';
 				if($row->estado_cita==3) $badge_class = 'badge-danger';
-				$cal_data[$index] .= '<div class="badge '. $badge_class .'" data-id="'. $row->id .'">'. date('H:i', strtotime($row->fecha)) .' '. $row->paciente .'</div>';
+				$cal_data[$index] .= '<div class="badge '. $badge_class .'" data-id="'. $row->id .'">'. date('H:i', strtotime($row->fecha)) .' '. html_escape($row->paciente) .'</div>';
 			}
 		}
 		

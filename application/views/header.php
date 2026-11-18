@@ -3,17 +3,17 @@
 <head>
 	<meta charset="utf-8">
 	<meta http-equiv="Content-Language" content="en" />
-	<link rel="canonical" href="<?php echo site_url($this->uri->uri_string()); ?>" />
+	<link rel="canonical" href="<?php echo html_escape(site_url($this->uri->uri_string())); ?>" />
 	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 	<meta http-equiv="x-ua-compatible" content="ie=edge">
-	<title><?php echo get_site_config('site_title'); ?></title>
+	<title><?php echo html_escape(get_site_config('site_title')); ?></title>
 	<link rel="icon" type="image/png" href="<?php echo base_url('/favicon.png'); ?>">
-	<meta name="theme-color" content="<?php echo get_site_config('primary_color'); ?>">
+	<meta name="theme-color" content="<?php echo html_escape(get_site_config('primary_color')); ?>">
 	<meta name="description" content="">
 
 	<style id="theme-options">
 		:root {
-			--primary-color: <?php echo get_site_config('primary_color'); ?>;
+			--primary-color: <?php echo html_escape(get_site_config('primary_color')); ?>;
 			--font-family: 'Source Sans Pro', Helvetica, Arial, sans-serif;
 		}
 	</style>
@@ -25,6 +25,7 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-datepicker@1.9.0/dist/css/bootstrap-datepicker3.min.css" rel="stylesheet">
 	<link rel="stylesheet" href="<?php echo base_url('/assets/css/graindashboard.css'); ?>">
 
+	<meta name="csrf-token" content="<?php echo html_escape($this->security->get_csrf_hash()); ?>" data-name="<?php echo html_escape($this->security->get_csrf_token_name()); ?>">
 </head>
 <body class="has-sidebar has-fixed-sidebar-and-header">
 
@@ -42,13 +43,13 @@
 			<div class="navbar-brand-wrapper d-flex align-items-center col-auto">
 				<!-- Logo For Mobile View -->
 				<a class="navbar-brand navbar-brand-mobile" href="<?php echo site_url(); ?>">
-					<img class="img-fluid w-100" src="<?php echo base_url('uploads/'.get_site_config('logo')); ?>" height="40" alt="<?php echo get_site_config('site_title'); ?>">
+					<img class="img-fluid w-100" src="<?php echo html_escape(base_url('uploads/'.get_site_config('logo'))); ?>" height="40" alt="<?php echo html_escape(get_site_config('site_title')); ?>">
 				</a>
 
 				<!-- Logo For Desktop View -->
 				<a class="navbar-brand navbar-brand-desktop" href="<?php echo site_url(); ?>">
-					<img class="side-nav-show-on-closed" src="<?php echo base_url('assets/img/logo-mini.png'); ?>" alt="<?php echo get_site_config('site_title'); ?>">
-					<img class="side-nav-hide-on-closed" src="<?php echo base_url('uploads/'.get_site_config('logo')); ?>" height="50" alt="<?php echo get_site_config('site_title'); ?>">
+					<img class="side-nav-show-on-closed" src="<?php echo base_url('assets/img/logo-mini.png'); ?>" alt="<?php echo html_escape(get_site_config('site_title')); ?>">
+					<img class="side-nav-hide-on-closed" src="<?php echo html_escape(base_url('uploads/'.get_site_config('logo'))); ?>" height="50" alt="<?php echo html_escape(get_site_config('site_title')); ?>">
 				</a>
 			</div>
 
@@ -99,9 +100,9 @@
 					<!-- User Avatar -->
 					<div class="dropdown mx-3 dropdown ml-auto">
 						<a id="profileMenuInvoker" class="header-complex-invoker" href="#" aria-controls="profileMenu" aria-haspopup="true" aria-expanded="false" data-unfold-event="click" data-unfold-target="#profileMenu" data-unfold-type="css-animation" data-unfold-duration="300" data-unfold-animation-in="fadeIn" data-unfold-animation-out="fadeOut">
-							<span class="mr-md-2 avatar-placeholder"><?php echo substr($this->login->first_name, 0, 1); ?></span>
+							<span class="mr-md-2 avatar-placeholder"><?php echo html_escape(substr($this->login->first_name, 0, 1)); ?></span>
 							<span class="d-none d-md-block">
-								<?php echo $this->login->first_name; ?>
+								<?php echo html_escape($this->login->first_name); ?>
 							</span>
 							<i class="gd-angle-down d-none d-md-block ml-2"></i>
 						</a>

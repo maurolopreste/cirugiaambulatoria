@@ -22,10 +22,10 @@
 					<td class="py-3 text-right">
 						<?php if($this->is_admin || $evolutivo->profesional_id==$this->login->id): ?>
 						<div class="position-relative">
-							<a class="link-dark d-inline-block" href="<?php echo site_url('/paciente/edit_evolutivo/'.$evolutivo->id); ?>/<?php echo $paciente_id; ?>" data-toggle="modal" data-target="#editModal">
+							<a class="link-dark d-inline-block" href="<?php echo html_escape(site_url('/paciente/edit_evolutivo/'.$evolutivo->id)); ?>/<?php echo html_escape($paciente_id); ?>" data-toggle="modal" data-target="#editModal">
 								<i class="gd-pencil icon-text"></i>
 							</a>
-							<a class="link-dark d-inline-block" href="<?php echo site_url('/paciente/delete_evolutivo/'.$evolutivo->id); ?>/<?php echo $paciente_id; ?>" onclick="return confirm('Atención: Se eliminá este informe', this)">
+							<a class="link-dark d-inline-block" href="<?php echo html_escape(site_url('/paciente/delete_evolutivo/'.$evolutivo->id)); ?>/<?php echo html_escape($paciente_id); ?>" onclick="return confirm('Atención: Se eliminá este informe', this)">
 								<i class="gd-trash icon-text"></i>
 							</a>
 						</div>
@@ -36,8 +36,8 @@
 			</tbody>
 		</table>
 	</div>
-	<a href="<?php echo site_url('/paciente/add_evolutivo/'.$rows[0]->paciente_id); ?>" data-toggle="modal" data-target="#addModal" class="btn btn-primary">Agregar evolutivo</a>
+	<a href="<?php echo html_escape(site_url('/paciente/add_evolutivo/'.$rows[0]->paciente_id)); ?>" data-toggle="modal" data-target="#addModal" class="btn btn-primary">Agregar evolutivo</a>
 <?php else: ?>
 	<div class="alert alert-warning">El paciente no tiene informes evolutivos</div>
-	<a href="<?php echo site_url('/paciente/add_evolutivo/'.$paciente_id); ?>" data-toggle="modal" data-target="#addModal" class="btn btn-primary">Agregar evolutivo</a>
+	<a href="<?php echo html_escape(site_url('/paciente/add_evolutivo/'.$paciente_id)); ?>" data-toggle="modal" data-target="#addModal" class="btn btn-primary">Agregar evolutivo</a>
 <?php endif; ?>

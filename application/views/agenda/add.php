@@ -15,7 +15,7 @@
 				<?php endif; ?>
 					<?php foreach($this->pacientes_list as $paciente): ?>
 						<?php $selected = $paciente->id==$paciente_id ? 'selected' : ''; ?>
-						<option value="<?php echo $paciente->id; ?>" <?php echo $selected; ?>><?php echo $paciente->first_name; ?> <?php echo $paciente->last_name; ?> <?php echo $paciente->dni; ?></option>
+						<option value="<?php echo html_escape($paciente->id); ?>" <?php echo html_escape($selected); ?>><?php echo html_escape($paciente->first_name); ?> <?php echo html_escape($paciente->last_name); ?> <?php echo html_escape($paciente->dni); ?></option>
 					<?php endforeach; ?>
 				</select>
 			</div>
@@ -48,7 +48,7 @@
 						<option value="">Seleccione una opción</option>
 						<?php foreach($this->obrasocial_list as $obra_social): ?>
 							<?php if(!$obra_social->active) continue; ?>
-							<option value="<?php echo $obra_social->id; ?>"><?php echo $obra_social->nombre; ?></option>
+							<option value="<?php echo html_escape($obra_social->id); ?>"><?php echo html_escape($obra_social->nombre); ?></option>
 						<?php endforeach; ?>
 					</select>
 				</div>
@@ -59,8 +59,8 @@
 					<option value="">Seleccione una opción</option>
 					<?php foreach($this->profesionales_list as $profesional): ?>
 						<?php if(!$profesional->active) continue; ?>
-						<option value="<?php echo $profesional->id; ?>">
-							<?php echo $profesional->first_name; ?> <?php echo $profesional->last_name; ?>
+						<option value="<?php echo html_escape($profesional->id); ?>">
+							<?php echo html_escape($profesional->first_name); ?> <?php echo html_escape($profesional->last_name); ?>
 						</option>
 					<?php endforeach; ?>
 				</select>

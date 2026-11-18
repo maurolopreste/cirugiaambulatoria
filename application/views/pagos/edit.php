@@ -7,14 +7,14 @@
 		<div class="modal-body pt-3">
 			<div class="form-group">
 				<label>Paciente</label>
-				<input type="text" class="form-control" value="<?php echo $row->nombre_paciente; ?>" readonly>
+				<input type="text" class="form-control" value="<?php echo html_escape($row->nombre_paciente); ?>" readonly>
 			</div>
 			<div class="form-group">
 				<label>Tipo de consulta</label>
 				<select name="valor_consulta" class="custom-select">
 					<option value="">Seleccione una opción</option>
 					<?php foreach($this->valor_consulta_list as $v): ?>
-						<option value="<?php echo $v->id; ?>" <?php if($row->valor_consulta==$v->id) echo 'selected'; ?>><?php echo $v->nombre; ?> ($<?php echo $v->valor; ?>)</option>
+						<option value="<?php echo html_escape($v->id); ?>" <?php if($row->valor_consulta==$v->id) echo 'selected'; ?>><?php echo html_escape($v->nombre); ?> ($<?php echo html_escape($v->valor); ?>)</option>
 					<?php endforeach; ?>
 				</select>
 			</div>
@@ -24,7 +24,7 @@
 					<select name="payment_method" class="custom-select">
 						<option value="">Seleccione una opción</option>
 						<?php foreach($this->metodopago_list as $m): ?>
-							<option value="<?php echo $m->id; ?>" <?php if($row->payment_method==$m->id) echo 'selected'; ?>><?php echo $m->nombre; ?></option>
+							<option value="<?php echo html_escape($m->id); ?>" <?php if($row->payment_method==$m->id) echo 'selected'; ?>><?php echo html_escape($m->nombre); ?></option>
 						<?php endforeach; ?>
 					</select>
 				</div>
@@ -42,13 +42,13 @@
 			</div>
 			<div class="form-group">
 				<label>Observaciones</label>
-				<textarea rows="2" class="form-control" name="comentarios"><?php echo $row->comentarios; ?></textarea>
+				<textarea rows="2" class="form-control" name="comentarios"><?php echo html_escape($row->comentarios); ?></textarea>
 			</div>
 		</div>
 
 		<footer class="modal-footer text-right border-0">
 			<?php if(isset($row->file)): ?>
-				<a href="<?php echo site_url('/uploads/'.$row->file); ?>" class="btn btn-outline-primary mr-auto" target="_blank">
+				<a href="<?php echo html_escape(site_url('/uploads/'.$row->file)); ?>" class="btn btn-outline-primary mr-auto" target="_blank">
 					Descargar Comprobante <i class="gd-download ml-2"></i>
 				</a>
 			<?php endif; ?>

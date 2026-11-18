@@ -3,17 +3,17 @@
 <head>
 	<meta charset="utf-8">
 	<meta http-equiv="Content-Language" content="en" />
-	<link rel="canonical" href="<?php echo site_url($this->uri->uri_string()); ?>" />
+	<link rel="canonical" href="<?php echo html_escape(site_url($this->uri->uri_string())); ?>" />
 	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 	<meta http-equiv="x-ua-compatible" content="ie=edge">
-	<title><?php echo !empty($page_title) ? $page_title : get_site_config('site_title'); ?></title>
+	<title><?php echo html_escape(!empty($page_title) ? $page_title : get_site_config('site_title')); ?></title>
 	<link rel="icon" type="image/png" href="<?php echo base_url('/favicon.png'); ?>">
-	<meta name="theme-color" content="<?php echo get_site_config('primary_color'); ?>">
+	<meta name="theme-color" content="<?php echo html_escape(get_site_config('primary_color')); ?>">
 	<meta name="description" content="">
 
 	<style id="theme-options">
 		:root {
-			--primary-color: <?php echo get_site_config('primary_color'); ?>;
+			--primary-color: <?php echo html_escape(get_site_config('primary_color')); ?>;
 			--font-family: 'Source Sans Pro', Helvetica, Arial, sans-serif;
 		}
 	</style>
@@ -25,6 +25,7 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-datepicker@1.9.0/dist/css/bootstrap-datepicker3.min.css" rel="stylesheet">
 	<link rel="stylesheet" href="<?php echo base_url('/assets/css/graindashboard.css'); ?>">
 	<link rel="stylesheet" href="<?php echo base_url('/assets/css/bootstrap-print.min.css'); ?>" media="print">
+	<meta name="csrf-token" content="<?php echo html_escape($this->security->get_csrf_hash()); ?>" data-name="<?php echo html_escape($this->security->get_csrf_token_name()); ?>">
 </head>
 <body>
 

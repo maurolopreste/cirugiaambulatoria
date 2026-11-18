@@ -4,7 +4,7 @@
 		<?php $this->load->view('alert'); ?>
 
 		<div class="mb-5 d-flex justify-content-center">
-			<div class="h3 mb-0">¡Hola, <?php echo $this->login->first_name; ?>! Te damos la bienvenida</div>
+			<div class="h3 mb-0">¡Hola, <?php echo html_escape($this->login->first_name); ?>! Te damos la bienvenida</div>
 		</div>
 
 		<div class="row justify-content-center">
@@ -22,10 +22,10 @@
 							<p class="mb-4">Autogestioná tu turno con nuestros profesionales. Cuando lo hayas hecho recibirás un mail donde el profesional confirma la cita.</p>
 							<div class="form-group">
 								<label><strong>Obra Social</strong></label>
-								<select name="tipo" class="custom-select mb-3" data-selected="<?php echo $user->obra_social; ?>" required>
+								<select name="tipo" class="custom-select mb-3" data-selected="<?php echo html_escape($user->obra_social); ?>" required>
 									<option value="">Seleccione obra social</option>
 									<?php foreach($this->obra_social_list as $tipo): ?>
-										<option value="<?php echo $tipo->id; ?>"><?php echo $tipo->nombre; ?></option>
+										<option value="<?php echo html_escape($tipo->id); ?>"><?php echo html_escape($tipo->nombre); ?></option>
 									<?php endforeach; ?>
 								</select>
 							</div>
@@ -35,7 +35,7 @@
 									<option value="">Seleccione un profesional</option>
 									<?php foreach($this->profesionales_list as $profesional): ?>
 										<?php if($profesional->active): ?>
-										<option value="<?php echo $profesional->id; ?>"><?php echo $profesional->first_name; ?> <?php echo $profesional->last_name; ?> - <?php echo $profesional->especialidad; ?> (Mat. <?php echo $profesional->matricula; ?>)</option>
+										<option value="<?php echo html_escape($profesional->id); ?>"><?php echo html_escape($profesional->first_name); ?> <?php echo html_escape($profesional->last_name); ?> - <?php echo html_escape($profesional->especialidad); ?> (Mat. <?php echo html_escape($profesional->matricula); ?>)</option>
 										<?php endif; ?>
 									<?php endforeach; ?>
 								</select>
@@ -89,10 +89,10 @@
 												<?php echo strftime('%e de %B, %Y', strtotime($row->fecha)); ?><br>
 												<strong>Hora:</strong> <?php echo date('H:i', strtotime($row->fecha)); ?>
 											</td>
-											<td class="py-2"><?php echo $row->profesional; ?></td>
+											<td class="py-2"><?php echo html_escape($row->profesional); ?></td>
 											<td class="py-2">
 												<?php if($row->link_video && $row->payment_status): ?>
-													<a href="https://meet.jit.si/<?php echo $row->link_video; ?>" class="btn btn-primary btn-block text-white btn-sm" target="_blank">
+													<a href="https://meet.jit.si/<?php echo html_escape($row->link_video); ?>" class="btn btn-primary btn-block text-white btn-sm" target="_blank">
 														Abrir <span class="gd-share"></span>
 													</a>
 												<?php else: ?>
@@ -105,7 +105,7 @@
 												<td class="py-0 text-center border-top-0" colspan="3">
 													<div class="alert alert-info py-2">
 														La consulta está pendiente de pago.
-														<a href="<?php echo site_url('/cita/generar_link_pago/'.$row->id); ?>" class="alert-link" target="_blank">
+														<a href="<?php echo html_escape(site_url('/cita/generar_link_pago/'.$row->id)); ?>" class="alert-link" target="_blank">
 															Puede pagar desde aquí.
 														</a>
 													</div>
@@ -129,10 +129,10 @@
 						<h4 class="mb-0 extra-bold text-primary">Contactanos</h4>
 					</div>
 					<div class="card-body pb-0">
-						<div class="h4 text-success"><?php echo get_site_config('telefono'); ?></div>
+						<div class="h4 text-success"><?php echo html_escape(get_site_config('telefono')); ?></div>
 						<p class="mb-4">Lunes a viernes de 09:00 a 18:00<br>
 						Sábados de 09:00 a 13:00</p>
-						<p class="mb-4"><strong>Email:</strong> <?php echo get_site_config('admin_email'); ?></p>
+						<p class="mb-4"><strong>Email:</strong> <?php echo html_escape(get_site_config('admin_email')); ?></p>
 					</div>
 				</div>
 			</div>

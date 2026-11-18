@@ -7,7 +7,7 @@
 	<script src="<?php echo base_url('assets/js/main.js'); ?>"></script>
 
 	<?php if(isset($this->include_js) && is_file(FCPATH.'assets/js/'.$this->include_js)): ?>
-	<script src="<?php echo base_url('assets/js/'.$this->include_js); ?>"></script>
+	<script src="<?php echo html_escape(base_url('assets/js/'.$this->include_js)); ?>"></script>
 	<?php endif; ?>
 
 </body>

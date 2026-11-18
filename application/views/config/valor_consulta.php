@@ -33,14 +33,14 @@
 								<?php foreach($rows as $row): ?>
 									<tr>
 										<td>
-											<input type="text" class="form-control form-control-icon-img" id="input_<?php echo $row->id; ?>" name="nombre" value="<?php echo $row->nombre; ?>">
+											<input type="text" class="form-control form-control-icon-img" id="input_<?php echo html_escape($row->id); ?>" name="nombre" value="<?php echo html_escape($row->nombre); ?>">
 										</td>
 										<td>
-											<input type="text" class="form-control form-control-icon-img" id="valor_<?php echo $row->id; ?>" name="valor" value="<?php echo $row->valor; ?>">
+											<input type="text" class="form-control form-control-icon-img" id="valor_<?php echo html_escape($row->id); ?>" name="valor" value="<?php echo html_escape($row->valor); ?>">
 										</td>
 										<td class="pt-3 text-right">
-											<button class="btn btn-sm btn-success text-white" onclick="edit(<?php echo $row->id; ?>)">Guardar</button>
-											<a href="<?php echo site_url('/config/delete_valor_consulta/'.$row->id); ?>" class="btn btn-sm btn-danger text-white" onclick="return confirm('¿Eliminar este valor?', this)">Eliminar</button>
+											<button class="btn btn-sm btn-success text-white" onclick="edit(<?php echo html_escape($row->id); ?>)">Guardar</button>
+											<a href="<?php echo html_escape(site_url('/config/delete_valor_consulta/'.$row->id)); ?>" class="btn btn-sm btn-danger text-white" onclick="return confirm('¿Eliminar este valor?', this)">Eliminar</button>
 										</td>
 									</tr>
 								<?php endforeach; ?>

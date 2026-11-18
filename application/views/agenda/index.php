@@ -22,7 +22,7 @@
 						<?php foreach($this->profesionales_list as $profesional): ?>
 							<?php if(!$profesional->active) continue; ?>
 							<?php $selected = $this->input->get('p_id')==$profesional->id ? 'selected' : ''; ?>
-							<option value="<?php echo $profesional->id; ?>" <?php echo $selected; ?>><?php echo $profesional->first_name; ?> <?php echo $profesional->last_name; ?></option>
+							<option value="<?php echo html_escape($profesional->id); ?>" <?php echo html_escape($selected); ?>><?php echo html_escape($profesional->first_name); ?> <?php echo html_escape($profesional->last_name); ?></option>
 						<?php endforeach; ?>
 					</select>
 					<a href="<?php echo site_url('/agenda/add'); ?>" class="btn btn-primary" data-toggle="modal" data-target="#addModal">Agendar turno</a>
@@ -35,8 +35,8 @@
 	</div>
 
 	<script type="text/javascript">
-		var year = '<?php echo $year; ?>';
-		var month = '<?php echo $month; ?>';
+		var year = '<?php echo html_escape($year); ?>';
+		var month = '<?php echo html_escape($month); ?>';
 	</script>
 
 <?php $this->load->view('footer'); ?>

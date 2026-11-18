@@ -1,6 +1,6 @@
 
 			<footer class="small pt-3 pb-1 mt-auto text-center">
-				<p>&copy; <?php echo date('Y'); ?> <?php echo get_site_config('site_title'); ?></p>
+				<p>&copy; <?php echo date('Y'); ?> <?php echo html_escape(get_site_config('site_title')); ?></p>
 			</footer>
 		</div>
 	</main>
@@ -15,7 +15,7 @@
 	<script src="<?php echo base_url('assets/js/main.js'); ?>"></script>
 
 	<?php if(isset($this->include_js) && is_file(FCPATH.'assets/js/'.$this->include_js)): ?>
-	<script src="<?php echo base_url('assets/js/'.$this->include_js); ?>"></script>
+	<script src="<?php echo html_escape(base_url('assets/js/'.$this->include_js)); ?>"></script>
 	<?php endif; ?>
 
 </body>

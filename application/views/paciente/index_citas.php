@@ -14,7 +14,7 @@
 			<?php foreach($rows as $row): ?>
 				<tr>
 					<td><?php echo date('d-m-Y', strtotime($row->fecha)); ?></td>
-					<td><?php echo $row->profesional; ?></td>
+					<td><?php echo html_escape($row->profesional); ?></td>
 					<td>
 						<?php
 						switch($row->estado_cita)
@@ -28,7 +28,7 @@
 					</td>
 					<td>
 						<?php if($row->estado_cita==1 && $row->link_video): ?>
-						<a href="https://meet.jit.si/<?php echo $row->link_video; ?>" target="_blank">
+						<a href="https://meet.jit.si/<?php echo html_escape($row->link_video); ?>" target="_blank">
 							Abrir <span class="gd-share"></span>
 						</a>
 						<?php else: ?>
@@ -38,17 +38,17 @@
 					<td class="py-3 text-right">
 						<?php if($this->is_admin): ?>
 						<div class="position-relative">
-							<a class="link-dark d-inline-block" href="<?php echo site_url('/cita/edit/'.$row->id); ?>/<?php echo $paciente_id; ?>" data-toggle="modal" data-target="#editModal">
+							<a class="link-dark d-inline-block" href="<?php echo html_escape(site_url('/cita/edit/'.$row->id)); ?>/<?php echo html_escape($paciente_id); ?>" data-toggle="modal" data-target="#editModal">
 								<i class="gd-pencil icon-text"></i>
 							</a>
-							<a class="link-dark d-inline-block" href="<?php echo site_url('/cita/delete/'.$row->id); ?>" onclick="return confirm('Atención: Se eliminá esta fila', this)">
+							<a class="link-dark d-inline-block" href="<?php echo html_escape(site_url('/cita/delete/'.$row->id)); ?>" onclick="return confirm('Atención: Se eliminá esta fila', this)">
 								<i class="gd-trash icon-text"></i>
 							</a>
 						</div>
 						<?php endif; ?>
 						<?php if($this->login->id==$row->profesional_id): ?>
 						<div class="position-relative">
-							<a class="link-dark d-inline-block" href="<?php echo site_url('/cita/edit/'.$row->id); ?>" data-toggle="modal" data-target="#editModal">
+							<a class="link-dark d-inline-block" href="<?php echo html_escape(site_url('/cita/edit/'.$row->id)); ?>" data-toggle="modal" data-target="#editModal">
 								<i class="gd-pencil icon-text"></i>
 							</a>
 						</div>

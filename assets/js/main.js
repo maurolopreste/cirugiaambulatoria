@@ -1,3 +1,20 @@
+// CSRF: agrega el token a todos los POST de jQuery (AJAX, serialize y FormData)
+$.ajaxPrefilter(function(options, originalOptions) {
+	var meta = $('meta[name="csrf-token"]');
+	if (!meta.length || (options.type || '').toUpperCase() !== 'POST' || options.crossDomain) return;
+	var name = meta.data('name'), token = meta.attr('content');
+
+	if (window.FormData && options.data instanceof FormData) {
+		if (!options.data.has(name)) options.data.append(name, token);
+	}
+	else if (typeof options.data === 'string' && options.data.indexOf(encodeURIComponent(name)+'=') === -1) {
+		options.data += (options.data ? '&' : '') + encodeURIComponent(name) + '=' + encodeURIComponent(token);
+	}
+	else if (!options.data) {
+		options.data = encodeURIComponent(name) + '=' + encodeURIComponent(token);
+	}
+});
+
 var datepicker_options;
 
 $(function(){

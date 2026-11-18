@@ -26,7 +26,7 @@
 						<button type="submit" class="input-group-append btn">
 							<i class="gd-search icon-text icon-text-sm"></i>
 						</button>
-						<input type="text" name="q" class="form-control form-control-icon-text" placeholder="Buscar" value="<?php echo $this->input->get('q'); ?>">
+						<input type="text" name="q" class="form-control form-control-icon-text" placeholder="Buscar" value="<?php echo html_escape($this->input->get('q')); ?>">
 					</div>
 				</form>
 
@@ -47,14 +47,14 @@
 							<?php foreach($rows as $row): ?>
 								<tr>
 									<!-- <td class="py-3">
-										<input type="checkbox" name="ids[]" value="<?php echo $row->id; ?>">
+										<input type="checkbox" name="ids[]" value="<?php echo html_escape($row->id); ?>">
 									</td> -->
-									<td class="py-3"><?php echo $row->last_name; ?></td>
-									<td class="py-3"><?php echo $row->first_name; ?></td>
-									<td class="py-3"><?php echo $row->dni; ?></td>
-									<td class="py-3"><?php echo $row->telefono; ?></td>
+									<td class="py-3"><?php echo html_escape($row->last_name); ?></td>
+									<td class="py-3"><?php echo html_escape($row->first_name); ?></td>
+									<td class="py-3"><?php echo html_escape($row->dni); ?></td>
+									<td class="py-3"><?php echo html_escape($row->telefono); ?></td>
 									<td align="right">
-										<a class="btn btn-success btn-sm text-white text-nowrap" href="<?php echo site_url('/paciente/edit/'.$row->id); ?>">
+										<a class="btn btn-success btn-sm text-white text-nowrap" href="<?php echo html_escape(site_url('/paciente/edit/'.$row->id)); ?>">
 											<i class="gd-pencil mr-2"></i> Editar
 										</a>
 									</td>

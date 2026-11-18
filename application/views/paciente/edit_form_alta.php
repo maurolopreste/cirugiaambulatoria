@@ -4,7 +4,7 @@
 		<nav class="d-none d-md-block hidden-print" aria-label="breadcrumb">
 			<ol class="breadcrumb">
 				<li class="breadcrumb-item">
-					<a href="<?php echo site_url('paciente/edit/'.$row->id); ?>" class="link-muted">&lt; Volver</a>
+					<a href="<?php echo html_escape(site_url('paciente/edit/'.$row->id)); ?>" class="link-muted">&lt; Volver</a>
 				</li>
 			</ol>
 		</nav>
@@ -23,31 +23,31 @@
 						<div class="form-row mb-3">
 								<div class="form-group col-sm-4">
 									<label>ART</label>
-									<select name="art_id" class="custom-select select2" data-select="<?php echo $form->art_id; ?>">
+									<select name="art_id" class="custom-select select2" data-select="<?php echo html_escape($form->art_id); ?>">
 										<option value="">Buscar por empresa o cuit</option>
 										<?php foreach($this->art_list as $art): ?>
-											<option value="<?php echo $art->id; ?>"><?php echo $art->nombre; ?></option>
+											<option value="<?php echo html_escape($art->id); ?>"><?php echo html_escape($art->nombre); ?></option>
 										<?php endforeach; ?>
 									</select>
 								</div>
 								<div class="form-group col-sm-4">
 									<label>NRO SINIESTRO</label>
-									<input type="text" class="form-control form-control-line" name="nro_siniestro" value="<?php echo $form->nro_siniestro; ?>">
+									<input type="text" class="form-control form-control-line" name="nro_siniestro" value="<?php echo html_escape($form->nro_siniestro); ?>">
 								</div>
 							</div>
 							<div class="form-row mb-3">
 								<div class="form-group col-sm-4">
 									<label>OBRA SOCIAL</label>
-									<select name="obra_social" class="custom-select select2" data-select="<?php echo $row->obra_social; ?>">
+									<select name="obra_social" class="custom-select select2" data-select="<?php echo html_escape($row->obra_social); ?>">
 										<option value="">Selecciona una opción</option>
 										<?php foreach($this->obra_social_list as $obra_social): ?>
-											<option value="<?php echo $obra_social->id; ?>"><?php echo $obra_social->nombre; ?></option>
+											<option value="<?php echo html_escape($obra_social->id); ?>"><?php echo html_escape($obra_social->nombre); ?></option>
 										<?php endforeach; ?>
 									</select>
 								</div>
 								<div class="form-group col-sm-4">
 									<label>NRO AFILIADO</label>
-									<input type="text" class="form-control form-control-line" name="nro_afiliado" value="<?php echo $row->nro_afiliado; ?>">
+									<input type="text" class="form-control form-control-line" name="nro_afiliado" value="<?php echo html_escape($row->nro_afiliado); ?>">
 								</div>
 							</div>
 
@@ -56,23 +56,23 @@
 							<div class="form-row mb-2 mb-lg-3">
 								<div class="form-group col-sm-4">
 									<label>Apellido</label>
-									<input type="text" class="form-control form-control-line" name="last_name" value="<?php echo $row->last_name; ?>">
+									<input type="text" class="form-control form-control-line" name="last_name" value="<?php echo html_escape($row->last_name); ?>">
 								</div>
 								<div class="form-group col-sm-4">
 									<label>Nombre</label>
-									<input type="text" class="form-control form-control-line" name="first_name" value="<?php echo $row->first_name; ?>">
+									<input type="text" class="form-control form-control-line" name="first_name" value="<?php echo html_escape($row->first_name); ?>">
 								</div>
 								<div class="form-group col-sm-2">
 									<label>CUIL/DNI</label>
-									<input type="text" class="form-control form-control-line" name="dni" value="<?php echo $row->dni; ?>">
+									<input type="text" class="form-control form-control-line" name="dni" value="<?php echo html_escape($row->dni); ?>">
 								</div>
 								<div class="col-sm-2">
 									<label class="d-inline mr-3">Sexo:</label>
 									<?php $options = ['M', 'F']; ?>
 									<?php foreach($options as $k=>$option): ?>
 										<div class="form-check form-check-inline">
-											<input class="form-check-input" type="radio" name="sexo" id="sexo<?php echo $k; ?>" value="<?php echo $option; ?>" <?php if($row->sexo==$option) echo 'checked'; ?>>
-											<label class="form-check-label" for="sexo<?php echo $k; ?>"><?php echo $option; ?></label>
+											<input class="form-check-input" type="radio" name="sexo" id="sexo<?php echo html_escape($k); ?>" value="<?php echo html_escape($option); ?>" <?php if($row->sexo==$option) echo 'checked'; ?>>
+											<label class="form-check-label" for="sexo<?php echo html_escape($k); ?>"><?php echo html_escape($option); ?></label>
 										</div>
 									<?php endforeach; ?>
 								</div>
@@ -81,59 +81,59 @@
 							<div class="form-row mb-2 mb-lg-3">
 								<div class="col-sm-3">
 									<label>Fecha de Nacimiento</label>
-									<input type="date" class="form-control form-control-line" name="fecha_nac" value="<?php echo $row->fecha_nac; ?>">
+									<input type="date" class="form-control form-control-line" name="fecha_nac" value="<?php echo html_escape($row->fecha_nac); ?>">
 								</div>
 								<div class="form-group col-sm-7">
 									<label>Calle</label>
-									<input type="text" class="form-control form-control-line" name="calle" value="<?php echo $form->calle; ?>">
+									<input type="text" class="form-control form-control-line" name="calle" value="<?php echo html_escape($form->calle); ?>">
 								</div>
 								<div class="form-group col-sm-2">
 									<label>Nro</label>
-									<input type="text" class="form-control form-control-line" name="calle_nro" value="<?php echo $form->calle_nro; ?>">
+									<input type="text" class="form-control form-control-line" name="calle_nro" value="<?php echo html_escape($form->calle_nro); ?>">
 								</div>
 							</div>
 
 							<div class="form-row mb-2 mb-lg-3">
 								<div class="form-group col-sm-1">
 									<label>Piso</label>
-									<input type="text" class="form-control form-control-line" name="piso" value="<?php echo $form->piso; ?>">
+									<input type="text" class="form-control form-control-line" name="piso" value="<?php echo html_escape($form->piso); ?>">
 								</div>
 								<div class="form-group col-sm-1">
 									<label>Depto</label>
-									<input type="text" class="form-control form-control-line" name="depto" value="<?php echo $form->depto; ?>">
+									<input type="text" class="form-control form-control-line" name="depto" value="<?php echo html_escape($form->depto); ?>">
 								</div>
 								<div class="form-group col-sm-4">
 									<label>Localidad</label>
-									<input type="text" class="form-control form-control-line" name="localidad" value="<?php echo $form->localidad; ?>">
+									<input type="text" class="form-control form-control-line" name="localidad" value="<?php echo html_escape($form->localidad); ?>">
 								</div>
 								<div class="form-group col-sm-4">
 									<label>Provincia</label>
-									<select class="form-control form-control-line" name="provincia" data-select="<?php echo $form->provincia; ?>">
+									<select class="form-control form-control-line" name="provincia" data-select="<?php echo html_escape($form->provincia); ?>">
 										<option value="14">Mendoza</option>
 										<option disabled>----</option>
 										<?php foreach($this->provincias_list as $provincia): ?>
-											<option value="<?php echo $provincia->id; ?>"><?php echo $provincia->nombre; ?></option>
+											<option value="<?php echo html_escape($provincia->id); ?>"><?php echo html_escape($provincia->nombre); ?></option>
 										<?php endforeach; ?>
 									</select>
 								</div>
 								<div class="form-group col-sm-2">
 									<label>CP</label>
-									<input type="text" class="form-control form-control-line" name="cp" value="<?php echo $form->cp; ?>">
+									<input type="text" class="form-control form-control-line" name="cp" value="<?php echo html_escape($form->cp); ?>">
 								</div>
 							</div>
 
 							<div class="form-row mb-2 mb-lg-3">
 								<div class="form-group col-sm-3">
 									<label>Tel. Fijo</label>
-									<input type="text" class="form-control form-control-line" name="tel_fijo" value="<?php echo $form->tel_fijo; ?>">
+									<input type="text" class="form-control form-control-line" name="tel_fijo" value="<?php echo html_escape($form->tel_fijo); ?>">
 								</div>
 								<div class="form-group col-sm-3">
 									<label>Tel. Móvil</label>
-									<input type="text" class="form-control form-control-line" name="tel_movil" value="<?php echo $form->tel_movil; ?>">
+									<input type="text" class="form-control form-control-line" name="tel_movil" value="<?php echo html_escape($form->tel_movil); ?>">
 								</div>
                                 <div class="form-group col-sm-6">
                                     <label>E-mail</label>
-                                    <input type="email" class="form-control form-control-line" name="email" value="<?php echo $row->email; ?>">
+                                    <input type="email" class="form-control form-control-line" name="email" value="<?php echo html_escape($row->email); ?>">
                                 </div>
                             </div>
 
@@ -142,11 +142,11 @@
 							<div class="form-row mb-2 mb-lg-3">
 								<div class="form-group col-sm-8">
 									<label>Nombre de la Empresa</label>
-									<input type="text" class="form-control form-control-line" name="empleador_nombre" value="<?php echo $form->empleador_nombre; ?>">
+									<input type="text" class="form-control form-control-line" name="empleador_nombre" value="<?php echo html_escape($form->empleador_nombre); ?>">
 								</div>
 								<div class="form-group col-sm-4">
 									<label>CUIT</label>
-									<input type="text" class="form-control form-control-line" name="empleador_cuit" value="<?php echo $form->empleador_cuit; ?>">
+									<input type="text" class="form-control form-control-line" name="empleador_cuit" value="<?php echo html_escape($form->empleador_cuit); ?>">
 								</div>
 							</div>
 
@@ -155,34 +155,34 @@
 							<div class="form-row mb-2 mb-lg-3">
                                 <div class="form-group col-md-8">
                                     <label>Nombre del Establecimiento Asistencial</label>
-                                    <input type="text" class="form-control form-control-line" name="prestador_nombre" value="<?php echo $form->prestador_nombre; ?>">
+                                    <input type="text" class="form-control form-control-line" name="prestador_nombre" value="<?php echo html_escape($form->prestador_nombre); ?>">
                                 </div>
 								<div class="form-group col-sm-4">
 									<label>CUIT</label>
-									<input type="text" class="form-control form-control-line" name="prestador_cuit" value="<?php echo $form->prestador_cuit; ?>">
+									<input type="text" class="form-control form-control-line" name="prestador_cuit" value="<?php echo html_escape($form->prestador_cuit); ?>">
 								</div>
                             </div>
 
                             <div class="form-row mb-2 mb-lg-3">
 								<div class="form-group col-sm-5">
 									<label>Calle</label>
-									<input type="text" class="form-control form-control-line" name="prestador_calle" value="<?php echo $form->prestador_calle; ?>">
+									<input type="text" class="form-control form-control-line" name="prestador_calle" value="<?php echo html_escape($form->prestador_calle); ?>">
 								</div>
 								<div class="form-group col-sm-1">
 									<label>Nro</label>
-									<input type="text" class="form-control form-control-line" name="prestador_calle_nro" value="<?php echo $form->prestador_calle_nro; ?>">
+									<input type="text" class="form-control form-control-line" name="prestador_calle_nro" value="<?php echo html_escape($form->prestador_calle_nro); ?>">
 								</div>
 								<div class="form-group col-sm-1">
 									<label>Piso</label>
-									<input type="text" class="form-control form-control-line" name="prestador_piso" value="<?php echo $form->prestador_piso; ?>">
+									<input type="text" class="form-control form-control-line" name="prestador_piso" value="<?php echo html_escape($form->prestador_piso); ?>">
 								</div>
 								<div class="form-group col-sm-1">
 									<label>Depto</label>
-									<input type="text" class="form-control form-control-line" name="prestador_depto" value="<?php echo $form->prestador_depto; ?>">
+									<input type="text" class="form-control form-control-line" name="prestador_depto" value="<?php echo html_escape($form->prestador_depto); ?>">
 								</div>
 								<div class="form-group col-sm-4">
 									<label>Localidad</label>
-									<input type="text" class="form-control form-control-line" name="prestador_localidad" value="<?php echo $form->prestador_localidad; ?>">
+									<input type="text" class="form-control form-control-line" name="prestador_localidad" value="<?php echo html_escape($form->prestador_localidad); ?>">
 								</div>
 							</div>
 
@@ -193,27 +193,27 @@
 										<option value="14">Mendoza</option>
 										<option disabled>----</option>
 										<?php foreach($this->provincias_list as $provincia): ?>
-											<option value="<?php echo $provincia->id; ?>"><?php echo $provincia->nombre; ?></option>
+											<option value="<?php echo html_escape($provincia->id); ?>"><?php echo html_escape($provincia->nombre); ?></option>
 										<?php endforeach; ?>
 									</select>
 								</div>
 								<div class="form-group col-sm-2">
 									<label>CP</label>
-									<input type="text" class="form-control form-control-line" name="prestador_cp" value="<?php echo $form->prestador_cp; ?>">
+									<input type="text" class="form-control form-control-line" name="prestador_cp" value="<?php echo html_escape($form->prestador_cp); ?>">
 								</div>
 								<div class="form-group col-sm-3">
 									<label>Tel</label>
-									<input type="text" class="form-control form-control-line" name="prestador_tel" value="<?php echo $form->prestador_tel; ?>">
+									<input type="text" class="form-control form-control-line" name="prestador_tel" value="<?php echo html_escape($form->prestador_tel); ?>">
 								</div>
 								<div class="form-group col-sm-3">
 									<label>Fax</label>
-									<input type="text" class="form-control form-control-line" name="prestador_fax" value="<?php echo $form->prestador_fax; ?>">
+									<input type="text" class="form-control form-control-line" name="prestador_fax" value="<?php echo html_escape($form->prestador_fax); ?>">
 								</div>
 							</div>
 
 							<div class="form-group mb-5">
 								<label>E-mail</label>
-								<input type="email" class="form-control form-control-line" name="prestador_email" value="<?php echo $form->prestador_email; ?>">
+								<input type="email" class="form-control form-control-line" name="prestador_email" value="<?php echo html_escape($form->prestador_email); ?>">
 							</div>
 
 							<div class="h5 font-weight-bold mb-3 bg-dark text-white p-2">DESCRIPCIÓN DEL MOTIVO DE CONSULTA</div>
@@ -223,8 +223,8 @@
 								<?php $options = ['Accidente de Trabajo', 'Accidente in itinere', 'Enfermedad Profesional', 'Intercurrencia', 'Sin especificar']; ?>
 								<?php foreach($options as $k=>$option): ?>
 									<div class="form-check form-check-inline">
-										<input class="form-check-input" type="radio" name="motivo_consulta" id="motivo_consulta<?php echo $k; ?>" value="<?php echo $option; ?>" <?php if($form->motivo_consulta==$option) echo 'checked'; ?>>
-										<label class="form-check-label" for="motivo_consulta<?php echo $k; ?>"><?php echo $option; ?></label>
+										<input class="form-check-input" type="radio" name="motivo_consulta" id="motivo_consulta<?php echo html_escape($k); ?>" value="<?php echo html_escape($option); ?>" <?php if($form->motivo_consulta==$option) echo 'checked'; ?>>
+										<label class="form-check-label" for="motivo_consulta<?php echo html_escape($k); ?>"><?php echo html_escape($option); ?></label>
 									</div>
 								<?php endforeach; ?>
 							</div>
@@ -232,49 +232,49 @@
 							<div class="form-row mb-2 mb-lg-3">
 								<div class="form-group col-sm-5">
 									<label>Fecha del Accidente / Primera manifestación invalidante</label>
-									<input type="date" class="form-control form-control-line" name="fecha_accidente" value="<?php echo $form->fecha_accidente ? date('Y-m-d', strtotime($form->fecha_accidente)) : ''; ?>">
+									<input type="date" class="form-control form-control-line" name="fecha_accidente" value="<?php echo html_escape($form->fecha_accidente ? date('Y-m-d', strtotime($form->fecha_accidente)) : ''); ?>">
 								</div>
 								<div class="form-group col-sm-2">
 									<label>Hora</label>
-									<input type="text" class="form-control form-control-line" name="hora_accidente" value="<?php echo $form->fecha_accidente ? date('H:i', strtotime($form->fecha_accidente)) : ''; ?>">
+									<input type="text" class="form-control form-control-line" name="hora_accidente" value="<?php echo html_escape($form->fecha_accidente ? date('H:i', strtotime($form->fecha_accidente)) : ''); ?>">
 								</div>
 							</div>
 
 							<div class="form-row mb-2 mb-lg-3">
 								<div class="form-group col-sm-5">
 									<label>Fecha de inicio de la inasistencia laboral</label>
-									<input type="date" class="form-control form-control-line" name="fecha_inasistencia" value="<?php echo $form->fecha_inasistencia ? date('Y-m-d', strtotime($form->fecha_inasistencia)) : ''; ?>">
+									<input type="date" class="form-control form-control-line" name="fecha_inasistencia" value="<?php echo html_escape($form->fecha_inasistencia ? date('Y-m-d', strtotime($form->fecha_inasistencia)) : ''); ?>">
 								</div>
 								<div class="form-group col-sm-2">
 									<label>Hora</label>
-									<input type="text" class="form-control form-control-line" name="hora_inasistencia" value="<?php echo $form->fecha_inasistencia ? date('H:i', strtotime($form->fecha_inasistencia)) : ''; ?>">
+									<input type="text" class="form-control form-control-line" name="hora_inasistencia" value="<?php echo html_escape($form->fecha_inasistencia ? date('H:i', strtotime($form->fecha_inasistencia)) : ''); ?>">
 								</div>
 							</div>
 
 							<div class="form-row mb-2 mb-lg-3">
 								<div class="form-group col-sm-5">
 								<label>Fecha de primera atención médica</label>
-									<input type="date" class="form-control form-control-line" name="fecha_primera_atencion" value="<?php echo $form->fecha_primera_atencion ? date('Y-m-d', strtotime($form->fecha_primera_atencion)) : ''; ?>">
+									<input type="date" class="form-control form-control-line" name="fecha_primera_atencion" value="<?php echo html_escape($form->fecha_primera_atencion ? date('Y-m-d', strtotime($form->fecha_primera_atencion)) : ''); ?>">
 								</div>
 								<div class="form-group col-sm-2">
 									<label>Hora</label>
-									<input type="text" class="form-control form-control-line" name="hora_primera_atencion" value="<?php echo $form->fecha_primera_atencion ? date('H:i', strtotime($form->fecha_primera_atencion)) : ''; ?>">
+									<input type="text" class="form-control form-control-line" name="hora_primera_atencion" value="<?php echo html_escape($form->fecha_primera_atencion ? date('H:i', strtotime($form->fecha_primera_atencion)) : ''); ?>">
 								</div>
 							</div>
 
 							<div class="form-group">
 								<label>Descripción del motivo de consulta</label>
-								<textarea class="form-control form-control-line" name="descripcion_motivo_consulta" rows="2"><?php echo $form->descripcion_motivo_consulta; ?></textarea>
+								<textarea class="form-control form-control-line" name="descripcion_motivo_consulta" rows="2"><?php echo html_escape($form->descripcion_motivo_consulta); ?></textarea>
 							</div>
 
 							<div class="form-group">
 								<label>Diagnóstico</label>
-								<textarea class="form-control form-control-line" name="diagnostico" rows="2"><?php echo $form->diagnostico; ?></textarea>
+								<textarea class="form-control form-control-line" name="diagnostico" rows="2"><?php echo html_escape($form->diagnostico); ?></textarea>
 							</div>
 
 							<div class="form-group mb-4 mb-lg-5">
 								<label>Indicaciones / Tratamiento</label>
-								<textarea class="form-control form-control-line" name="indicaciones" rows="2"><?php echo $form->indicaciones; ?></textarea>
+								<textarea class="form-control form-control-line" name="indicaciones" rows="2"><?php echo html_escape($form->indicaciones); ?></textarea>
 							</div>
 
                             <div class="h4 font-weight-bold mb-3">CONSTANCIA DE ALTA MÉDICA</div>
@@ -287,8 +287,8 @@
                                         <?php $options = ['Si', 'No']; ?>
                                         <?php foreach($options as $k=>$option): ?>
                                             <div class="form-check form-check-inline">
-                                                <input class="form-check-input" type="radio" name="tratamiento_pendiente" id="tratamiento_pendiente<?php echo $k; ?>" value="<?php echo $option; ?>" <?php if($form->tratamiento_pendiente==$option) echo 'checked'; ?>>
-                                                <label class="form-check-label" for="tratamiento_pendiente<?php echo $k; ?>"><?php echo $option; ?></label>
+                                                <input class="form-check-input" type="radio" name="tratamiento_pendiente" id="tratamiento_pendiente<?php echo html_escape($k); ?>" value="<?php echo html_escape($option); ?>" <?php if($form->tratamiento_pendiente==$option) echo 'checked'; ?>>
+                                                <label class="form-check-label" for="tratamiento_pendiente<?php echo html_escape($k); ?>"><?php echo html_escape($option); ?></label>
                                             </div>
                                         <?php endforeach; ?>
                                     </div>
@@ -298,8 +298,8 @@
                                         <?php $options = ['Odontología', 'Dermatología', 'Psicoterapia', 'Ninguno']; ?>
                                         <?php foreach($options as $k=>$option): ?>
                                             <div class="form-check form-check-inline">
-                                                <input class="form-check-input" type="radio" name="tratamiento_extra" id="tratamiento_extra<?php echo $k; ?>" value="<?php echo $option; ?>" <?php if($form->tratamiento_extra==$option) echo 'checked'; ?>>
-                                                <label class="form-check-label" for="tratamiento_extra<?php echo $k; ?>"><?php echo $option; ?></label>
+                                                <input class="form-check-input" type="radio" name="tratamiento_extra" id="tratamiento_extra<?php echo html_escape($k); ?>" value="<?php echo html_escape($option); ?>" <?php if($form->tratamiento_extra==$option) echo 'checked'; ?>>
+                                                <label class="form-check-label" for="tratamiento_extra<?php echo html_escape($k); ?>"><?php echo html_escape($option); ?></label>
                                             </div>
                                         <?php endforeach; ?>
                                     </div>
@@ -307,33 +307,33 @@
                                     <div class="form-row">
                                         <div class="form-group col-sm-7">
                                         <label>Fecha de próxima revisión</label>
-                                            <input type="date" class="form-control form-control-line" name="fecha_proxima_revision" value="<?php echo $form->fecha_proxima_revision ? date('Y-m-d', strtotime($form->fecha_proxima_revision)) : ''; ?>">
+                                            <input type="date" class="form-control form-control-line" name="fecha_proxima_revision" value="<?php echo html_escape($form->fecha_proxima_revision ? date('Y-m-d', strtotime($form->fecha_proxima_revision)) : ''); ?>">
                                         </div>
                                         <div class="form-group col-sm-4">
                                             <label>Hora</label>
-                                            <input type="text" class="form-control form-control-line" name="hora_proxima_revision" value="<?php echo $form->fecha_proxima_revision ? date('H:i', strtotime($form->fecha_proxima_revision)) : ''; ?>">
+                                            <input type="text" class="form-control form-control-line" name="hora_proxima_revision" value="<?php echo html_escape($form->fecha_proxima_revision ? date('H:i', strtotime($form->fecha_proxima_revision)) : ''); ?>">
                                         </div>
                                     </div>
 
                                     <div class="form-row">
                                         <div class="form-group col-sm-7">
                                         <label>Fecha de retorno al trabajo</label>
-                                            <input type="date" class="form-control form-control-line" name="fecha_retorno_trabajo" value="<?php echo $form->fecha_retorno_trabajo ? date('Y-m-d', strtotime($form->fecha_retorno_trabajo)) : ''; ?>">
+                                            <input type="date" class="form-control form-control-line" name="fecha_retorno_trabajo" value="<?php echo html_escape($form->fecha_retorno_trabajo ? date('Y-m-d', strtotime($form->fecha_retorno_trabajo)) : ''); ?>">
                                         </div>
                                         <div class="form-group col-sm-4">
                                             <label>Hora</label>
-                                            <input type="text" class="form-control form-control-line" name="hora_retorno_trabajo" value="<?php echo $form->fecha_retorno_trabajo ? date('H:i', strtotime($form->fecha_retorno_trabajo)) : ''; ?>">
+                                            <input type="text" class="form-control form-control-line" name="hora_retorno_trabajo" value="<?php echo html_escape($form->fecha_retorno_trabajo ? date('H:i', strtotime($form->fecha_retorno_trabajo)) : ''); ?>">
                                         </div>
                                     </div>
 
                                     <div class="form-row mb-2 mb-lg-3">
                                         <div class="form-group col-sm-7">
                                         <label>Fin de tratamiento</label>
-                                            <input type="date" class="form-control form-control-line" name="fecha_fin_tratamiento" value="<?php echo $form->fecha_fin_tratamiento ? date('Y-m-d', strtotime($form->fecha_fin_tratamiento)) : ''; ?>">
+                                            <input type="date" class="form-control form-control-line" name="fecha_fin_tratamiento" value="<?php echo html_escape($form->fecha_fin_tratamiento ? date('Y-m-d', strtotime($form->fecha_fin_tratamiento)) : ''); ?>">
                                         </div>
                                         <div class="form-group col-sm-4">
                                             <label>Hora</label>
-                                            <input type="text" class="form-control form-control-line" name="hora_fin_tratamiento" value="<?php echo $form->fecha_fin_tratamiento ? date('H:i', strtotime($form->fecha_fin_tratamiento)) : ''; ?>">
+                                            <input type="text" class="form-control form-control-line" name="hora_fin_tratamiento" value="<?php echo html_escape($form->fecha_fin_tratamiento ? date('H:i', strtotime($form->fecha_fin_tratamiento)) : ''); ?>">
                                         </div>
                                     </div>
 								</div>
@@ -347,8 +347,8 @@
 													<?php $motivo_cese = $form->motivo_cese ? unserialize($form->motivo_cese) : []; ?>
                                                     <?php foreach($options as $k=>$option): ?>
                                                         <div class="form-check">
-                                                            <input class="form-check-input" type="checkbox" name="motivo_cese[]" id="motivo_cese<?php echo $k; ?>" value="<?php echo $option; ?>" <?php if(in_array($option, $motivo_cese)) echo 'checked'; ?>>
-                                                            <label class="form-check-label" for="motivo_cese<?php echo $k; ?>"><?php echo $option; ?></label>
+                                                            <input class="form-check-input" type="checkbox" name="motivo_cese[]" id="motivo_cese<?php echo html_escape($k); ?>" value="<?php echo html_escape($option); ?>" <?php if(in_array($option, $motivo_cese)) echo 'checked'; ?>>
+                                                            <label class="form-check-label" for="motivo_cese<?php echo html_escape($k); ?>"><?php echo html_escape($option); ?></label>
                                                         </div>
                                                     <?php endforeach; ?>
                                                 </div>
@@ -362,8 +362,8 @@
                                                     <?php $options = ['Si', 'No']; ?>
                                                     <?php foreach($options as $k=>$option): ?>
                                                         <div class="form-check form-check-inline">
-                                                            <input class="form-check-input" type="radio" name="recalificacion_profesional" id="recalificacion_profesional<?php echo $k; ?>" value="<?php echo $option; ?>" <?php if($form->recalificacion_profesional==$option) echo 'checked'; ?>>
-                                                            <label class="form-check-label" for="recalificacion_profesional<?php echo $k; ?>"><?php echo $option; ?></label>
+                                                            <input class="form-check-input" type="radio" name="recalificacion_profesional" id="recalificacion_profesional<?php echo html_escape($k); ?>" value="<?php echo html_escape($option); ?>" <?php if($form->recalificacion_profesional==$option) echo 'checked'; ?>>
+                                                            <label class="form-check-label" for="recalificacion_profesional<?php echo html_escape($k); ?>"><?php echo html_escape($option); ?></label>
                                                         </div>
                                                     <?php endforeach; ?>
                                                 </div>
@@ -376,8 +376,8 @@
                                                     <?php $options = ['Si', 'No']; ?>
                                                     <?php foreach($options as $k=>$option): ?>
                                                         <div class="form-check form-check-inline">
-                                                            <input class="form-check-input" type="radio" name="afeccion_inculpable" id="afeccion_inculpable<?php echo $k; ?>" value="<?php echo $option; ?>" <?php if($form->afeccion_inculpable==$option) echo 'checked'; ?>>
-                                                            <label class="form-check-label" for="afeccion_inculpable<?php echo $k; ?>"><?php echo $option; ?></label>
+                                                            <input class="form-check-input" type="radio" name="afeccion_inculpable" id="afeccion_inculpable<?php echo html_escape($k); ?>" value="<?php echo html_escape($option); ?>" <?php if($form->afeccion_inculpable==$option) echo 'checked'; ?>>
+                                                            <label class="form-check-label" for="afeccion_inculpable<?php echo html_escape($k); ?>"><?php echo html_escape($option); ?></label>
                                                         </div>
                                                     <?php endforeach; ?>
                                                 </div>
@@ -390,8 +390,8 @@
                                                     <?php $options = ['Si', 'No']; ?>
                                                     <?php foreach($options as $k=>$option): ?>
                                                         <div class="form-check form-check-inline">
-                                                            <input class="form-check-input" type="radio" name="secuelas_incapacitantes" id="secuelas_incapacitantes<?php echo $k; ?>" value="<?php echo $option; ?>" <?php if($form->secuelas_incapacitantes==$option) echo 'checked'; ?>>
-                                                            <label class="form-check-label" for="secuelas_incapacitantes<?php echo $k; ?>"><?php echo $option; ?></label>
+                                                            <input class="form-check-input" type="radio" name="secuelas_incapacitantes" id="secuelas_incapacitantes<?php echo html_escape($k); ?>" value="<?php echo html_escape($option); ?>" <?php if($form->secuelas_incapacitantes==$option) echo 'checked'; ?>>
+                                                            <label class="form-check-label" for="secuelas_incapacitantes<?php echo html_escape($k); ?>"><?php echo html_escape($option); ?></label>
                                                         </div>
                                                     <?php endforeach; ?>
                                                 </div>
@@ -404,8 +404,8 @@
                                                     <?php $options = ['Si', 'No']; ?>
                                                     <?php foreach($options as $k=>$option): ?>
                                                         <div class="form-check form-check-inline">
-                                                            <input class="form-check-input" type="radio" name="prestaciones_mantenimiento" id="prestaciones_mantenimiento<?php echo $k; ?>" value="<?php echo $option; ?>" <?php if($form->prestaciones_mantenimiento==$option) echo 'checked'; ?>>
-                                                            <label class="form-check-label" for="prestaciones_mantenimiento<?php echo $k; ?>"><?php echo $option; ?></label>
+                                                            <input class="form-check-input" type="radio" name="prestaciones_mantenimiento" id="prestaciones_mantenimiento<?php echo html_escape($k); ?>" value="<?php echo html_escape($option); ?>" <?php if($form->prestaciones_mantenimiento==$option) echo 'checked'; ?>>
+                                                            <label class="form-check-label" for="prestaciones_mantenimiento<?php echo html_escape($k); ?>"><?php echo html_escape($option); ?></label>
                                                         </div>
                                                     <?php endforeach; ?>
                                                 </div>

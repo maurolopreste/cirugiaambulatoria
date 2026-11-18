@@ -6,7 +6,7 @@
 		<?php $this->load->view('alert'); ?>
 
 		<div class="mb-5 d-flex justify-content-center">
-			<div class="h3 mb-0">¡Hola, <?php echo $this->login->first_name; ?>! Te damos la bienvenida</div>
+			<div class="h3 mb-0">¡Hola, <?php echo html_escape($this->login->first_name); ?>! Te damos la bienvenida</div>
 		</div>
 
 		<div class="row justify-content-center">
@@ -20,11 +20,11 @@
 						<h4 class="mb-0 extra-bold text-primary">Próxima consulta</h4>
 					</div>
 					<div class="card-body pb-4 text-center">
-						<h3 class="display-4"><?php echo $proxima_consulta->paciente; ?></h3>
+						<h3 class="display-4"><?php echo html_escape($proxima_consulta->paciente); ?></h3>
 						<h4>Turno: <?php echo date('H:i', strtotime($proxima_consulta->fecha)); ?></h4>
 						<br>
-						<a href="<?php echo site_url('paciente/formingreso/'.$proxima_consulta->paciente_id); ?>" class="btn btn-success text-white">Ver datos paciente</a>
-						<a href="<?php echo site_url('agenda/completar/'.$proxima_consulta->id); ?>" class="btn btn-info text-white">Marcar como atendido</a>
+						<a href="<?php echo html_escape(site_url('paciente/formingreso/'.$proxima_consulta->paciente_id)); ?>" class="btn btn-success text-white">Ver datos paciente</a>
+						<a href="<?php echo html_escape(site_url('agenda/completar/'.$proxima_consulta->id)); ?>" class="btn btn-info text-white">Marcar como atendido</a>
 					</div>
 				</div>
 				<?php endif; ?>
@@ -52,7 +52,7 @@
 										<tr>
 											<td class="py-2"><?php echo strftime('%e de %B, %Y', strtotime($row->fecha)); ?></td>
 											<td class="py-2"><?php echo date('H:i', strtotime($row->fecha)); ?></td>
-											<td class="py-2"><?php echo $row->paciente; ?></td>
+											<td class="py-2"><?php echo html_escape($row->paciente); ?></td>
 										</tr>
 									<?php endforeach; ?>
 									</tbody>

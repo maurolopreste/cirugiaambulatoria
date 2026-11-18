@@ -6,8 +6,8 @@
 
 <p>Pero no te preocupes, puedes crear una nueva clave desde el siguiente link:</p>
 
-<a href="<?php echo $url; ?>" class="btn">Cambiar contraseña</a>
+<a href="<?php echo html_escape($url); ?>" class="btn">Cambiar contraseña</a>
 
-<p>Si el link de arriba no funciona, copia y pega el siguiente link en una pestaña nueva: <?php echo $url; ?></p>
+<p>Si el link de arriba no funciona, copia y pega el siguiente link en una pestaña nueva: <?php echo html_escape($url); ?></p>
 
 <?php $this->load->view('email/layout_bottom'); ?>

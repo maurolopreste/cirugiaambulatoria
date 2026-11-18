@@ -7,7 +7,7 @@
 			<?php echo form_open(); ?>
 				<div class="form-group">
 					<label for="email"><?php echo lang('Email'); ?></label>
-					<input id="email" type="email" class="form-control" name="email" value="<?php echo $user->email; ?>" required>
+					<input id="email" type="email" class="form-control" name="email" value="<?php echo html_escape($user->email); ?>" required>
 				</div>
 
 				<div class="form-group">

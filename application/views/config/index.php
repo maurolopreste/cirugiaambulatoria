@@ -23,19 +23,19 @@
 						<div class="col-md-6">
 							<div class="form-group">
 								<label>Título del sitio</label>
-								<input type="text" class="form-control" name="site_title" value="<?php echo $row->site_title; ?>" required>
+								<input type="text" class="form-control" name="site_title" value="<?php echo html_escape($row->site_title); ?>" required>
 							</div>
 							<div class="form-group">
 								<label>Teléfono</label>
-								<input type="text" class="form-control" name="telefono" value="<?php echo $row->telefono; ?>" required>
+								<input type="text" class="form-control" name="telefono" value="<?php echo html_escape($row->telefono); ?>" required>
 							</div>
 							<div class="form-group">
 								<label>Color primario</label>
-								<input type="text" class="form-control" name="primary_color" value="<?php echo $row->primary_color; ?>" required>
+								<input type="text" class="form-control" name="primary_color" value="<?php echo html_escape($row->primary_color); ?>" required>
 							</div>
 							<div class="form-group">
 								<label>Email administración</label>
-								<input type="email" class="form-control" name="admin_email" value="<?php echo $row->admin_email; ?>" required>
+								<input type="email" class="form-control" name="admin_email" value="<?php echo html_escape($row->admin_email); ?>" required>
 							</div>
 						</div>
 						<div class="col-md-6">
@@ -44,7 +44,7 @@
 							<div class="custom-file">
 								<?php if($row->logo): ?>
 									<button class="delete" style="display: block;">&times;</button>
-									<img src="<?php echo base_url('uploads/'.$row->logo); ?>" class="preview-image">
+									<img src="<?php echo html_escape(base_url('uploads/'.$row->logo)); ?>" class="preview-image">
 								<?php else: ?>
 									<button class="delete">&times;</button>
 									<img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNkYAAAAAYAAjCB0C8AAAAASUVORK5CYII=" class="preview-image">

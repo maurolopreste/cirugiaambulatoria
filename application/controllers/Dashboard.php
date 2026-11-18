@@ -62,7 +62,7 @@ class Dashboard extends Front_Controller {
 		
 		foreach($valor_consultas as $v)
 		{
-			$result[] = '<option value="'. $v->valor_consulta .'">'. $v->nombre .' ($ '. $v->valor .')</option>';
+			$result[] = '<option value="'. html_escape($v->valor_consulta) .'">'. html_escape($v->nombre) .' ($ '. html_escape($v->valor) .')</option>';
 		}
 
 		echo implode('', $result);

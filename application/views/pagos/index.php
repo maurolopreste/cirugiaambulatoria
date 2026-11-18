@@ -23,7 +23,7 @@
 						<button type="submit" class="input-group-append btn">
 							<i class="gd-search icon-text icon-text-sm"></i>
 						</button>
-						<input type="text" name="q" class="form-control form-control-icon-text" placeholder="Buscar por paciente o método de pago" value="<?php echo $this->input->get('q'); ?>">
+						<input type="text" name="q" class="form-control form-control-icon-text" placeholder="Buscar por paciente o método de pago" value="<?php echo html_escape($this->input->get('q')); ?>">
 					</div>
 				</form>
 
@@ -46,13 +46,13 @@
 							<?php foreach($rows as $row): ?>
 								<tr>
 									<!-- <td class="py-3">
-										<input type="checkbox" name="ids[]" value="<?php echo $row->id; ?>">
+										<input type="checkbox" name="ids[]" value="<?php echo html_escape($row->id); ?>">
 									</td> -->
 									<td><?php echo strftime('%e de %B', strtotime($row->fecha)); ?></td>
-									<td><?php echo $row->paciente; ?></td>
-									<td><?php echo $row->tipo_consulta; ?></td>
-									<td><?php echo $row->valor; ?></td>
-									<td><?php echo $row->metodo_pago; ?></td>
+									<td><?php echo html_escape($row->paciente); ?></td>
+									<td><?php echo html_escape($row->tipo_consulta); ?></td>
+									<td><?php echo html_escape($row->valor); ?></td>
+									<td><?php echo html_escape($row->metodo_pago); ?></td>
 									<td>
 										<?php
 										switch($row->payment_status)
@@ -64,10 +64,10 @@
 									</td>
 									<td class="py-3 text-right">
 										<div class="position-relative">
-											<a class="link-dark d-inline-block mr-2" href="<?php echo site_url('/pagos/edit/'.$row->id); ?>" data-toggle="modal" data-target="#editModal">
+											<a class="link-dark d-inline-block mr-2" href="<?php echo html_escape(site_url('/pagos/edit/'.$row->id)); ?>" data-toggle="modal" data-target="#editModal">
 												<i class="gd-eye icon-text"></i>
 											</a>
-											<!-- <a class="link-dark d-inline-block" href="<?php echo site_url('/pagos/delete/'.$row->id); ?>" onclick="return confirm('¿Eliminar este pago?', this)">
+											<!-- <a class="link-dark d-inline-block" href="<?php echo html_escape(site_url('/pagos/delete/'.$row->id)); ?>" onclick="return confirm('¿Eliminar este pago?', this)">
 												<i class="gd-trash icon-text"></i>
 											</a> -->
 										</div>

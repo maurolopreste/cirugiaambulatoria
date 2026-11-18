@@ -12,7 +12,7 @@
 						<option value="">Seleccione una opción</option>
 						<?php foreach($this->profesionales_list as $profesional): ?>
 							<?php $selected = $row->profesional_id==$profesional->id ? 'selected' : ''; ?>
-							<option value="<?php echo $profesional->id; ?>" <?php echo $selected; ?>><?php echo $profesional->first_name; ?> <?php echo $profesional->last_name; ?></option>
+							<option value="<?php echo html_escape($profesional->id); ?>" <?php echo html_escape($selected); ?>><?php echo html_escape($profesional->first_name); ?> <?php echo html_escape($profesional->last_name); ?></option>
 						<?php endforeach; ?>
 					</select>
 				</div>
@@ -23,18 +23,18 @@
 			</div>
 			<div class="form-group">
 				<label>Informe</label>
-				<textarea rows="5" class="form-control" name="informe" required><?php echo $row->informe; ?></textarea>
+				<textarea rows="5" class="form-control" name="informe" required><?php echo html_escape($row->informe); ?></textarea>
 			</div>
 			<div class="form-group mb-4">
 				<label for="ControlFile1">Documentación Adjunta (opcional)</label>
 				<input type="file" name="userfile" class="form-control-file" id="ControlFile1">
 				<?php if(!empty($row->file)): ?>
-				<div class="alert alert-warning mt-2 p-2">Archivo subido: <a href="<?php echo site_url('/uploads/'.$row->file); ?>" class="alert-link" target="_blank"><?php echo $row->file; ?></a></div>
+				<div class="alert alert-warning mt-2 p-2">Archivo subido: <a href="<?php echo html_escape(site_url('/uploads/'.$row->file)); ?>" class="alert-link" target="_blank"><?php echo html_escape($row->file); ?></a></div>
 				<?php endif; ?>
 			</div>
 			<div class="form-group">
 				<label>Próxima visita</label>
-				<input type="date" class="form-control" name="proxima_visita" value="<?php echo $row->proxima_visita; ?>">
+				<input type="date" class="form-control" name="proxima_visita" value="<?php echo html_escape($row->proxima_visita); ?>">
 			</div>
 			<div class="form-row">
 				<div class="form-group col-md-6">

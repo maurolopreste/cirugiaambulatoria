@@ -12,7 +12,7 @@
 						<option value="">Seleccione una opción</option>
 						<?php foreach($this->pacientes_list as $paciente): ?>
 							<?php $selected = $row->paciente_id==$paciente->id ? 'selected' : ''; ?>
-							<option value="<?php echo $paciente->id; ?>" <?php echo $selected; ?>><?php echo $paciente->first_name; ?> <?php echo $paciente->last_name; ?></option>
+							<option value="<?php echo html_escape($paciente->id); ?>" <?php echo html_escape($selected); ?>><?php echo html_escape($paciente->first_name); ?> <?php echo html_escape($paciente->last_name); ?></option>
 						<?php endforeach; ?>
 					</select>
 				</div>
@@ -22,9 +22,9 @@
 						<option value="">Seleccione una opción</option>
 						<?php foreach($this->profesionales_list as $profesional): ?>
 							<?php $selected = $row->profesional_id==$profesional->id ? 'selected' : ''; ?>
-							<option value="<?php echo $profesional->id; ?>" <?php echo $selected; ?>>
-								<?php echo $profesional->first_name; ?> <?php echo $profesional->last_name; ?>
-								(Mat <?php echo $profesional->matricula; ?>)
+							<option value="<?php echo html_escape($profesional->id); ?>" <?php echo html_escape($selected); ?>>
+								<?php echo html_escape($profesional->first_name); ?> <?php echo html_escape($profesional->last_name); ?>
+								(Mat <?php echo html_escape($profesional->matricula); ?>)
 							</option>
 						<?php endforeach; ?>
 					</select>
@@ -55,12 +55,12 @@
 			<?php if($this->is_admin): ?>
 			<div class="form-group">
 				<label>Observaciones (admin)</label>
-				<textarea rows="2" class="form-control" name="comentarios"><?php echo $row->comentarios; ?></textarea>
+				<textarea rows="2" class="form-control" name="comentarios"><?php echo html_escape($row->comentarios); ?></textarea>
 			</div>
 			<?php else: ?>
 			<div class="form-group">
 				<label>Observaciones del profesional</label>
-				<textarea rows="3" class="form-control" name="observacion_profesional"><?php echo $row->observacion_profesional; ?></textarea>
+				<textarea rows="3" class="form-control" name="observacion_profesional"><?php echo html_escape($row->observacion_profesional); ?></textarea>
 			</div>
 			<?php endif; ?>
 		</div>
@@ -96,6 +96,6 @@
 			}
 		}
 
-		getFechasDisponibles(<?php echo $row->profesional_id; ?>);
+		getFechasDisponibles(<?php echo html_escape($row->profesional_id); ?>);
 		getHorariosDisponibles(<?php echo date('Y-m-d', strtotime($row->fecha)); ?>);
 	</script>

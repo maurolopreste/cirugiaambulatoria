@@ -6,12 +6,13 @@ if($rows):
 	foreach($rows as $row):
 	?>
 	<div class="d-flex justify-content-start border form-check-days mb-2 py-2 px-3">
-		<form method="post" action="<?php echo site_url('/profesional/add_dia_habilitado/'.$profesional_id); ?>" class="formDiaHorario">
-			<input type="hidden" name="dia_id" value="<?php echo $row->id; ?>">
+		<form method="post" action="<?php echo html_escape(site_url('/profesional/add_dia_habilitado/'.$profesional_id)); ?>" class="formDiaHorario">
+			<input type="hidden" name="<?php echo html_escape($this->security->get_csrf_token_name()); ?>" value="<?php echo html_escape($this->security->get_csrf_hash()); ?>">
+			<input type="hidden" name="dia_id" value="<?php echo html_escape($row->id); ?>">
 			<?php foreach($days as $k=>$v): ?>
 			<div class="form-check form-check-inline">
-				<input class="form-check-input" type="checkbox" name="days[]" id="inlineCheckbox<?php echo $k; ?>" value="<?php echo $k; ?>" <?php if(strpos($row->daysOfWeekDisabled, strval($k))===false) echo 'checked'; ?>>
-				<label class="form-check-label" for="inlineCheckbox<?php echo $k; ?>"><?php echo $v; ?></label>
+				<input class="form-check-input" type="checkbox" name="days[]" id="inlineCheckbox<?php echo html_escape($k); ?>" value="<?php echo html_escape($k); ?>" <?php if(strpos($row->daysOfWeekDisabled, strval($k))===false) echo 'checked'; ?>>
+				<label class="form-check-label" for="inlineCheckbox<?php echo html_escape($k); ?>"><?php echo html_escape($v); ?></label>
 			</div>
 			<?php endforeach; ?>
 			<div class="form-inline pt-2">
@@ -19,51 +20,52 @@ if($rows):
 				<select name="hora_desde" class="form-control form-control-sm mx-2">
 					<?php foreach($hours as $h): ?>
 					<?php $selected = $row->hora_desde==$h ? 'selected' : ''; ?>
-					<option value="<?php echo $h; ?>" <?php echo $selected; ?>><?php echo $h; ?></option>
+					<option value="<?php echo html_escape($h); ?>" <?php echo html_escape($selected); ?>><?php echo html_escape($h); ?></option>
 					<?php endforeach; ?>
 				</select>
 				a
 				<select name="hora_hasta" class="form-control form-control-sm mx-2">
 					<?php foreach($hours as $h): ?>
 					<?php $selected = $row->hora_hasta==$h ? 'selected' : ''; ?>
-					<option value="<?php echo $h; ?>" <?php echo $selected; ?>><?php echo $h; ?></option>
+					<option value="<?php echo html_escape($h); ?>" <?php echo html_escape($selected); ?>><?php echo html_escape($h); ?></option>
 					<?php endforeach; ?>
 				</select>
 				<button type="submit" class="btn btn-primary btn-sm">Guardar cambios</button>
 			</div>
 		</form>
-		<!-- <a class="link-dark d-inline-block ml-auto" href="<?php echo site_url('/profesional/delete_dia_habilitado/'.$row->id); ?>" onclick="return confirm('Atención: Se eliminá este horario', this)">
+		<!-- <a class="link-dark d-inline-block ml-auto" href="<?php echo html_escape(site_url('/profesional/delete_dia_habilitado/'.$row->id)); ?>" onclick="return confirm('Atención: Se eliminá este horario', this)">
 			<i class="gd-trash icon-text"></i>
 		</a> -->
 	</div>
 	<?php endforeach; ?>
 <?php else: ?>
 	<div class="d-flex justify-content-start border form-check-days mb-2 py-2 px-3">
-		<form method="post" action="<?php echo site_url('/profesional/add_dia_habilitado/'.$profesional_id); ?>" class="formDiaHorario">
+		<form method="post" action="<?php echo html_escape(site_url('/profesional/add_dia_habilitado/'.$profesional_id)); ?>" class="formDiaHorario">
+			<input type="hidden" name="<?php echo html_escape($this->security->get_csrf_token_name()); ?>" value="<?php echo html_escape($this->security->get_csrf_hash()); ?>">
 			<?php foreach($days as $k=>$v): ?>
 			<div class="form-check form-check-inline">
-				<input class="form-check-input" type="checkbox" name="days[]" id="inlineCheckbox<?php echo $k; ?>" value="<?php echo $k; ?>" <?php if($k<6) echo 'checked'; ?>>
-				<label class="form-check-label" for="inlineCheckbox<?php echo $k; ?>"><?php echo $v; ?></label>
+				<input class="form-check-input" type="checkbox" name="days[]" id="inlineCheckbox<?php echo html_escape($k); ?>" value="<?php echo html_escape($k); ?>" <?php if($k<6) echo 'checked'; ?>>
+				<label class="form-check-label" for="inlineCheckbox<?php echo html_escape($k); ?>"><?php echo html_escape($v); ?></label>
 			</div>
 			<?php endforeach; ?>
 			<div class="form-inline pt-2">
 				De
 				<select name="hora_desde" class="form-control form-control-sm mx-2">
 					<?php foreach($hours as $h): ?>
-					<option value="<?php echo $h; ?>"><?php echo $h; ?></option>
+					<option value="<?php echo html_escape($h); ?>"><?php echo html_escape($h); ?></option>
 					<?php endforeach; ?>
 				</select>
 				a
 				<select name="hora_hasta" class="form-control form-control-sm mx-2">
 					<?php foreach($hours as $h): ?>
 					<?php $selected = $h=='20:00' ? 'selected' : ''; ?>
-					<option value="<?php echo $h; ?>" <?php echo $selected; ?>><?php echo $h; ?></option>
+					<option value="<?php echo html_escape($h); ?>" <?php echo html_escape($selected); ?>><?php echo html_escape($h); ?></option>
 					<?php endforeach; ?>
 				</select>
 				<button type="submit" class="btn btn-primary btn-sm">Guardar cambios</button>
 			</div>
 		</form>
-		<!-- <a class="link-dark d-inline-block ml-auto" href="<?php echo site_url('/profesional/delete_dia_habilitado/'.$row->id); ?>" onclick="return confirm('Atención: Se eliminá este horario', this)">
+		<!-- <a class="link-dark d-inline-block ml-auto" href="<?php echo html_escape(site_url('/profesional/delete_dia_habilitado/'.$row->id)); ?>" onclick="return confirm('Atención: Se eliminá este horario', this)">
 			<i class="gd-trash icon-text"></i>
 		</a> -->
 	</div>

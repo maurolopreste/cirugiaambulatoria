@@ -2,7 +2,7 @@
 						<footer class="footer mt-3">
 							<div class="container-fluid">
 								<div class="footer-content text-center small">
-									<span class="text-muted">&copy; <?php echo date('Y'); ?> <?php echo get_site_config('site_title'); ?></span>
+									<span class="text-muted">&copy; <?php echo date('Y'); ?> <?php echo html_escape(get_site_config('site_title')); ?></span>
 								</div>
 							</div>
 						</footer>

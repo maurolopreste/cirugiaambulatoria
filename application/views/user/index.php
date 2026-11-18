@@ -35,30 +35,30 @@
 							<?php foreach($rows as $row): ?>
 								<tr>
 									<!-- <td class="py-3">
-										<input type="checkbox" name="ids[]" value="<?php echo $row->id; ?>">
+										<input type="checkbox" name="ids[]" value="<?php echo html_escape($row->id); ?>">
 									</td> -->
 									<td>
-										<a href="<?php echo site_url('/user/edit/'.$row->id); ?>">
-											<?php echo $row->first_name; ?>
-											<?php echo $row->last_name; ?>
+										<a href="<?php echo html_escape(site_url('/user/edit/'.$row->id)); ?>">
+											<?php echo html_escape($row->first_name); ?>
+											<?php echo html_escape($row->last_name); ?>
 										</a>
 									</td>
-									<td><?php echo $row->email; ?></td>
-									<td><?php echo $row->perfil; ?></td>
+									<td><?php echo html_escape($row->email); ?></td>
+									<td><?php echo html_escape($row->perfil); ?></td>
 									<td class="py-3 text-right">
 										<div class="position-relative">
-											<a id="dropDown<?php echo $row->id; ?>Invoker" class="link-dark d-flex" href="#" aria-controls="dropDown<?php echo $row->id; ?>" aria-haspopup="true" aria-expanded="false" data-unfold-target="#dropDown<?php echo $row->id; ?>" data-unfold-event="click" data-unfold-type="css-animation" data-unfold-duration="300" data-unfold-animation-in="fadeIn" data-unfold-animation-out="fadeOut">
+											<a id="dropDown<?php echo html_escape($row->id); ?>Invoker" class="link-dark d-flex" href="#" aria-controls="dropDown<?php echo html_escape($row->id); ?>" aria-haspopup="true" aria-expanded="false" data-unfold-target="#dropDown<?php echo html_escape($row->id); ?>" data-unfold-event="click" data-unfold-type="css-animation" data-unfold-duration="300" data-unfold-animation-in="fadeIn" data-unfold-animation-out="fadeOut">
 												<i class="gd-more-alt icon-text"></i>
 											</a>
-											<ul id="dropDown<?php echo $row->id; ?>" class="unfold unfold-light unfold-top unfold-right position-absolute py-3 mt-1 unfold-css-animation unfold-hidden fadeOut" aria-labelledby="dropDown<?php echo $row->id; ?>Invoker" style="min-width: 150px; animation-duration: 300ms; right: 0px;">
+											<ul id="dropDown<?php echo html_escape($row->id); ?>" class="unfold unfold-light unfold-top unfold-right position-absolute py-3 mt-1 unfold-css-animation unfold-hidden fadeOut" aria-labelledby="dropDown<?php echo html_escape($row->id); ?>Invoker" style="min-width: 150px; animation-duration: 300ms; right: 0px;">
 												<li class="unfold-item">
-													<a class="unfold-link media align-items-center text-nowrap" href="<?php echo site_url('/user/edit/'.$row->id); ?>">
+													<a class="unfold-link media align-items-center text-nowrap" href="<?php echo html_escape(site_url('/user/edit/'.$row->id)); ?>">
 														<i class="gd-pencil unfold-item-icon mr-3"></i>
 														<span class="media-body">Editar</span>
 													</a>
 												</li>
 												<li class="unfold-item">
-													<a class="unfold-link media align-items-center text-nowrap text-danger" href="<?php echo site_url('/user/delete/'.$row->id); ?>" onclick="return confirm('Este usuario se enviará a la papelera', this)">
+													<a class="unfold-link media align-items-center text-nowrap text-danger" href="<?php echo html_escape(site_url('/user/delete/'.$row->id)); ?>" onclick="return confirm('Este usuario se enviará a la papelera', this)">
 														<i class="gd-trash unfold-item-icon mr-3"></i>
 														<span class="media-body">Papelera</span>
 													</a>

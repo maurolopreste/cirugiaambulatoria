@@ -21,7 +21,7 @@
 					</td>
 					<td>
 						<?php if(!empty($row->informe)): ?>
-							<?php echo $row->informe; ?>
+							<?php echo nl2br(html_escape($row->informe)); ?>
 						<?php else: ?>
 							Ingreso historia clínica
 						<?php endif; ?>
@@ -36,13 +36,13 @@
 					<td class="py-3 text-right">
 						<?php if($this->is_admin): ?>
 						<div class="position-relative">
-							<a class="link-dark d-inline-block" href="<?php echo site_url('/paciente/edit_historiaclinica/'.$row->id); ?>/<?php echo $paciente_id; ?>" data-toggle="modal" data-target="#editModal">
+							<a class="link-dark d-inline-block" href="<?php echo html_escape(site_url('/paciente/edit_historiaclinica/'.$row->id)); ?>/<?php echo html_escape($paciente_id); ?>" data-toggle="modal" data-target="#editModal">
 								<i class="gd-pencil icon-text"></i>
 							</a>
-							<a class="link-dark d-inline-block" href="<?php echo site_url('/paciente/send_historiaclinica/'.$row->id); ?>">
+							<a class="link-dark d-inline-block" href="<?php echo html_escape(site_url('/paciente/send_historiaclinica/'.$row->id)); ?>">
 								<i class="gd-send icon-text"></i>
 							</a>
-							<a class="link-dark d-inline-block" href="<?php echo site_url('/paciente/delete_historiaclinica/'.$row->id); ?>" onclick="return confirm('Atención: Se eliminá este informe', this)">
+							<a class="link-dark d-inline-block" href="<?php echo html_escape(site_url('/paciente/delete_historiaclinica/'.$row->id)); ?>" onclick="return confirm('Atención: Se eliminá este informe', this)">
 								<i class="gd-trash icon-text"></i>
 							</a>
 						</div>
@@ -53,8 +53,8 @@
 			</tbody>
 		</table>
 	</div>
-	<a href="<?php echo site_url('/paciente/add_evolutivo/'.$paciente_id); ?>" data-toggle="modal" data-target="#addModal" class="btn btn-primary">Agregar informe evolutivo</a>
+	<a href="<?php echo html_escape(site_url('/paciente/add_evolutivo/'.$paciente_id)); ?>" data-toggle="modal" data-target="#addModal" class="btn btn-primary">Agregar informe evolutivo</a>
 <?php else: ?>
 	<div class="alert alert-warning">Este paciente no tiene historia clínica</div>
-	<a href="<?php echo site_url('/paciente/add_historiaclinica/'.$paciente_id); ?>" data-toggle="modal" data-target="#addModal" class="btn btn-primary">Agregar historia clínica</a>
+	<a href="<?php echo html_escape(site_url('/paciente/add_historiaclinica/'.$paciente_id)); ?>" data-toggle="modal" data-target="#addModal" class="btn btn-primary">Agregar historia clínica</a>
 <?php endif; ?>

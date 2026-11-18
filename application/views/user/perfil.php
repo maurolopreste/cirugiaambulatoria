@@ -15,11 +15,11 @@
 						<div class="form-row">
 							<div class="form-group col-md-6">
 								<label>Nombre</label>
-								<input type="text" class="form-control" name="first_name" value="<?php echo $user->first_name; ?>" required>
+								<input type="text" class="form-control" name="first_name" value="<?php echo html_escape($user->first_name); ?>" required>
 							</div>
 							<div class="form-group col-md-6">
 								<label>Apellido</label>
-								<input type="text" class="form-control" name="last_name" value="<?php echo $user->last_name; ?>" required>
+								<input type="text" class="form-control" name="last_name" value="<?php echo html_escape($user->last_name); ?>" required>
 							</div>
 						</div>
 

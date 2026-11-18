@@ -11,7 +11,7 @@
 					<select name="profesional_id" class="custom-select select2" required>
 						<option value="">Seleccione una opción</option>
 						<?php foreach($this->profesionales_list as $profesional): ?>
-							<option value="<?php echo $profesional->id; ?>"><?php echo $profesional->first_name; ?> <?php echo $profesional->last_name; ?></option>
+							<option value="<?php echo html_escape($profesional->id); ?>"><?php echo html_escape($profesional->first_name); ?> <?php echo html_escape($profesional->last_name); ?></option>
 						<?php endforeach; ?>
 					</select>
 				</div>

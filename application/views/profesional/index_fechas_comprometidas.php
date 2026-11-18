@@ -12,12 +12,12 @@
 			<tbody>
 			<?php foreach($rows as $fecha): ?>
 				<tr>
-					<td><?php echo $fecha->motivo; ?></td>
+					<td><?php echo html_escape($fecha->motivo); ?></td>
 					<td><?php echo date('d-m-Y', strtotime($fecha->fecha_desde)); ?></td>
 					<td><?php echo date('d-m-Y', strtotime($fecha->fecha_hasta)); ?></td>
 					<td class="py-3 text-right">
 						<div class="position-relative">
-							<a class="link-dark d-inline-block" href="<?php echo site_url('/profesional/delete_fecha_comprometida/'.$fecha->id); ?>" onclick="return confirm('Atención: Se eliminá esta fila', this)">
+							<a class="link-dark d-inline-block" href="<?php echo html_escape(site_url('/profesional/delete_fecha_comprometida/'.$fecha->id)); ?>" onclick="return confirm('Atención: Se eliminá esta fila', this)">
 								<i class="gd-trash icon-text"></i>
 							</a>
 						</div>

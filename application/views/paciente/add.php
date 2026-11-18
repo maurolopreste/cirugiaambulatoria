@@ -18,11 +18,11 @@
 							<?php /*if($this->is_admin): ?>
 								<div class="form-group">
 									<label>Profesional encargado</label>
-									<select name="profesional_id" class="custom-select select2" data-selected="<?php echo $row->profesional_id; ?>">
+									<select name="profesional_id" class="custom-select select2" data-selected="<?php echo html_escape($row->profesional_id); ?>">
 										<option value="">Seleccione una opción</option>
 										<?php foreach($this->profesionales_list as $profesional): ?>
 											<?php if($profesional->active): ?>
-											<option value="<?php echo $profesional->id; ?>"><?php echo $profesional->first_name; ?> <?php echo $profesional->last_name; ?></option>
+											<option value="<?php echo html_escape($profesional->id); ?>"><?php echo html_escape($profesional->first_name); ?> <?php echo html_escape($profesional->last_name); ?></option>
 											<?php endif; ?>
 										<?php endforeach; ?>
 									</select>
@@ -75,7 +75,7 @@
 									<select name="obra_social" class="custom-select select2">
 										<option value="">Seleccione una opción</option>
 										<?php foreach($this->obra_social_list as $obra_social): ?>
-											<option value="<?php echo $obra_social->id; ?>"><?php echo $obra_social->nombre; ?></option>
+											<option value="<?php echo html_escape($obra_social->id); ?>"><?php echo html_escape($obra_social->nombre); ?></option>
 										<?php endforeach; ?>
 									</select>
 								</div>
@@ -91,7 +91,7 @@
 									<select name="art_id" class="custom-select select2">
 										<option value="">Seleccione una opción</option>
 										<?php foreach($this->art_list as $art): ?>
-											<option value="<?php echo $art->id; ?>"><?php echo $art->nombre; ?></option>
+											<option value="<?php echo html_escape($art->id); ?>"><?php echo html_escape($art->nombre); ?></option>
 										<?php endforeach; ?>
 									</select>
 								</div>

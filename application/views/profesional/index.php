@@ -24,7 +24,7 @@
 						<button type="submit" class="input-group-append btn">
 							<i class="gd-search icon-text icon-text-sm"></i>
 						</button>
-						<input type="text" name="q" class="form-control form-control-icon-text" placeholder="Buscar" value="<?php echo $this->input->get('q'); ?>">
+						<input type="text" name="q" class="form-control form-control-icon-text" placeholder="Buscar" value="<?php echo html_escape($this->input->get('q')); ?>">
 					</div>
 				</form>
 
@@ -45,16 +45,16 @@
 							<?php foreach($rows as $row): ?>
 								<tr>
 									<!-- <td class="py-3">
-										<input type="checkbox" name="ids[]" value="<?php echo $row->id; ?>">
+										<input type="checkbox" name="ids[]" value="<?php echo html_escape($row->id); ?>">
 									</td> -->
 									<td>
-										<a href="<?php echo site_url('/profesional/edit/'.$row->id); ?>">
-											<?php echo $row->first_name; ?>
-											<?php echo $row->last_name; ?>
+										<a href="<?php echo html_escape(site_url('/profesional/edit/'.$row->id)); ?>">
+											<?php echo html_escape($row->first_name); ?>
+											<?php echo html_escape($row->last_name); ?>
 										</a>
 									</td>
-									<td><?php echo $row->especialidad; ?></td>
-									<td><?php echo $row->email; ?></td>
+									<td><?php echo html_escape($row->especialidad); ?></td>
+									<td><?php echo html_escape($row->email); ?></td>
 									<td>
 										<?php if($row->active): ?>
 										<div class="badge badge-success">Activo</div>
@@ -64,21 +64,21 @@
 									</td>
 									<td class="py-3 text-right">
 										<div class="position-relative">
-											<a class="link-dark d-inline-block" href="<?php echo site_url('/profesional/edit/'.$row->id); ?>">
+											<a class="link-dark d-inline-block" href="<?php echo html_escape(site_url('/profesional/edit/'.$row->id)); ?>">
 												<i class="gd-pencil icon-text"></i>
 											</a>
 											<?php if($this->is_admin && $row->active): ?>
-												<a class="link-dark d-inline-block ml-1" href="#" onclick="deshabilitar(<?php echo $row->id; ?>)" title="Deshabilitar">
+												<a class="link-dark d-inline-block ml-1" href="#" onclick="deshabilitar(<?php echo html_escape($row->id); ?>)" title="Deshabilitar">
 													<i class="gd-unlink icon-text"></i>
 												</a>
 											<?php endif; ?>
 											<?php if($this->is_admin && !$row->active): ?>
-												<a class="link-dark d-inline-block ml-1" href="#" onclick="activar(<?php echo $row->id; ?>)" title="Activar">
+												<a class="link-dark d-inline-block ml-1" href="#" onclick="activar(<?php echo html_escape($row->id); ?>)" title="Activar">
 													<i class="gd-check-box icon-text"></i>
 												</a>
 											<?php endif; ?>
 											<?php if($this->is_admin): ?>
-												<a class="link-dark d-inline-block ml-1" href="<?php echo site_url('/profesional/delete/'.$row->id); ?>" onclick="return confirm('Atención: Se eliminá este profesional', this)">
+												<a class="link-dark d-inline-block ml-1" href="<?php echo html_escape(site_url('/profesional/delete/'.$row->id)); ?>" onclick="return confirm('Atención: Se eliminá este profesional', this)">
 													<i class="gd-trash icon-text"></i>
 												</a>
 											<?php endif; ?>

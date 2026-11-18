@@ -9,7 +9,7 @@
 					<div class="alert alert-warning alert-left-bordered d-flex align-items-center p-md-4 mb-4" role="alert">
 						<p class="mb-0">
 							<i class="fa fa-check mr-2"></i>
-							Si querés pagar con otro medio de pago escribinos a <strong><?php echo get_site_config('admin_email'); ?></strong>
+							Si querés pagar con otro medio de pago escribinos a <strong><?php echo html_escape(get_site_config('admin_email')); ?></strong>
 						</p>
 					</div>
 				<?php endif; ?>
@@ -44,14 +44,14 @@
 							<?php foreach($rows as $row): ?>
 								<tr>
 									<!-- <td class="py-3">
-										<input type="checkbox" name="ids[]" value="<?php echo $row->id; ?>">
+										<input type="checkbox" name="ids[]" value="<?php echo html_escape($row->id); ?>">
 									</td> -->
 									<td><?php echo strftime('%e de %B, %Y', strtotime($row->fecha)); ?></td>
 									<td><?php echo date('H:i', strtotime($row->fecha)); ?></td>
-									<td><?php echo $row->profesional; ?></td>
+									<td><?php echo html_escape($row->profesional); ?></td>
 									<td>
 										<?php if($row->link_video && $row->payment_status): ?>
-											<a href="https://meet.jit.si/<?php echo $row->link_video; ?>" target="_blank">
+											<a href="https://meet.jit.si/<?php echo html_escape($row->link_video); ?>" target="_blank">
 												Abrir <span class="gd-share"></span>
 											</a>
 										<?php else: ?>
@@ -75,7 +75,7 @@
 									</td>
 									<td class="py-3 text-right">
 										<?php if(!$row->payment_status): ?>
-											<a href="<?php echo site_url('/cita/generar_link_pago/'.$row->id); ?>" target="_blank">
+											<a href="<?php echo html_escape(site_url('/cita/generar_link_pago/'.$row->id)); ?>" target="_blank">
 												Pagar ahora <span class="gd-credit-card ml-1" style="vertical-align: middle;"></span>
 											</a>
 										<?php endif; ?>
