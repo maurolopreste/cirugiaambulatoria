@@ -8,6 +8,7 @@ class Agenda extends Front_Controller {
 	{
 		parent::__construct();
 		$this->need_login();
+		$this->require_staff();//los pacientes no acceden a la agenda interna
 
 		$this->load->model('agenda_model');
 		$this->load->model('config_model');
@@ -114,8 +115,9 @@ class Agenda extends Front_Controller {
 
 	public function edit($id)
 	{
-		// $this->is_admin();
 		$row_agenda = $this->agenda_model->get($id);
+		if(!$row_agenda) show_404();
+		$this->require_turno_access($row_agenda);//admin o profesional del turno
 
 		$post = $this->input->post(NULL, TRUE);	
 		if ($post && $id)
@@ -204,11 +206,10 @@ class Agenda extends Front_Controller {
 
 	public function completar($id)
 	{
-		//$this->is_admin();
-		
 		//cambiar estado agenda
 		$turno = $this->agenda_model->get_turno($id);
 		if(!$turno) die('no existe el turno');
+		$this->require_turno_access($turno);//admin o profesional del turno
 		$this->agenda_model->update($id, array('estado_cita'=>2));//completado
 
 		//refrescar la página

@@ -163,9 +163,30 @@ class Dashboard extends Front_Controller {
 		$this->load->library('mercadopago');
 		$this->load->library('email');
 
+		//sólo los pacientes reservan online (el staff usa /agenda/add)
+		if(!$this->is_paciente) $this->deny();
+
 		$post = $this->input->post(NULL, TRUE);	
 		if ($post)
 		{
+			//validar la entrada: profesional activo, tipo de consulta del profesional y fecha futura
+			$profesional_ids = array_map(function($p){ return (int)$p->id; }, $this->profesionales_list);
+			$valores_prof = $this->user_model->get_valor_profesional((int)$post['profesional_id']);
+			$fecha_ok = preg_match('/^\d{4}-\d{2}-\d{2}$/', $post['fecha'])
+				&& preg_match('/^\d{1,2}(:\d{2})?$/', $post['hora'])
+				&& strtotime($post['fecha'] .' '. $post['hora']) > time();
+
+			if(!in_array((int)$post['profesional_id'], $profesional_ids, true)
+				|| !isset($valores_prof[$post['valor_consulta']])
+				|| !$fecha_ok)
+			{
+				$this->session->set_flashdata('alert', array(
+					'msg' => lang('Los datos del turno no son válidos'),
+					'error' => TRUE
+				));
+				redirect('/dashboard');
+			}
+
 			$insert = array(
 				'paciente_id' => $this->login->id,
 				'profesional_id' => $post['profesional_id'],

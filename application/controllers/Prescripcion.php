@@ -25,6 +25,7 @@ class Prescripcion extends Front_Controller {
 
 	public function add($paciente_id)
 	{
+		$this->require_staff();//sólo el staff emite prescripciones
 		$post = $this->input->post(null, true);
 		if($post)
 		{
@@ -69,7 +70,11 @@ class Prescripcion extends Front_Controller {
 
 	public function edit($id)
 	{
+		$this->require_staff();
 		$row = $this->prescripcion_model->get($id);
+		if(!$row) show_404();
+		//sólo el admin o el profesional que la emitió
+		if(!$this->is_admin && (int)$row->profesional_id !== (int)$this->login->id) $this->deny();
 
 		$post = $this->input->post(null, true);
 		if($post)
@@ -112,6 +117,11 @@ class Prescripcion extends Front_Controller {
 
 	public function view($id)
 	{
+		$prescripcion = $this->prescripcion_model->get($id);
+		if(!$prescripcion) show_404();
+		//el paciente sólo ve las suyas
+		$this->require_paciente_access($prescripcion->paciente_id);
+
 		$data['row'] = $this->prescripcion_model->get_prescripciones(null, $id);
 		$this->load->view('prescripcion/view', $data);
 	}

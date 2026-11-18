@@ -65,6 +65,67 @@ class Front_Controller extends CI_Controller {
 		}
 	}
 
+	/**
+	 * Corta la ejecución con 403 (o redirige si no es AJAX).
+	 */
+	protected function deny($msg = 'No tienes los permisos necesarios')
+	{
+		if ($this->input->is_ajax_request()) {
+			set_status_header(403);
+			exit($msg);
+		}
+		$this->session->set_flashdata('alert', array(
+			'msg' => lang($msg),
+			'error' => TRUE
+		));
+		redirect('/dashboard');
+	}
+
+	/**
+	 * Sólo administradores y profesionales (los pacientes quedan afuera).
+	 */
+	public function require_staff()
+	{
+		if (!$this->is_admin && !$this->is_profesional) {
+			$this->deny();
+		}
+	}
+
+	/**
+	 * Puede acceder a los datos del paciente: el staff, o el propio paciente.
+	 */
+	protected function can_access_paciente($paciente_id)
+	{
+		if ($this->is_admin || $this->is_profesional) return TRUE;
+		return $this->is_paciente && (int)$paciente_id === (int)$this->login->id;
+	}
+
+	public function require_paciente_access($paciente_id)
+	{
+		if (!$this->can_access_paciente($paciente_id)) {
+			$this->deny();
+		}
+	}
+
+	/**
+	 * Puede operar sobre un turno: admin, el profesional asignado, o (si $incluir_paciente) el paciente del turno.
+	 */
+	protected function can_access_turno($turno, $incluir_paciente = FALSE)
+	{
+		if (!$turno) return FALSE;
+		if ($this->is_admin) return TRUE;
+		if ($this->is_profesional) return (int)$turno->profesional_id === (int)$this->login->id;
+		if ($incluir_paciente && $this->is_paciente) return (int)$turno->paciente_id === (int)$this->login->id;
+		return FALSE;
+	}
+
+	public function require_turno_access($turno, $incluir_paciente = FALSE)
+	{
+		if (!$this->can_access_turno($turno, $incluir_paciente)) {
+			$this->deny();
+		}
+	}
+
 	public function is_ajax()
 	{
 		if (!$this->input->is_ajax_request()) {

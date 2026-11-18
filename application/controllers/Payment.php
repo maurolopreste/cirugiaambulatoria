@@ -15,7 +15,10 @@ class Payment extends Front_Controller {
 	public function success()
 	{
 		$payment_data = $this->input->get(null, true);
-		$data['agenda'] = $this->agenda_model->get($payment_data['external_reference']);
+		$agenda = $this->agenda_model->get($payment_data['external_reference']);
+		if(!$agenda) show_404();
+		$this->require_turno_access($agenda, TRUE);
+		$data['agenda'] = $agenda;
 		$this->load->view('payment/success', $data);
 	}
 

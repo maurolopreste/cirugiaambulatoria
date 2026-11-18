@@ -21,6 +21,10 @@ class Cita extends Front_Controller {
 
 	public function edit($id)
 	{
+		//el paciente no puede modificar estado ni observaciones de un turno
+		$this->require_staff();
+		$this->require_turno_access($this->agenda_model->get($id));
+
 		$post = $this->input->post(NULL, TRUE);	
 		if ($post && $id)
 		{
@@ -48,6 +52,8 @@ class Cita extends Front_Controller {
 		$this->load->library('mercadopago');
 
 		$cita = $this->agenda_model->get($cita_id);
+		//admin, profesional del turno o el propio paciente
+		$this->require_turno_access($cita, TRUE);
 
 		//items
 		$tipo_consulta = $this->config_model->get_valor_consulta($cita->valor_consulta);

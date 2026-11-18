@@ -8,6 +8,7 @@ class Paciente extends Front_Controller {
 	{
 		parent::__construct();
 		$this->need_login();
+		$this->require_staff();//los pacientes no acceden a este módulo
 
 		$this->load->model('user_model');
 		$this->load->model('historiaclinica_model');
@@ -127,7 +128,7 @@ class Paciente extends Front_Controller {
 				'msg' => lang('La historia clínica se agregó correctamente'),
 				'error' => FALSE
 			));
-			redirect('/paciente/edit/'.$$historiaclinica->paciente_id);
+			redirect('/paciente/edit/'.$historiaclinica->paciente_id);
 		}
 
 		$data['row'] = $historiaclinica;
@@ -137,6 +138,7 @@ class Paciente extends Front_Controller {
 	public function send_historiaclinica($historiaclinica_id)
 	{
 		$historiaclinica = $this->historiaclinica_model->get($historiaclinica_id);
+		if(!$historiaclinica) show_404();
 		$paciente = $this->user_model->get($historiaclinica->paciente_id);
 
 		$post = $this->input->post(NULL, TRUE);	
@@ -258,11 +260,13 @@ class Paciente extends Front_Controller {
 
 	public function delete_evolutivo($evolutivo_id, $paciente_id)
 	{
-		// $this->is_admin();
 		$this->is_ajax();
 
 		$evolutivo = $this->evolutivo_model->get($evolutivo_id);
-		if($evolutivo->paciente_id != $paciente_id) die('No es posible eliminar este informe');
+		if(!$evolutivo || $evolutivo->paciente_id != $paciente_id) die('No es posible eliminar este informe');
+
+		//sólo el admin o el profesional autor del informe
+		if(!$this->is_admin && (int)$evolutivo->profesional_id !== (int)$this->login->id) $this->deny();
 
 		$this->evolutivo_model->delete($evolutivo_id);
 		echo 'ok';
