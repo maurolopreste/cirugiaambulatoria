@@ -144,9 +144,35 @@ check('AGENDA: el "nuevo paciente" se crea como paciente (grupo 3), no como prof
 out = subprocess.run(['git', '-C', ROOT, 'grep', '--untracked', '-l', '-E', 'la64DUlofo|45Ops119|APP_USR-[0-9a-f]|c624024565957847', '--', '.', ':!tests'], capture_output=True, text=True).stdout.split()
 check('SECRETOS: no quedan credenciales conocidas en el código actual', not out, out)
 check('SECRETOS: secrets.php está ignorado por git', subprocess.run(['git', '-C', ROOT, 'check-ignore', '-q', 'application/config/secrets.php']).returncode == 0)
-req = urllib.request.Request(BASE + '/login', headers={'Host': 'gestion.example.com'})
-try: resp = urllib.request.urlopen(req); body = resp.read().decode('utf-8', 'replace'); st = resp.status
-except urllib.error.HTTPError as e: body = e.read().decode('utf-8', 'replace'); st = e.code
+def raw(path, headers=None):
+    op = urllib.request.build_opener(NoRedirect)
+    try: r = op.open(urllib.request.Request(BASE + path, headers=headers or {})); return r.status, r.headers, r.read().decode('utf-8', 'replace')
+    except urllib.error.HTTPError as e: return e.code, e.headers, e.read().decode('utf-8', 'replace')
+
+PROD = 'https://gestion.cirugiaambulatoria.com.ar'
+# producción por HTTP → redirección 301 a la URL canónica (nunca al Host recibido)
+st, hd, body = raw('/login?x=1', {'Host': 'gestion.example.com'})
+check('HTTPS: en producción, HTTP redirige (301) a la URL https canónica', st == 301 and hd.get('Location') == PROD + '/login?x=1', (st, hd.get('Location')))
+st, hd, body = raw('//evil.example/x', {'Host': 'evil.example'})
+check('HTTPS: la redirección no puede apuntar a otro dominio (open redirect)', st == 301 and hd.get('Location', '').startswith(PROD + '/'), hd.get('Location'))
+check('HTTPS: el redirect no filtra errores ni detalles', not re.search(r'Severity|Warning|Notice|Deprecated|Database Error|Fatal error|cirugiaambulatoria_test', body))
+# detrás de un proxy/CDN que ya terminó el TLS: no hay redirección y se envía HSTS
+st, hd, body = raw('/login', {'Host': 'gestion.example.com', 'X-Forwarded-Proto': 'https'})
+check('HTTPS: detrás de proxy HTTPS no redirige (evita bucles)', st != 301, st)
+check('HTTPS: se envía Strict-Transport-Security (HSTS)', 'max-age=' in hd.get('Strict-Transport-Security', ''), hd.get('Strict-Transport-Security'))
 check('ENTORNO: un host público se trata como PRODUCCIÓN (sin errores ni detalles de la base)', not re.search(r'Severity|Warning|Notice|Deprecated|Database Error|Fatal error|cirugiaambulatoria_test|root', body), (st, body[:150]))
+# desarrollo: HTTP sin redirección ni HSTS
+st, hd, body = raw('/login')
+check('HTTPS: en desarrollo (localhost) no se fuerza HTTPS ni se envía HSTS', st == 200 and not hd.get('Strict-Transport-Security'), (st, hd.get('Strict-Transport-Security')))
+
+# ------------------------------------------------------------------ SAMESITE y Secure
+st, hd, body = raw('/login')
+ck = hd.get_all('Set-Cookie') or []
+ses = [x for x in ck if x.startswith('ci_session')]; csrf = [x for x in ck if x.startswith('csrf_cookie_name')]
+check('SAMESITE: la cookie de sesión lleva SameSite=Lax', ses and all('samesite=lax' in x.lower() for x in ses), ses)
+check('SAMESITE: la cookie CSRF lleva SameSite=Lax', csrf and all('samesite=lax' in x.lower() for x in csrf), csrf)
+st, hd, body = raw('/login', {'X-Forwarded-Proto': 'https'})
+ck = hd.get_all('Set-Cookie') or []
+check('SECURE: con HTTPS (también detrás de proxy) las cookies llevan Secure', len(ck) >= 2 and all('secure' in x.lower() for x in ck), ck)
 
 summary()

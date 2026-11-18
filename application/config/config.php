@@ -406,8 +406,17 @@ $config['sess_regenerate_destroy'] = TRUE;
 $config['cookie_prefix']	= '';
 $config['cookie_domain']	= '';
 $config['cookie_path']		= '/';
-$config['cookie_secure']	= (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off');//sólo por HTTPS (en local http queda en FALSE)
+$config['cookie_secure']	= function_exists('_is_https') ? _is_https() : FALSE;//sólo por HTTPS (en local http queda en FALSE)
 $config['cookie_httponly'] 	= TRUE;
+
+// SameSite=Lax: el navegador no envía las cookies en POST/iframes iniciados desde otros sitios (defensa extra contra CSRF)
+// y sí en la vuelta de MercadoPago (navegación GET de nivel superior).
+if (PHP_VERSION_ID >= 70300) {
+	ini_set('session.cookie_samesite', 'Lax');//cookie de sesión; la de CSRF la fija application/core/MY_Security.php
+}
+else {
+	$config['cookie_path'] = '/; samesite=Lax';//PHP < 7.3: se inyecta en el path de la cookie (truco conocido)
+}
 
 /*
 |--------------------------------------------------------------------------

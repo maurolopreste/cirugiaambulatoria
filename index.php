@@ -121,6 +121,33 @@ switch (ENVIRONMENT)
 
 /*
  *---------------------------------------------------------------
+ * HTTPS
+ *---------------------------------------------------------------
+ * ¿La conexión del visitante es segura? (también detrás de un proxy/CDN que termina el TLS)
+ */
+function _is_https()
+{
+	return (!empty($_SERVER['HTTPS']) && strtolower($_SERVER['HTTPS']) !== 'off')
+		|| (isset($_SERVER['SERVER_PORT']) && (int) $_SERVER['SERVER_PORT'] === 443)
+		|| (!empty($_SERVER['HTTP_X_FORWARDED_PROTO']) && strtolower($_SERVER['HTTP_X_FORWARDED_PROTO']) === 'https')
+		|| (!empty($_SERVER['HTTP_FRONT_END_HTTPS']) && strtolower($_SERVER['HTTP_FRONT_END_HTTPS']) !== 'off');
+}
+
+// En producción todo es por HTTPS: se redirige a la URL canónica (BASE_URL, no al Host recibido, para no
+// permitir redirecciones a otros dominios) y se activa HSTS (el navegador pasa a usar siempre HTTPS).
+if (ENVIRONMENT === 'production' && PHP_SAPI !== 'cli')
+{
+	if ( ! _is_https())
+	{
+		$_uri = isset($_SERVER['REQUEST_URI']) ? $_SERVER['REQUEST_URI'] : '/';
+		header('Location: '.rtrim(BASE_URL, '/').'/'.ltrim(str_replace(array("\r", "\n"), '', $_uri), '/'), TRUE, 301);
+		exit;
+	}
+	header('Strict-Transport-Security: max-age=15552000');// 180 días
+}
+
+/*
+ *---------------------------------------------------------------
  * SYSTEM DIRECTORY NAME
  *---------------------------------------------------------------
  *
