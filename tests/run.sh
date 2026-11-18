@@ -34,8 +34,6 @@ rm -f "$TMPD"/ci_rate_* 2>/dev/null || true
 
 # 1) Base de pruebas: estructura clonada + datos de ejemplo
 $MY -e "DROP DATABASE IF EXISTS $DB; CREATE DATABASE $DB CHARACTER SET latin1;"
-$MY "$DB" < "$T/schema.sql"
-"$PHP" "$T/seed.php" | $MY "$DB"
 
 # 2) Stubs de lo que falta en el repo (modelo/vistas de prescripciones): sólo si no existen
 ( cd "$T/fixtures" && find application -type f ) | while read -r f; do
@@ -53,6 +51,10 @@ sed -e "s#define('BASE_URL', 'http://localhost/cirugiaambulatoria');#define('BAS
     -e "s#\$system_path = 'system';#\$system_path = '$ROOT/system';#" \
     -e "s#\$application_folder = 'application';#\$application_folder = '$ROOT/application';#" \
     "$ROOT/index.php" > "$WORK/index.php"
+# 3a) Estructura de la base: se arma con las MIGRACIONES (así también se prueban) y luego los datos de ejemplo
+CI_ENV=development "$PHP" "$WORK/index.php" migrate run > "$WORK/migrate.log" 2>&1 || { sed "s/<[^>]*>//g" "$WORK/migrate.log" | grep -v "^\s*$" | head -20; exit 1; }
+"$PHP" "$T/seed.php" | $MY "$DB"
+
 ln -s "$ROOT/assets" "$WORK/assets"; ln -s "$ROOT/favicon.png" "$WORK/favicon.png"
 cat > "$WORK/router.php" <<'PHPR'
 <?php
@@ -62,6 +64,10 @@ if ($path !== '/' && is_file(__DIR__ . $path) && $path !== '/index.php' && $path
 $_SERVER['SCRIPT_NAME'] = '/index.php';
 require __DIR__ . '/index.php';
 PHPR
+
+# 3b) Pruebas del sistema de migraciones (CLI)
+RC=0
+PHP="$PHP" MY="$MYSQL/mysql -uroot" DB=$DB WORK="$WORK" ROOT="$ROOT" bash "$T/test_migrations.sh" || RC=$?
 
 # 4) Servidor (PHP 7.4, como producción)
 "$PHP" -S 127.0.0.1:$PORT -t "$WORK" "$WORK/router.php" > "$WORK/server.log" 2>&1 &
@@ -76,7 +82,6 @@ if [ "${SERVE:-}" = "1" ]; then
 fi
 
 # 5) Pruebas
-RC=0
 UPLOADS="$WORK/uploads" TMPD="$TMPD" BASE="http://127.0.0.1:$PORT" MYSQL_CLI="$MYSQL/mysql" DB=$DB ROOT="$ROOT" python3 "$T/test_security.py" || RC=$?
 UPLOADS="$WORK/uploads" TMPD="$TMPD" BASE="http://127.0.0.1:$PORT" MYSQL_CLI="$MYSQL/mysql" DB=$DB ROOT="$ROOT" python3 "$T/test_hardening.py" || RC=$?
 node "$T/test_csrf_prefilter.js" || RC=$?

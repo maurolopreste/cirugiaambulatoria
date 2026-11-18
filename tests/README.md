@@ -7,4 +7,6 @@ Requisitos: MySQL local (root/root), PHP 7.4 de Herd, python3 y node. No toca `c
 
 Suites: `test_security.py` (autorización, CSRF/cookies, XSS), `test_hardening.py` (login, tokens, sesión, contraseñas, uploads, secretos, entorno) y `test_csrf_prefilter.js`.
 
-Archivos: `schema.sql` (estructura clonada de la base local, sin datos), `seed.php` (datos de prueba), `test_security.py` (HTTP), `test_csrf_prefilter.js` (JS), `fixtures/` (stubs del módulo de prescripciones, que no está en el repo; se copian sólo si faltan y se borran al terminar).
+La base de pruebas se arma con las **migraciones** (`application/migrations/`), no con un SQL aparte; `test_migrations.sh` prueba el propio sistema de migraciones.
+
+Archivos: `seed.php` (datos de prueba), `test_security.py` (HTTP), `test_csrf_prefilter.js` (JS), `fixtures/` (stubs del módulo de prescripciones, que no está en el repo; se copian sólo si faltan y se borran al terminar).

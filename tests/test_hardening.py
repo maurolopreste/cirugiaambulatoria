@@ -140,6 +140,12 @@ n = sql("select count(*) from user where group_id=3")
 a_.post('/agenda/add', {'nuevopaciente[first_name]': 'Nuevo', 'nuevopaciente[last_name]': 'Paciente', 'nuevopaciente[email]': '', 'nuevopaciente[telefono]': '1', 'nuevopaciente[obra_social]': '', 'profesional_id': '2', 'fecha': '2030-01-01', 'hora': '10', 'hora_min': '00', 'comentarios': 'x'})
 check('AGENDA: el "nuevo paciente" se crea como paciente (grupo 3), no como profesional', sql("select group_id from user where first_name='Nuevo' and last_name='Paciente' order by id desc limit 1") == '3')
 
+# ------------------------------------------------------------------ MIGRACIONES: no accesibles por web
+for pth in ('/migrate', '/migrate/run', '/migrate/version/0'):
+    r = Client().get(pth)
+    check(f'MIGRACIONES: {pth} no es accesible por web', r[0] != 200 or ('Versión actual' not in r[2] and 'Versión' not in r[2]), r[0])
+check('MIGRACIONES: ni siquiera un admin logueado puede ejecutarlas por web', 'Versión' not in a_.get('/migrate/run')[2] and sql('select version from migrations') == '1')
+
 # ------------------------------------------------------------------ SECRETOS Y ENTORNO
 out = subprocess.run(['git', '-C', ROOT, 'grep', '--untracked', '-l', '-E', 'la64DUlofo|45Ops119|APP_USR-[0-9a-f]|c624024565957847', '--', '.', ':!tests'], capture_output=True, text=True).stdout.split()
 check('SECRETOS: no quedan credenciales conocidas en el código actual', not out, out)

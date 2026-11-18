@@ -53,9 +53,15 @@
  *
  * NOTE: If you change these, also change the error_reporting() code below
  */
-	// Se define por la variable de entorno CI_ENV. Si no está, se asume DESARROLLO sólo cuando se
-	// accede desde la propia máquina (CLI, localhost, 127.0.0.1 o *.test); en cualquier otro caso es PRODUCCIÓN.
+	// Se define por la variable de entorno CI_ENV (obligatoria por CLI). Para web, si no está, se asume DESARROLLO sólo
+	// cuando se accede desde la propia máquina (localhost, 127.0.0.1 o *.test); en cualquier otro caso es PRODUCCIÓN.
 	$_env = getenv('CI_ENV');
+	if (!$_env && PHP_SAPI === 'cli')
+	{
+		// Por línea de comandos no hay Host que permita adivinar el entorno: se exige indicarlo (evita operar contra la base equivocada).
+		fwrite(STDERR, "Falta CI_ENV. Ejemplo:  CI_ENV=production php index.php migrate\n");
+		exit(1);
+	}
 	if (!$_env)
 	{
 		$_host = isset($_SERVER['HTTP_HOST']) ? strtolower(preg_replace('/:\d+$/', '', $_SERVER['HTTP_HOST'])) : '';
