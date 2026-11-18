@@ -150,6 +150,7 @@
 						</a>
 					</li>
 
+					<?php /* Prescripciones oculto: el módulo (modelo y vistas) todavía no existe. Para mostrarlo, quitar este if. */ if(FALSE): ?>
 					<li class="side-nav-menu-item<?php if('prescripcion'==$this->uri->segments[1]) echo ' active'; ?>">
 						<a class="side-nav-menu-link media align-items-center" href="<?php echo site_url('prescripcion'); ?>">
 							<span class="side-nav-menu-icon d-flex mr-3">
@@ -158,6 +159,7 @@
 							<span class="side-nav-fadeout-on-closed media-body"><?php echo lang('Prescripciones'); ?></span>
 						</a>
 					</li>
+					<?php endif; ?>
 
 					<li class="side-nav-menu-item<?php if('cita'==$this->uri->segments[1]) echo ' active'; ?>">
 						<a class="side-nav-menu-link media align-items-center" href="<?php echo site_url('cita'); ?>">

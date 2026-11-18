@@ -65,6 +65,8 @@ for name, d in cases.items():
     r = p.post('/dashboard/agendar_cita', d)
     check(f'VALID agendar_cita rechaza: {name}', sql('select count(*) from agenda') == n0 and r[0] in (302, 303, 307, 403), (r[0], sql('select count(*) from agenda'), n0))
 
+check('MENÚ: el paciente no ve el enlace a Prescripciones (módulo aún inexistente)', '/prescripcion"' not in p.get('/dashboard')[2])
+
 # ---------------------------------------------------------------- AUTORIZACIÓN: profesional 1 (id 2)
 f = login('prof1')
 # --- el profesional sólo ve SUS pacientes (los que tienen/tuvieron turno, historia, informe o prescripción con él)
