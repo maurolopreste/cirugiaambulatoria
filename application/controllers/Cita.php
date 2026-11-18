@@ -50,7 +50,7 @@ class Cita extends Front_Controller {
 		$cita = $this->agenda_model->get($cita_id);
 
 		//items
-		$tipo_consulta = $this->config_model->get_valores($cita->valor_consulta);
+		$tipo_consulta = $this->config_model->get_valor_consulta($cita->valor_consulta);
 		$products_mp = array(
 			array(
 				"id" => 1,

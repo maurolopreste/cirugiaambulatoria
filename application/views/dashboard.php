@@ -88,10 +88,15 @@
 											</td>
 											<td class="py-2"><?php echo $row->nombre_profesional; ?></td>
 											<td class="py-2 text-right">
+												<?php if($row->estado_cita==1): ?>
+												<a href="#" class="btn btn-primary text-white btn-sm" onclick="anunciar(<?php echo $row->id; ?>)">
+													Anunciar paciente
+												</a>
 												<?php $mensaje_whatsapp = 'Hola ' . $row->nombre_paciente . "\n\n" . 'Te recordamos un turno pendiente en Cirugía Ambulatoria con *' . $row->nombre_profesional . '*, el día *' . strftime('%A %e/%m a las %H:%M hs', strtotime($row->fecha)) . '.*' . "\n\n" . '_Dirección: Av. J.B. Justo y Paso de los Andes, Ciudad de Mendoza_'; ?>
 												<a href="https://api.whatsapp.com/send/?phone=<?php echo $row->telefono_paciente; ?>&text=<?php echo urlencode($mensaje_whatsapp); ?>&app_absent=0" class="btn btn-success text-white btn-sm" target="_blank">
 													Enviar por WhatsApp <i class="fab fa-whatsapp"></i>
 												</a>
+												<?php endif; ?>
 												<a href="<?php echo site_url('/agenda/edit/'.$row->id); ?>" class="btn btn-info text-white btn-sm" data-toggle="modal" data-target="#editModal">
 													Modificar turno
 												</a>
@@ -109,7 +114,16 @@
 			</div>
 		</div>
 		<?php endif; ?>
-
 	</div>
+
+	<script type="text/javascript">
+		function anunciar(id) {
+			var modal = $('#confirmModal');
+			var href = '<?php echo site_url('/agenda/anunciar/'); ?>'+id;
+			modal.find('.h5').text('Se notificará al profesional');
+			modal.find('.btn-confirm').attr('href', href);
+			modal.modal('show');
+		}
+	</script>
 
 <?php $this->load->view('footer'); ?>

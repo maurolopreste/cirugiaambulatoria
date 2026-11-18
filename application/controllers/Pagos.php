@@ -11,10 +11,11 @@ class Pagos extends Front_Controller {
 		$this->is_admin();
 
 		$this->load->model('agenda_model');
+		$this->load->model('config_model');
 		$this->load->library('upload');
 
-		$this->valor_consulta_list = $this->agenda_model->get_valores_consulta();
-		$this->metodopago_list = $this->agenda_model->get_metodos_pago();
+		$this->valor_consulta_list = $this->config_model->get_valor_consulta();
+		$this->metodopago_list = $this->config_model->get_metodos_pago();
 		// $this->include_js = 'pagos.js';
 	}
 

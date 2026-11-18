@@ -10,11 +10,13 @@ class Agenda extends Front_Controller {
 		$this->need_login();
 
 		$this->load->model('agenda_model');
+		$this->load->model('config_model');
 		$this->load->model('user_model');
 		$this->load->library('upload');
 
 		$this->pacientes_list = $this->user_model->get_by_group_id(3);
-		$this->metodopago_list = $this->agenda_model->get_metodos_pago();
+		$this->metodopago_list = $this->config_model->get_metodos_pago();
+		$this->obrasocial_list = $this->config_model->get_obras_sociales();
 		
 		$this->include_js = 'agenda.js';
 	}
@@ -42,26 +44,44 @@ class Agenda extends Front_Controller {
 
 	public function add($paciente_id=null)
 	{
-		//$this->is_admin();
-
 		$post = $this->input->post(NULL, TRUE);	
 		if ($post)
 		{
+			if(!empty($post['nuevopaciente']['first_name']))
+			{
+				$nuevopaciente = $post['nuevopaciente'];
+				$data_paciente = array(
+					'group_id' => 2,
+					'first_name' => $nuevopaciente['first_name'],
+					'last_name' => $nuevopaciente['last_name'],
+					'email' => $nuevopaciente['email'],
+					'telefono' => $nuevopaciente['telefono'],
+					'obra_social' => $nuevopaciente['obra_social'],
+					'created_at' => date('Y-m-d H:i:s')
+				);
+				$paciente_id = $this->user_model->insert($data_paciente);
+			}
+
+			if(!$paciente_id) $paciente_id = $post['paciente_id'];
+			
+			if(!$paciente_id)
+			{
+				$this->session->set_flashdata('alert', array(
+					'msg' => lang('No se ha seleccionado ningún paciente'),
+					'error' => TRUE
+				));
+				redirect('/agenda');
+			}
+
 			$data = array(
 				'paciente_id' => $paciente_id,
-				'profesional_id' => $this->login->id,
-				'fecha' => $post['fecha'].' '.$post['hora'],
+				'profesional_id' => $post['profesional_id'],
+				'fecha' => $post['fecha'].' '.$post['hora'].':'.$post['hora_min'],
 				'comentarios' => $post['comentarios'],
 				'estado_cita' => 1,
 				'created_at' => date('Y-m-d H:i:s'),
 				'created_by' => $this->login->id
 			);
-
-			if($this->is_admin)
-			{
-				$data['paciente_id'] = $post['paciente_id'];
-				$data['profesional_id'] = $post['profesional_id'];
-			}
 
 			$agenda_id = $this->agenda_model->insert($data);
 
@@ -72,23 +92,20 @@ class Agenda extends Front_Controller {
 
 			//notificar al paciente
 			$turno = $this->agenda_model->get_turno($agenda_id);
-			$data['paciente'] = $turno->nombre_paciente;
-			$data['profesional'] = $turno->nombre_profesional;
-			$data['fecha'] = strftime('%A %e/%m a las %H:%M hs.', strtotime($turno->fecha));
-			$message = $this->load->view('email/turno_nuevo', $data, true);
-			$this->email->from(get_site_config('admin_email'), get_site_config('site_title'));
-			$this->email->to($turno->email_paciente);
-			$this->email->subject('Asignación de Turno Clínica Ambulatoria: '. $post['fecha'] .' a las '. $post['hora'] .' con '. $turno->nombre_profesional);
-			$this->email->message($message);
-			$this->email->send();
-
-			if($paciente_id)
+			if($turno->email_paciente)
 			{
-				redirect('/paciente/edit/'.$paciente_id);
+				$data['paciente'] = $turno->nombre_paciente;
+				$data['profesional'] = $turno->nombre_profesional;
+				$data['fecha'] = strftime('%A %e/%m a las %H:%M hs.', strtotime($turno->fecha));
+				$message = $this->load->view('email/turno_nuevo', $data, true);
+				$this->email->from(get_site_config('admin_email'), get_site_config('site_title'));
+				$this->email->to($turno->email_paciente);
+				$this->email->subject('Asignación de Turno Cirugía Ambulatoria: '. $post['fecha'] .' a las '. $post['hora'] .':'. $post['hora_min'] . ' con '. $turno->nombre_profesional);
+				$this->email->message($message);
+				$this->email->send();
 			}
-			else {
-				redirect('/agenda');
-			}
+
+			redirect('/agenda');
 		}
 
 		$data['paciente_id'] = $paciente_id;
@@ -104,7 +121,7 @@ class Agenda extends Front_Controller {
 		if ($post && $id)
 		{
 			$data = array(
-				'fecha' => $post['fecha'].' '.$post['hora']
+				'fecha' => $post['fecha'].' '.$post['hora'].':'.$post['hora_min']
 			);
 
 			if($this->is_admin)
@@ -116,7 +133,7 @@ class Agenda extends Front_Controller {
 				$data['comentarios'] = $post['comentarios'];
 			}
 			else {
-				$data['observacion_profesional'] = $post['observacion_profesional'];	
+				$data['observacion_profesional'] = $post['observacion_profesional'];
 			}
 
 			if(!$row_agenda->link_video)
@@ -170,6 +187,32 @@ class Agenda extends Front_Controller {
 			'error' => FALSE
 		));	
 		redirect('/agenda', 'refresh');
+	}
+
+	public function anunciar($id)
+	{
+		$this->is_admin();
+		
+		//cambiar estado agenda
+		$turno = $this->agenda_model->get_turno($id);
+		if(!$turno) die('no existe el turno');
+		$this->agenda_model->update($id, array('estado_cita'=>5));//en espera
+
+		//refrescar la página
+		redirect('/dashboard', 'refresh');
+	}
+
+	public function completar($id)
+	{
+		//$this->is_admin();
+		
+		//cambiar estado agenda
+		$turno = $this->agenda_model->get_turno($id);
+		if(!$turno) die('no existe el turno');
+		$this->agenda_model->update($id, array('estado_cita'=>2));//completado
+
+		//refrescar la página
+		redirect('/dashboard', 'refresh');
 	}
 
 }

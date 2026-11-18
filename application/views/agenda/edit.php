@@ -1,7 +1,7 @@
 
-	<?php echo form_open_multipart('', array('autocomplete'=>'off')); ?>
+	<?php echo form_open('', array('autocomplete'=>'off')); ?>
 		<header class="modal-header">
-			<h4 class="modal-title">Modificar fecha</h4>
+			<h4 class="modal-title">Editar turno</h4>
 		</header>
 
 		<div class="modal-body pt-3">
@@ -22,7 +22,7 @@
 				</div>
 				<div class="form-group">
 					<label>Profesional</label>
-					<select name="profesional_id" class="custom-select select2">
+					<select name="profesional_id" class="custom-select select2" required>
 						<option value="">Seleccione una opción</option>
 						<?php foreach($this->profesionales_list as $profesional): ?>
 							<?php if(!$profesional->active) continue; ?>
@@ -35,17 +35,36 @@
 				</div>
 			<?php endif; ?>
 			
-			<div class="form-row">
-				<div class="form-group col-6">
-					<label>Fecha</label>
-					<input type="text" id="fecha_turno" class="form-control datepicker" name="fecha" value="<?php echo date('Y-m-d', strtotime($row->fecha)); ?>" required>
+			<?php if($this->is_admin): ?>
+				<div class="form-row">
+					<div class="form-group col-6">
+						<label>Fecha</label>
+						<input type="text" id="fecha_turno" class="form-control datepicker" name="fecha" value="<?php echo date('Y-m-d', strtotime($row->fecha)); ?>" required>
+					</div>
+					<div class="form-group col-6">
+						<label>Hora</label>
+						<!-- <select name="hora" id="horario_turno" class="custom-select" required>
+						</select> -->
+						<div class="row">
+							<div class="col-6">
+								<select name="hora" id="horario_turno" class="custom-select" disabled onchange="getMinutosDisponibles(this.value);" required>
+								</select>
+							</div>
+							<div class="col-6 pl-0">
+								<select name="hora_min" id="horario_turno_2" class="custom-select" disabled required>
+									<option value=""></option>
+									<option value="0">00</option>
+									<option value="10">10</option>
+									<option value="20">20</option>
+									<option value="30">30</option>
+									<option value="40">40</option>
+									<option value="50">50</option>
+								</select>
+							</div>
+						</div>
+					</div>
 				</div>
-				<div class="form-group col-6">
-					<label>Hora</label>
-					<select name="hora" id="horario_turno" class="custom-select" required>
-					</select>
-				</div>
-			</div>
+			<?php endif; ?>
 			
 			<?php /*if($this->is_admin): ?>
 				<div class="form-row">
@@ -84,7 +103,7 @@
 			<?php else: ?>
 				<div class="form-group">
 					<label>Observación del profesional</label>
-					<textarea rows="3" class="form-control" name="observacion_profesional"><?php echo $row->observacion_profesional; ?></textarea>
+					<textarea rows="4" class="form-control" name="observacion_profesional"><?php echo $row->observacion_profesional; ?></textarea>
 				</div>
 			<?php endif; ?>
 		</div>
@@ -96,11 +115,11 @@
 				</a>
 			<?php endif; ?>
 			
-			<?php if($row->estado_cita!=3): ?>
+			<?php if($this->is_admin && $row->estado_cita!=3): ?>
 				<button type="button" class="btn btn-danger" data-title="El turno se cancelará. Le enviaremos una notificación al paciente." onclick="cancelarTurno(<?php echo $row->id; ?>)">Cancelar turno</button>
 			<?php endif; ?>
 			
-			<button type="submit" class="btn btn-primary btn-submit">Guardar</button>
+			<button type="submit" class="btn btn-primary btn-submit">Guardar cambios</button>
 			<button type="button" class="btn btn-light" data-dismiss="modal">Cerrar</button>
 		</footer>
 	</form>
@@ -123,8 +142,24 @@
 				var action = base_url+'/dashboard/get_horarios_disponibles';
 				$.post(action, {fecha: fecha, profesional_id: profesional_id}, function(res){
 					if(res) {
-						$('#horario_turno').html(res);
-						$('#horario_turno').find('option[value="<?php echo date('H:i', strtotime($row->fecha)); ?>"').attr('selected', 'selected');
+						$('#horario_turno').html(res).removeAttr('disabled');
+						$('#horario_turno').find('option[value="<?php echo date('H', strtotime($row->fecha)); ?>"').attr('selected', 'selected');
+						var hora  = $('#horario_turno').val();
+						getMinutosDisponibles(hora, profesional_id);
+					}
+				});
+			}
+		}
+
+		function getMinutosDisponibles(hora, profesional_id) {
+			if(hora) {
+				var action = base_url+'/dashboard/get_minutos_disponibles';
+				var fecha = $('#fecha_turno').val();
+				var profesional_id = $('#profesional_id').val();
+				$.post(action, {fecha: fecha, hora: hora, profesional_id: profesional_id}, function(res){
+					if(res) {
+						$('#horario_turno_2').html(res).removeAttr('disabled');
+						$('#horario_turno_2').find('option[value="<?php echo date('i', strtotime($row->fecha)); ?>"').attr('selected', 'selected');
 					}
 				});
 			}

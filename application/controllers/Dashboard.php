@@ -13,7 +13,7 @@ class Dashboard extends Front_Controller {
 		$this->load->model('agenda_model');
 		$this->load->model('config_model');
 		
-		$this->tipo_cobertura_list = $this->config_model->get_tipo_coberturas();
+		$this->obra_social_list = $this->config_model->get_obras_sociales();
 		$this->profesionales_list = $this->user_model->get_by_group_id(2);//profesionales
 
 		$this->include_js = 'dashboard.js';
@@ -32,7 +32,16 @@ class Dashboard extends Front_Controller {
 
 		if($this->is_profesional) {
 			$view = 'profesional/dashboard';
-			$data['citas'] = $this->agenda_model->get_by_profesional($this->login->id);
+			$citas = $this->agenda_model->get_by_profesional($this->login->id);
+			$citas_hoy = [];
+			foreach($citas as $cita) {
+				//sólo turnos de hoy
+				if(date('Y-m-d', strtotime($cita->fecha)) == date('Y-m-d')) {
+					$citas_hoy[] = $cita;
+				}
+			}
+			$data['citas'] = $citas_hoy;
+			$data['proxima_consulta'] = $this->agenda_model->get_turno_en_espera($this->login->id);
 		}
 
 		if($this->is_admin) {
@@ -44,7 +53,7 @@ class Dashboard extends Front_Controller {
 		$this->load->view($view, $data);
 	}
 
-	public function get_valores_consulta($profesional_id)
+	public function get_valor_consulta($profesional_id)
 	{
 		$this->is_ajax();
 
@@ -113,18 +122,35 @@ class Dashboard extends Front_Controller {
 
 		$result = array();
 		$post = $this->input->post(null, true);
-		$search_turnos = $this->agenda_model->search_turnos($post['fecha'], $post['profesional_id']);
 		$dias_habilitados = $this->user_model->get_dias_habilitados($post['profesional_id']);
 		$horario_desde = $dias_habilitados ? str_replace(':00', '', $dias_habilitados[0]->hora_desde) : 9;
 		$horario_hasta = $dias_habilitados ? str_replace(':00', '', $dias_habilitados[0]->hora_hasta) : 20;
 
 		for ($i=$horario_desde; $i <= $horario_hasta; $i++)
 		{
-			if($search_turnos && in_array($i, $search_turnos)) {
-				$result[] = '<option value="" disabled>'. $i .':00</option>';
+			$result[] = '<option value="'. $i .'">'. $i .'</option>';
+		}
+
+		echo implode('', $result);
+	}
+
+	public function get_minutos_disponibles()
+	{
+		$this->is_ajax();
+
+		$result = array();
+		$post = $this->input->post(null, true);
+		$fecha_hora = $post['fecha'] . ' ' . ($post['hora']<10 ? '0'.$post['hora'] : $post['hora']);
+		$search_turnos = $this->agenda_model->search_turnos($fecha_hora, $post['profesional_id'], TRUE);
+		$minutos_disponibles = ['00', '05', '10', '15', '20', '25', '30', '35', '40', '45', '50', '55'];//cada 5 minutos
+
+		foreach ($minutos_disponibles as $m)
+		{
+			if($search_turnos && in_array($m, $search_turnos)) {
+				$result[] = '<option value="" disabled>'. $m .'</option>';
 			}
 			else {
-				$result[] = '<option value="'. $i .':00">'. $i .':00</option>';
+				$result[] = '<option value="'. $m .'">'. $m .'</option>';
 			}
 		}
 
@@ -163,7 +189,7 @@ class Dashboard extends Front_Controller {
 			$this->email->send();
 
 			//items
-			$tipo_consulta = $this->config_model->get_valores($post['valor_consulta']);
+			$tipo_consulta = $this->config_model->get_valor_consulta($post['valor_consulta']);
 			$products_mp = array(
 				array(
 					"id" => 1,

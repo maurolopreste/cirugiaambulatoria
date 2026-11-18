@@ -22,7 +22,7 @@
 	<link href="https://fonts.googleapis.com/css2?family=Source+Sans+Pro:wght@400;500&family=Oswald:wght@700&display=swap" rel="stylesheet">
 	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" integrity="sha512-iBBXm8fW90+nuLcSKlbmrPcLa0OT92xO1BIsZ+ywDWZCvqsWgccV3gFoRBv0z+8dLJgyAHIhR35VZc2oM/gI1w==" crossorigin="anonymous" />
 	<link rel="stylesheet" href="<?php echo base_url('/assets/css/select2.min.css'); ?>">
-    <link href="https://unpkg.com/bootstrap-datepicker@1.9.0/dist/css/bootstrap-datepicker3.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-datepicker@1.9.0/dist/css/bootstrap-datepicker3.min.css" rel="stylesheet">
 	<link rel="stylesheet" href="<?php echo base_url('/assets/css/graindashboard.css'); ?>">
 	<link rel="stylesheet" href="<?php echo base_url('/assets/css/bootstrap-print.min.css'); ?>" media="print">
 </head>

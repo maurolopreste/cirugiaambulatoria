@@ -81,10 +81,10 @@ class User_model extends Super_model {
 		$this->db->select("
 			$this->tbl.*,
 			CONCAT(profesional.first_name, ' ',  profesional.last_name) as profesional,
-			tipo_cobertura.nombre as tipo_cobertura
+			obra_social.nombre as obra_social
 		");
 		$this->db->join('user as profesional', "$this->tbl.profesional_id = profesional.id", 'left');
-		$this->db->join('tipo_cobertura', "$this->tbl.cobertura = tipo_cobertura.id", 'left');
+		$this->db->join('obra_social', "$this->tbl.obra_social = obra_social.id", 'left');
 
 		//search by $search
 		if($search)

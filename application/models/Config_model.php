@@ -24,13 +24,18 @@ class Config_model extends Super_model {
 		return $this->db->get('medicamento')->result();
 	}
 
-	public function get_tipo_coberturas()
+	public function get_obras_sociales()
 	{
 		$this->db->order_by('nombre ASC');
-		return $this->db->get('tipo_cobertura')->result();
+		return $this->db->get('obra_social')->result();
 	}
 
-	public function get_valores($id=false)
+	public function get_metodos_pago()
+	{
+		return $this->db->get('metodo_pago')->result();
+	}
+
+	public function get_valor_consulta($id=false)
 	{
 		if($id)
 		{

@@ -11,6 +11,7 @@ class Config extends Front_Controller {
 		$this->is_admin();
 
 		$this->load->model('config_model');
+		$this->load->model('user_model');
 	}
 
 	public function index()
@@ -97,7 +98,7 @@ class Config extends Front_Controller {
 		echo 'ok';
 	}
 
-	public function tipo_cobertura($id=false)
+	public function obra_social($id=false)
 	{
 		$post = $this->input->post(NULL, TRUE);	
 		if ($post)
@@ -105,38 +106,85 @@ class Config extends Front_Controller {
 			if($id)
 			{
 				$data = array(
-					'nombre' => $post['nombre']
+					'nombre' => $post['nombre'],
+					'active' => $post['active']
 				);
 				$this->db->where('id', $id);
-				$this->db->update('tipo_cobertura', $data);
+				$this->db->update('obra_social', $data);
 			}
 			else {
 				$data = array(
-					'nombre' => $post['nombre']
+					'nombre' => $post['nombre'],
+					'active' => 1
 				);
-				$this->db->insert('tipo_cobertura', $data);
+				$this->db->insert('obra_social', $data);
 
 				$this->session->set_flashdata('alert', array(
 					'msg' => lang('Los cambios se guardaron correctamente'),
 					'error' => FALSE
 				));
-				redirect('/config/tipo_cobertura');
+				redirect('/config/obra_social');
 			}
 		}
 
-		$data['rows'] = $this->config_model->get_tipo_coberturas();
-		$this->load->view('config/tipo_cobertura', $data);
+		$data['rows'] = $this->config_model->get_obras_sociales();
+		$this->load->view('config/obra_social', $data);
 	}
 
-	public function add_tipo_cobertura()
+	public function add_obra_social()
 	{
-		$this->load->view('config/tipo_cobertura_add');
+		$this->load->view('config/obra_social_add');
 	}
 
-	public function delete_tipo_cobertura($id)
+	public function delete_obra_social($id)
 	{
 		$this->is_ajax();
-		$this->db->delete('tipo_cobertura', array('id' => $id));
+		$this->db->delete('obra_social', array('id' => $id));
+		echo 'ok';
+	}
+
+	public function art($id=false)
+	{
+		$post = $this->input->post(NULL, TRUE);	
+		if ($post)
+		{
+			if($id)
+			{
+				$data = array(
+					'nombre' => $post['nombre'],
+					'active' => $post['active']
+				);
+				$this->db->where('id', $id);
+				$this->db->update('art', $data);
+			}
+			else {
+				$data = array(
+					'nombre' => $post['nombre'],
+					'active' => 1
+				);
+				$this->db->insert('art', $data);
+
+				$this->session->set_flashdata('alert', array(
+					'msg' => lang('Los cambios se guardaron correctamente'),
+					'error' => FALSE
+				));
+				redirect('/config/art');
+			}
+		}
+
+		$data['rows'] = $this->user_model->get_art_list();
+		$this->load->view('config/art', $data);
+	}
+
+	public function add_art()
+	{
+		$this->load->view('config/art_add');
+	}
+
+	public function delete_art($id)
+	{
+		$this->is_ajax();
+		$this->db->delete('art', array('id' => $id));
 		echo 'ok';
 	}
 
@@ -169,7 +217,7 @@ class Config extends Front_Controller {
 			}
 		}
 
-		$data['rows'] = $this->config_model->get_valores();
+		$data['rows'] = $this->config_model->get_valor_consulta();
 		$this->load->view('config/valor_consulta', $data);
 	}
 

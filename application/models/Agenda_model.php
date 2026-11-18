@@ -121,7 +121,7 @@ class Agenda_model extends Super_model {
 		return $this->db->get($this->tbl)->row();
 	}
 
-	public function search_turnos($fecha, $profesional_id)
+	public function search_turnos($fecha, $profesional_id, $incluir_minutos=NULL)
 	{
 		$this->db->select('fecha');
 		$this->db->where('estado_cita <>', 3);
@@ -134,7 +134,12 @@ class Agenda_model extends Super_model {
 		if($result)
 		{
 			foreach ($result as $row) {
-				$fechas[] = intval(substr($row->fecha, 11, 2));//obtener hora del turno, sin ceros al principio
+				if($incluir_minutos) {
+					$fechas[] = substr($row->fecha, 14, 2);//obtener hora del turno (sólo minutos)
+				}
+				else {
+					$fechas[] = intval(substr($row->fecha, 11, 2));//obtener hora del turno, sin ceros al principio
+				}
 			}
 		}
 
@@ -152,8 +157,6 @@ class Agenda_model extends Super_model {
 		$this->db->join('user as paciente', "$this->tbl.paciente_id = paciente.id", 'left');
 		$this->db->join('user as profesional', "$this->tbl.profesional_id = profesional.id", 'left');
 		
-		// $this->db->where("$this->tbl.paciente_id", $paciente_id);
-		// $this->db->where("$this->tbl.estado_cita", 1);//sólo citas pendientes
 		$this->db->where("DATE($this->tbl.fecha)", "CURDATE()", false);
 		$this->db->order_by("$this->tbl.fecha DESC");
 
@@ -185,21 +188,28 @@ class Agenda_model extends Super_model {
 		$this->db->join('user as paciente', "$this->tbl.paciente_id = paciente.id", 'left');
 
 		$this->db->where("$this->tbl.profesional_id", $profesional_id);
-		$this->db->where("$this->tbl.estado_cita", 1);//sólo citas pendientes
+		//$this->db->where("$this->tbl.estado_cita", 1);//sólo citas pendientes
 
 		$this->db->order_by("$this->tbl.fecha DESC");//ordernar por fecha y hora
 
 		return $this->db->get($this->tbl)->result();
 	}
 
-	public function get_metodos_pago()
+	public function get_turno_en_espera($profesional_id)
 	{
-		return $this->db->get('metodo_pago')->result();
-	}
+		$this->db->select("
+			$this->tbl.*,
+			CONCAT(paciente.first_name, ' ', paciente.last_name) as paciente
+		");
+		$this->db->join('user as paciente', "$this->tbl.paciente_id = paciente.id", 'left');
 
-	public function get_valores_consulta()
-	{
-		return $this->db->get('valor_consulta')->result();
+		$this->db->where("$this->tbl.profesional_id", $profesional_id);
+		$this->db->where("$this->tbl.estado_cita", 5);//sólo turnos en espera
+
+		$this->db->order_by("$this->tbl.fecha DESC");//ordernar por fecha y hora
+		$this->db->limit(1);
+
+		return $this->db->get($this->tbl)->row();
 	}
 
 }

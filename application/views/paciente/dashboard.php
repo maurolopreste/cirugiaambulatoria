@@ -21,10 +21,10 @@
 						<?php echo form_open('/dashboard/agendar_cita', array('autocomplete'=>'off')); ?>
 							<p class="mb-4">Autogestioná tu turno con nuestros profesionales. Cuando lo hayas hecho recibirás un mail donde el profesional confirma la cita.</p>
 							<div class="form-group">
-								<label><strong>Tipo de cobertura</strong></label>
-								<select name="tipo" class="custom-select mb-3" data-selected="<?php echo $user->cobertura; ?>" required>
-									<option value="">Seleccione tipo de cobertura</option>
-									<?php foreach($this->tipo_cobertura_list as $tipo): ?>
+								<label><strong>Obra Social</strong></label>
+								<select name="tipo" class="custom-select mb-3" data-selected="<?php echo $user->obra_social; ?>" required>
+									<option value="">Seleccione obra social</option>
+									<?php foreach($this->obra_social_list as $tipo): ?>
 										<option value="<?php echo $tipo->id; ?>"><?php echo $tipo->nombre; ?></option>
 									<?php endforeach; ?>
 								</select>
@@ -145,7 +145,7 @@
 			$('#horario_turno').empty();
 
 			if(profesional_id) {
-				var action = '/dashboard/get_valores_consulta/'+profesional_id;
+				var action = '/dashboard/get_valor_consulta/'+profesional_id;
 				$.post(action, null, function(res){
 					if(res) {
 						$('#valor_consulta').html(res);

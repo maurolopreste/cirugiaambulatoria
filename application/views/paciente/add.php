@@ -8,7 +8,7 @@
 		</div>
 	
 		<div class="row">
-			<div class="col-md-5 mb-3 mb-xl-4">
+			<div class="col-md-6 mb-3 mb-xl-4">
 				<div class="card mb-3 mb-md-4">
 					<div class="card-header">
 						<h5 class="h5 text-primary text-uppercase font-weight-semi-bold mb-0">Información</h5>
@@ -56,6 +56,50 @@
 									<input type="email" class="form-control" name="email" required>
 								</div>
 							<?php endif; ?>
+
+							<!-- <div class="mb-3">
+								<label class="d-inline mr-3"><strong>Método de ingreso</strong></label>
+								<div class="form-check form-check-inline">
+									<input class="form-check-input" type="radio" name="metodoingreso" id="metodoingreso0" value="obra-social" checked>
+									<label class="form-check-label" for="metodoingreso0">Obra Social</label>
+								</div>
+								<div class="form-check form-check-inline">
+									<input class="form-check-input" type="radio" name="metodoingreso" id="metodoingreso1" value="art">
+									<label class="form-check-label" for="metodoingreso1">ART</label>
+								</div>
+							</div> -->
+
+							<div class="form-row">
+								<div class="form-group col-md-6">
+									<label>Obra Social</label>
+									<select name="obra_social" class="custom-select select2">
+										<option value="">Seleccione una opción</option>
+										<?php foreach($this->obra_social_list as $obra_social): ?>
+											<option value="<?php echo $obra_social->id; ?>"><?php echo $obra_social->nombre; ?></option>
+										<?php endforeach; ?>
+									</select>
+								</div>
+								<div class="form-group col-md-6">
+									<label>Nro Afiliado</label>
+									<input type="text" class="form-control" name="nro_afiliado">
+								</div>
+							</div>
+
+							<div class="form-row">
+								<div class="form-group col-md-6">
+									<label>ART</label>
+									<select name="art_id" class="custom-select select2">
+										<option value="">Seleccione una opción</option>
+										<?php foreach($this->art_list as $art): ?>
+											<option value="<?php echo $art->id; ?>"><?php echo $art->nombre; ?></option>
+										<?php endforeach; ?>
+									</select>
+								</div>
+								<div class="form-group col-md-6">
+									<label>Nro Siniestro</label>
+									<input type="text" class="form-control" name="nro_siniestro">
+								</div>
+							</div>
 
 							<?php /*if($this->is_admin): ?>
 								<hr class="my-4" />

@@ -23,16 +23,31 @@
 							<div class="form-row mb-3">
 								<div class="form-group col-sm-4">
 									<label>ART</label>
-									<select name="art_id" class="custom-select form-control-line" data-select="<?php echo $form->art_id; ?>">
-										<option value="">Selecciona una opción</option>
+									<select name="art_id" class="custom-select select2" data-select="<?php echo $form->art_id; ?>">
+										<option value="">Buscar por empresa o cuit</option>
 										<?php foreach($this->art_list as $art): ?>
 											<option value="<?php echo $art->id; ?>"><?php echo $art->nombre; ?></option>
 										<?php endforeach; ?>
 									</select>
 								</div>
-								<div class="form-group col-sm-3">
-									<label>N DE SINIESTRO</label>
+								<div class="form-group col-sm-4">
+									<label>NRO SINIESTRO</label>
 									<input type="text" class="form-control form-control-line" name="nro_siniestro" value="<?php echo $form->nro_siniestro; ?>">
+								</div>
+							</div>
+							<div class="form-row mb-3">
+								<div class="form-group col-sm-4">
+									<label>OBRA SOCIAL</label>
+									<select name="obra_social" class="custom-select select2" data-select="<?php echo $row->obra_social; ?>">
+										<option value="">Selecciona una opción</option>
+										<?php foreach($this->obra_social_list as $obra_social): ?>
+											<option value="<?php echo $obra_social->id; ?>"><?php echo $obra_social->nombre; ?></option>
+										<?php endforeach; ?>
+									</select>
+								</div>
+								<div class="form-group col-sm-4">
+									<label>NRO AFILIADO</label>
+									<input type="text" class="form-control form-control-line" name="nro_afiliado" value="<?php echo $row->nro_afiliado; ?>">
 								</div>
 							</div>
 

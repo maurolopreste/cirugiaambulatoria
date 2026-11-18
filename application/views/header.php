@@ -22,7 +22,7 @@
 	<link href="https://fonts.googleapis.com/css2?family=Source+Sans+Pro:wght@400;500&family=Oswald:wght@700&display=swap" rel="stylesheet">
 	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" integrity="sha512-iBBXm8fW90+nuLcSKlbmrPcLa0OT92xO1BIsZ+ywDWZCvqsWgccV3gFoRBv0z+8dLJgyAHIhR35VZc2oM/gI1w==" crossorigin="anonymous" />
 	<link rel="stylesheet" href="<?php echo base_url('/assets/css/select2.min.css'); ?>">
-    <link href="https://unpkg.com/bootstrap-datepicker@1.9.0/dist/css/bootstrap-datepicker3.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-datepicker@1.9.0/dist/css/bootstrap-datepicker3.min.css" rel="stylesheet">
 	<link rel="stylesheet" href="<?php echo base_url('/assets/css/graindashboard.css'); ?>">
 
 </head>
@@ -269,11 +269,14 @@
 					</a>
 					<ul id="dropdownConfig" class="side-nav-menu side-nav-menu-second-level mb-0" style="<?php if('config'==$this->uri->segments[1]) echo ' display: block'; ?>">
 						<li class="side-nav-menu-item">
-							<a class="side-nav-menu-link<?php if(strpos($this->uri->uri_string(), 'config/tipo_cobertura')!==false) echo ' active'; ?>" href="<?php echo site_url('config/tipo_cobertura'); ?>">Tipos de Cobertura</a>
+							<a class="side-nav-menu-link<?php if(strpos($this->uri->uri_string(), 'config/obra_social')!==false) echo ' active'; ?>" href="<?php echo site_url('config/obra_social'); ?>">Obras Sociales</a>
 						</li>
 						<li class="side-nav-menu-item">
-							<a class="side-nav-menu-link<?php if(strpos($this->uri->uri_string(), 'config/medicamento')!==false) echo ' active'; ?>" href="<?php echo site_url('config/medicamento'); ?>">Medicamentos</a>
+							<a class="side-nav-menu-link<?php if(strpos($this->uri->uri_string(), 'config/art')!==false) echo ' active'; ?>" href="<?php echo site_url('config/art'); ?>">ART</a>
 						</li>
+						<!-- <li class="side-nav-menu-item">
+							<a class="side-nav-menu-link<?php if(strpos($this->uri->uri_string(), 'config/medicamento')!==false) echo ' active'; ?>" href="<?php echo site_url('config/medicamento'); ?>">Medicamentos</a>
+						</li> -->
 					</ul>
 
 					<li class="side-nav-menu-item<?php if('user'==$this->uri->segments[1]) echo ' active'; ?>">

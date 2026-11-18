@@ -28,3 +28,4 @@ $lang['El profesional se habilitó nuevamente'] = 'El profesional se habilitó n
 $lang['La agenda se actualizó correctamente'] = 'La agenda se actualizó correctamente';
 $lang['Cancelación turno'] = 'Cancelación turno';
 $lang['Usuarios Sistema'] = 'Usuarios Sistema';
+$lang['No se ha seleccionado ningún paciente'] = 'No se ha seleccionado ningún paciente';

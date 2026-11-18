@@ -17,7 +17,7 @@ class Paciente extends Front_Controller {
 		$this->load->library('upload');
 
 		$this->art_list = $this->user_model->get_art_list();
-		$this->tipo_cobertura_list = $this->config_model->get_tipo_coberturas();
+		$this->obra_social_list = $this->config_model->get_obras_sociales();
 		$this->medicamentos_list = $this->config_model->get_medicamentos();
 
 		$this->include_js = 'paciente.js';
@@ -285,6 +285,7 @@ class Paciente extends Front_Controller {
 		$post = $this->input->post(NULL, TRUE);	
 		if ($post)
 		{
+			//print_r($post);die;
 			$data = array(
 				'group_id' => 3,//pacientes
 				'first_name' => $post['first_name'],
@@ -301,6 +302,21 @@ class Paciente extends Front_Controller {
 			}
 
 			$paciente_id = $this->user_model->insert($data);
+
+			//guardar datos formingreso
+			if(!empty($post['art_id']) && !empty($post['nro_siniestro']))
+			{
+				$formingreso = $this->user_model->formingreso($paciente_id);
+				if(!$formingreso)
+				{
+					$this->db->insert('formingreso', ['user_id'=>$paciente_id, 'created_at'=>date('Y-m-d H:i:s')]);
+				}
+				$data = array(
+					'art_id' => $post['art_id'],
+					'nro_siniestro' => $post['nro_siniestro']
+				);
+				$this->user_model->formingreso($paciente_id, $data);
+			}
 
 			//enviar email para confirmar cuenta
 			// $email = $post['email'];
@@ -336,18 +352,28 @@ class Paciente extends Front_Controller {
 		// 	));
 		// 	redirect('/paciente');
 		// }
+
+		$formingreso = $this->user_model->formingreso($id);
+		if(!$formingreso)
+		{
+			$this->db->insert('formingreso', ['user_id'=>$id, 'created_at'=>date('Y-m-d H:i:s')]);
+			$formingreso = $this->user_model->formingreso($id);
+		}
+		$paciente->art_id = $formingreso->art_id;
+		$paciente->nro_siniestro = $formingreso->nro_siniestro;
 		
-		$post = $this->input->post(NULL, TRUE);	
+		$post = $this->input->post(NULL, TRUE);
 		if ($post)
 		{
-			// print_r($post);die;
 			$data = array(
 				'first_name' => $post['first_name'],
 				'last_name' => $post['last_name'],
 				'dni' => $post['dni'],
 				// 'direccion' => $post['direccion'],
 				'telefono' => $post['telefono'],
-				'email' => $post['email']
+				'email' => $post['email'],
+				'obra_social' => $post['obra_social'],
+				'nro_afiliado' => $post['nro_afiliado']
 			);
 
 			if(!empty($post['password']))
@@ -361,6 +387,13 @@ class Paciente extends Front_Controller {
 			}
 
 			$this->user_model->update($id, $data);
+
+			//guardar datos formingreso
+			$data = array(
+				'art_id' => $post['art_id'],
+				'nro_siniestro' => $post['nro_siniestro']
+			);
+			$this->user_model->formingreso($id, $data);
 
 			$this->session->set_flashdata('alert', array(
 				'msg' => lang('Los cambios se guardaron correctamente'),
@@ -393,7 +426,9 @@ class Paciente extends Front_Controller {
 				'telefono' => $post['tel_movil'],
 				'email' => $post['email'],
 				'fecha_nac' => $post['fecha_nac'],
-				'sexo' => $post['sexo']
+				'sexo' => $post['sexo'],
+				'obra_social' => $post['obra_social'],
+				'nro_afiliado' => $post['nro_afiliado']
 			);
 			$this->user_model->update($id, $data);
 
