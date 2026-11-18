@@ -76,17 +76,37 @@ class User_model extends Super_model {
 		}
 	}
 
+	/**
+	 * Un paciente es "de" un profesional si tiene (o tuvo) con él un turno, una historia clínica,
+	 * un informe evolutivo o una prescripción.
+	 */
+	public function es_paciente_de($profesional_id, $paciente_id)
+	{
+		$prof = (int)$profesional_id;
+		$pac = (int)$paciente_id;
+		if(!$prof || !$pac) return FALSE;
+
+		$sql = "SELECT 1 FROM agenda WHERE paciente_id = ? AND profesional_id = ?
+			UNION SELECT 1 FROM historiaclinica WHERE paciente_id = ? AND profesional_id = ?
+			UNION SELECT 1 FROM evolutivo WHERE paciente_id = ? AND profesional_id = ?
+			UNION SELECT 1 FROM prescripcion WHERE paciente_id = ? AND profesional_id = ?
+			LIMIT 1";
+		return $this->db->query($sql, array($pac, $prof, $pac, $prof, $pac, $prof, $pac, $prof))->num_rows() > 0;
+	}
+
+	/**
+	 * Pacientes de un profesional (ver es_paciente_de), con búsqueda opcional.
+	 */
 	public function get_by_profesional($profesional_id=null, $search=null)
 	{
+		$prof = (int)$profesional_id;
+
 		$this->db->select("
 			$this->tbl.*,
-			CONCAT(profesional.first_name, ' ',  profesional.last_name) as profesional,
-			obra_social.nombre as obra_social
+			group.name as perfil
 		");
-		$this->db->join('user as profesional', "$this->tbl.profesional_id = profesional.id", 'left');
-		$this->db->join('obra_social', "$this->tbl.obra_social = obra_social.id", 'left');
+		$this->db->join('group', "$this->tbl.group_id = group.id", 'left');
 
-		//search by $search
 		if($search)
 		{
 			$this->db->group_start();
@@ -97,14 +117,18 @@ class User_model extends Super_model {
 			$this->db->group_end();
 		}
 
-		//hide deleted rows
 		$this->db->where("$this->tbl.deleted_at IS NULL");
-
-		$this->db->where("$this->tbl.profesional_id", $profesional_id);
+		$this->db->where("$this->tbl.group_id", 3);
+		//$prof es un entero (cast), no hay inyección posible
+		$this->db->where("$this->tbl.id IN (
+			SELECT paciente_id FROM agenda WHERE profesional_id = $prof
+			UNION SELECT paciente_id FROM historiaclinica WHERE profesional_id = $prof
+			UNION SELECT paciente_id FROM evolutivo WHERE profesional_id = $prof
+			UNION SELECT paciente_id FROM prescripcion WHERE profesional_id = $prof
+		)", NULL, FALSE);
 		$this->db->order_by($this->order_by);
-		
-		$rs = $this->db->get($this->tbl);
-		return $rs->result();
+
+		return $this->db->get($this->tbl)->result();
 	}
 
 	public function get_fechas_comprometidas($profesional_id)

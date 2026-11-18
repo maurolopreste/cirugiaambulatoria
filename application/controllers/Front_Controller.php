@@ -27,7 +27,6 @@ class Front_Controller extends CI_Controller {
 			}
 			$this->login = $fresh ? $fresh : NULL;
 		}
-		$this->pacientes_list = $this->user_model->get_by_group_id(3);
 		$this->profesionales_list = $this->user_model->get_by_group_id(2);
 		$this->provincias_list = $this->user_model->get_provincias();
 		$this->per_page = 20;
@@ -36,6 +35,11 @@ class Front_Controller extends CI_Controller {
 		$this->is_admin = ($this->login && $this->login->group_id==1);
 		$this->is_profesional = ($this->login && $this->login->group_id==2);
 		$this->is_paciente = ($this->login && $this->login->group_id==3);
+
+		//listado de pacientes visible: el admin ve todos, el profesional sólo los suyos, el paciente ninguno
+		$this->pacientes_list = array();
+		if($this->is_admin) $this->pacientes_list = $this->user_model->get_by_group_id(3);
+		elseif($this->is_profesional) $this->pacientes_list = $this->user_model->get_by_profesional($this->login->id);
 
 		$this->is_local = strpos($_SERVER['HTTP_HOST'], "local")!==false;
 
@@ -105,11 +109,12 @@ class Front_Controller extends CI_Controller {
 	}
 
 	/**
-	 * Puede acceder a los datos del paciente: el staff, o el propio paciente.
+	 * Puede acceder a los datos del paciente: el admin, el profesional del paciente (ver User_model::es_paciente_de) o el propio paciente.
 	 */
 	protected function can_access_paciente($paciente_id)
 	{
-		if ($this->is_admin || $this->is_profesional) return TRUE;
+		if ($this->is_admin) return TRUE;
+		if ($this->is_profesional) return $this->user_model->es_paciente_de($this->login->id, $paciente_id);
 		return $this->is_paciente && (int)$paciente_id === (int)$this->login->id;
 	}
 

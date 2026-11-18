@@ -26,6 +26,7 @@ class Prescripcion extends Front_Controller {
 	public function add($paciente_id)
 	{
 		$this->require_staff();//sólo el staff emite prescripciones
+		$this->require_paciente_access($paciente_id);//y a pacientes propios
 		$post = $this->input->post(null, true);
 		if($post)
 		{

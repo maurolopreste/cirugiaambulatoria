@@ -15,7 +15,6 @@ class Agenda extends Front_Controller {
 		$this->load->model('user_model');
 		$this->load->library('upload');
 
-		$this->pacientes_list = $this->user_model->get_by_group_id(3);
 		$this->metodopago_list = $this->config_model->get_metodos_pago();
 		$this->obrasocial_list = $this->config_model->get_obras_sociales();
 		
@@ -45,7 +44,10 @@ class Agenda extends Front_Controller {
 
 	public function add($paciente_id=null)
 	{
+		if($paciente_id) $this->require_paciente_access($paciente_id);
+
 		$post = $this->input->post(NULL, TRUE);	
+		$paciente_nuevo = FALSE;
 		if ($post)
 		{
 			if(!empty($post['nuevopaciente']['first_name']))
@@ -61,6 +63,7 @@ class Agenda extends Front_Controller {
 					'created_at' => date('Y-m-d H:i:s')
 				);
 				$paciente_id = $this->user_model->insert($data_paciente);
+				$paciente_nuevo = TRUE;
 			}
 
 			if(!$paciente_id) $paciente_id = $post['paciente_id'];
@@ -72,6 +75,13 @@ class Agenda extends Front_Controller {
 					'error' => TRUE
 				));
 				redirect('/agenda');
+			}
+
+			if($this->is_profesional)
+			{
+				//el profesional agenda sólo a su nombre y sólo con sus pacientes (o uno recién creado)
+				$post['profesional_id'] = $this->login->id;
+				if(!$paciente_nuevo) $this->require_paciente_access($paciente_id);
 			}
 
 			$data = array(

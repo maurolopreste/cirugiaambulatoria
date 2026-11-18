@@ -33,14 +33,14 @@ class Paciente extends Front_Controller {
 			$this->load->view('paciente/index', $data);
 		}
 		else {
-			// $data['rows'] = $this->user_model->get_by_profesional($this->login->id, $search);
-			$data['rows'] = $this->user_model->get_by_group_id(3, $search);
+			$data['rows'] = $this->user_model->get_by_profesional($this->login->id, $search);//sólo sus pacientes
 			$this->load->view('profesional/pacientes', $data);
 		}
 	}
 
 	public function index_historiaclinica($paciente_id)
 	{
+		$this->require_paciente_access($paciente_id);
 		$this->is_ajax();
 
 		$historiaclinica = $this->historiaclinica_model->get_by_paciente($paciente_id);
@@ -54,6 +54,7 @@ class Paciente extends Front_Controller {
 
 	public function add_historiaclinica($paciente_id)
 	{
+		$this->require_paciente_access($paciente_id);
 		$post = $this->input->post(NULL, TRUE);	
 		if ($post)
 		{
@@ -68,6 +69,10 @@ class Paciente extends Front_Controller {
 				'tratamiento' => $post['tratamiento'],
 				'created_at' => date('Y-m-d H:i:s')
 			);
+
+			if($this->is_profesional) {
+				$data['profesional_id'] = $this->login->id;
+			}
 
 			if($this->is_admin && !empty($post['profesional_id'])) {
 				$data['profesional_id'] = $post['profesional_id'];
@@ -94,6 +99,7 @@ class Paciente extends Front_Controller {
 
 	public function edit_historiaclinica($historiaclinica_id, $paciente_id)
 	{
+		$this->require_paciente_access($paciente_id);
 		$historiaclinica = $this->historiaclinica_model->get($historiaclinica_id);
 		if($historiaclinica->paciente_id != $paciente_id) die('No es posible editar esta historia');
 
@@ -139,6 +145,7 @@ class Paciente extends Front_Controller {
 	{
 		$historiaclinica = $this->historiaclinica_model->get($historiaclinica_id);
 		if(!$historiaclinica) show_404();
+		$this->require_paciente_access($historiaclinica->paciente_id);
 		$paciente = $this->user_model->get($historiaclinica->paciente_id);
 
 		$post = $this->input->post(NULL, TRUE);	
@@ -180,6 +187,7 @@ class Paciente extends Front_Controller {
 
 	public function add_evolutivo($paciente_id)
 	{
+		$this->require_paciente_access($paciente_id);
 		$post = $this->input->post(NULL, TRUE);	
 		if ($post)
 		{
@@ -220,6 +228,7 @@ class Paciente extends Front_Controller {
 
 	public function edit_evolutivo($evolutivo_id, $paciente_id)
 	{
+		$this->require_paciente_access($paciente_id);
 		$evolutivo = $this->evolutivo_model->get($evolutivo_id);
 		if($evolutivo->paciente_id != $paciente_id) die('No es posible editar este informe');
 
@@ -260,6 +269,7 @@ class Paciente extends Front_Controller {
 
 	public function delete_evolutivo($evolutivo_id, $paciente_id)
 	{
+		$this->require_paciente_access($paciente_id);
 		$this->is_ajax();
 
 		$evolutivo = $this->evolutivo_model->get($evolutivo_id);
@@ -274,6 +284,7 @@ class Paciente extends Front_Controller {
 
 	public function index_citas($paciente_id)
 	{
+		$this->require_paciente_access($paciente_id);
 		$this->is_ajax();
 
 		$data['rows'] = $this->agenda_model->get_by_paciente($paciente_id);
@@ -346,6 +357,7 @@ class Paciente extends Front_Controller {
 
 	public function edit($id)
 	{
+		$this->require_paciente_access($id);
 		$paciente = $this->user_model->get($id);
 
 		// if(!$this->is_admin && $paciente->profesional_id != $this->login->id)
@@ -380,7 +392,7 @@ class Paciente extends Front_Controller {
 				'nro_afiliado' => $post['nro_afiliado']
 			);
 
-			if(!empty($post['password']))
+			if(!empty($post['password']) && $this->is_admin)
 			{
 				$data['password'] = password_hash($post['password'], PASSWORD_DEFAULT);
 			}
@@ -412,6 +424,7 @@ class Paciente extends Front_Controller {
 
 	public function formingreso($id)
 	{
+		$this->require_paciente_access($id);
 		$formingreso = $this->user_model->formingreso($id);
 		if(!$formingreso)
 		{
@@ -502,6 +515,7 @@ class Paciente extends Front_Controller {
 
 	public function formalta($id)
 	{
+		$this->require_paciente_access($id);
 		$formalta = $this->user_model->formalta($id);
 		if(!$formalta)
 		{
@@ -588,6 +602,7 @@ class Paciente extends Front_Controller {
 
 	public function formreingreso($id)
 	{
+		$this->require_paciente_access($id);
 		$formreingreso = $this->user_model->formreingreso($id);
 		if(!$formreingreso)
 		{

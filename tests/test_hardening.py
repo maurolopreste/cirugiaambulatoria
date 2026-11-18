@@ -110,6 +110,8 @@ r = anon.get('/archivo/ver/abc123.pdf'); check('UPLOADS: sin sesión no se entre
 r = p1.get('/archivo/ver/abc123.pdf'); check('UPLOADS: otro paciente no puede ver el archivo', denied(r) and '%PDF' not in r[2], r[0])
 r = p2.get('/archivo/ver/abc123.pdf'); check('UPLOADS: el paciente dueño sí lo ve (PDF, nosniff, CSP)', r[0] == 200 and r[1].get('Content-Type') == 'application/pdf' and r[1].get('X-Content-Type-Options') == 'nosniff' and 'sandbox' in r[1].get('Content-Security-Policy', ''), (r[0], r[1].get('Content-Type')))
 check('UPLOADS: el admin lo ve', a_.get('/archivo/ver/abc123.pdf')[0] == 200)
+check('UPLOADS: un profesional que NO es del paciente no lo ve', denied(login('prof1').get('/archivo/ver/abc123.pdf')))
+check('UPLOADS: el profesional del paciente sí lo ve', login('prof2').get('/archivo/ver/abc123.pdf')[0] == 200)
 r = a_.get('/archivo/ver/' + urllib.parse.quote('Informe Pérez.pdf')); check('UPLOADS: nombres con espacios y acentos (archivos viejos) funcionan', r[0] == 200, r[0])
 check('UPLOADS: archivo en disco que no pertenece a ningún registro → 404', a_.get('/archivo/ver/huerfano.pdf')[0] == 404)
 check('UPLOADS: path traversal → 404', all(a_.get('/archivo/ver/' + t)[0] in (404, 403, 400) for t in ('..%2F..%2Findex.php', '..%2f..%2fapplication%2fconfig%2fconfig.php', '%2e%2e%2findex.php')))
